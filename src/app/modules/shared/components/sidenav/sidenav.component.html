@@ -2,7 +2,7 @@
     <!--Toolbar del site-->
     <mat-toolbar color="primary" class="dashboard-toolbar">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-        <h1 class="app-name">Repositorio de Recepción O&M</h1>
+        <h1 class="app-name">Repositorio de Información de OyM Recepción</h1>
         <!--Botones de ayuda y cierre de sesion-->
         <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
             <ul fxLayout="row" fxLayoutGap="20px">
@@ -17,7 +17,7 @@
                     </button>
                     <mat-menu #menu="matMenu">
                         <button mat-menu-item (click)="cerrarSesion()">
-                            <mat-icon>exit_to_app</mat-icon>
+                            <mat-icon>power_settings_new</mat-icon>
                             <label>Cerrar Sesión</label>
                         </button>
                     </mat-menu>
@@ -36,7 +36,8 @@
                 <!--Perfil-->
                 <div class="profile-card">
                     <div class="header">
-                        <h3><strong>{{ username }}</strong></h3>
+                        <h2>Bienvenido</h2>
+                        <h3>{{ username }}</h3>
                     </div>
                 </div>
 

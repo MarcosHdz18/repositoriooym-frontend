@@ -14,9 +14,9 @@ export class SidenavComponent implements OnInit {
 
   menuNav = [
     { name: "Inicio", route: "home", icon: "home" },
-    { name: "Áreas", route: "areas", icon: "account_balance" },
-    { name: "Responsables", route: "responsables", icon: "accessibility" },
-    { name: "Proyectos", route: "proyectos", icon: "important_devices" }
+    { name: "Área", route: "area", icon: "account_balance" },
+    { name: "Responsable", route: "responsable", icon: "accessibility" },
+    { name: "Proyectos", route: "proyecto", icon: "important_devices" }
   ]
 
   constructor(media: MediaMatcher, private keycloakService: KeycloakService) {
