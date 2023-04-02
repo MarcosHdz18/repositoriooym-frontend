@@ -1,1 +1,23 @@
-<p>new-area works!</p>
+<h2 mat-dialog-title class="centrar-texto">{{ tituloFormulario }} Área</h2>
+<mat-dialog-content>
+    <form [formGroup]="areaForm">
+        <div class="category-container">
+            <mat-form-field>
+                <input formControlName="nombre" matInput placeholder="Nombre" required/>
+                <mat-icon matSuffix>assignment</mat-icon>
+            </mat-form-field>
+            <mat-form-field>
+                <textarea formControlName="descripcion" matInput placeholder="Descripción" required></textarea>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button (click)="onSave()" [disabled]="areaForm.invalid" mat-raised-button color="primary">
+        <mat-icon>save</mat-icon> {{ botonLabel }}
+    </button>
+    <button (click)="onCancel()" mat-raised-button color="accent">
+        <mat-icon>cancel</mat-icon> Cancelar
+    </button>
+</mat-dialog-actions>

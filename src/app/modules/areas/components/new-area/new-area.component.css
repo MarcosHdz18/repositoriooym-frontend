@@ -1,0 +1,18 @@
+.centrar-texto {
+    text-align: center;
+}
+
+.category-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.category-container > * {
+    width: 100%;
+}
+
+mat-dialog-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+}

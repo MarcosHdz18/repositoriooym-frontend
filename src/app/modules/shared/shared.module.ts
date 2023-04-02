@@ -6,10 +6,12 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
 
 @NgModule({
   declarations: [
-    SidenavComponent
+    SidenavComponent,
+    DialogConfirmComponent
   ],
   exports: [
     SidenavComponent

@@ -1,0 +1,49 @@
+.centrar {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.header-image {
+    background-image: url('../../../../../assets/img/areas.png');
+    background-size: cover;
+}
+
+.card {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+mat-form-field {
+    width: 450px;
+}
+
+ul li {
+    list-style: none;
+}
+
+table {
+    width: 100%;
+}
+
+tr.element-row:hover {
+    background: whitesmoke;
+}
+
+.container-buscador {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: 50px;
+}
+
+.button-agregar {
+    max-height: 45px;
+}
+
+.button-excel {
+    margin-left: 8px;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}

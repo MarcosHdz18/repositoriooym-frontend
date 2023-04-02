@@ -1,1 +1,70 @@
-<p>area works!</p>
+<!--Componente card-->
+<div style="margin-top: 20px; margin-bottom: 20px;">
+    <mat-card class="card">
+        <!--Encabezado del card-->
+        <mat-card-header>
+            <!--Boton para agregar una categoria-->            
+            <div mat-card-avatar class="header-image"></div>
+            <mat-card-title>Áreas de los Responsables de Proyectos</mat-card-title>
+            <mat-card-subtitle>Listado de Áreas</mat-card-subtitle>
+        </mat-card-header>
+
+        <div mat-card-image></div>
+
+        <!--Contenido de la tarjeta-->
+        <mat-card-content>
+            <div class="container-buscador">
+                <mat-form-field style="margin-top: 20px;" appearance="outline">
+                    <mat-label>Buscar área</mat-label>
+                    <input matInput (keyup)="filtrarAreas($event)" #input>
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+                <div fxLayoutAlign="flex-end">
+                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveAreaDialog()">Agregar área</button>
+                    <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent">Exportar a Excel</button>
+                </div>
+            </div>
+            
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+                <!--id column-->
+                <ng-container matColumnDef="idArea">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element">{{ element.idAreaResponsableProyecto }}</td>
+                </ng-container>
+                <!--name column-->
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                    <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+                </ng-container>
+                <!--description column-->
+                <ng-container matColumnDef="descripcion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
+                    <td mat-cell *matCellDef="let element">{{ element.descripcion }}</td>
+                </ng-container>
+                <!--actions column-->
+                <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                    <td mat-cell *matCellDef="let element; let i=index;">
+                        <button *ngIf="isAdmin" matTooltip="Editar" (click)="update(element.idAreaResponsableProyecto, element.nombre, element.descripcion)" mat-icon-button color="accent">
+                            <mat-icon aria-label="Edit">edit</mat-icon>
+                        </button>
+                        <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element.idAreaResponsableProyecto)" mat-icon-button color="warn">
+                            <mat-icon aria-label="Delete">delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                
+                <!--Mostrar registro de las filas desplegadas-->
+                <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayColumns;" class="element-row"></tr>
+                <!--Registro no encontrado-->
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No existen datos con la búsqueda proporcionada: "{{ input.value }}"</td>
+                </tr>
+            </table>
+            <!--Paginacion-->
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Selecciona la página de los elementos indicados">
+            </mat-paginator>
+        </mat-card-content>
+    </mat-card>
+</div>
