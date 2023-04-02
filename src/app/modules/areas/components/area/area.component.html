@@ -5,8 +5,8 @@
         <mat-card-header>
             <!--Boton para agregar una categoria-->            
             <div mat-card-avatar class="header-image"></div>
-            <mat-card-title>Áreas de los Responsables de Proyectos</mat-card-title>
-            <mat-card-subtitle>Listado de Áreas</mat-card-subtitle>
+            <mat-card-title>Departamentos de la Gerencia OYM Recepción Infraestructura, Aplicativos Y Sistemas Virtualizados</mat-card-title>
+            <mat-card-subtitle>Listado de Departamentos</mat-card-subtitle>
         </mat-card-header>
 
         <div mat-card-image></div>
@@ -15,12 +15,12 @@
         <mat-card-content>
             <div class="container-buscador">
                 <mat-form-field style="margin-top: 20px;" appearance="outline">
-                    <mat-label>Buscar área</mat-label>
+                    <mat-label>Ingresa el texto para búscar el Departamento</mat-label>
                     <input matInput (keyup)="filtrarAreas($event)" #input>
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
                 <div fxLayoutAlign="flex-end">
-                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveAreaDialog()">Agregar área</button>
+                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveAreaDialog()">Añadir nueva área</button>
                     <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent">Exportar a Excel</button>
                 </div>
             </div>
