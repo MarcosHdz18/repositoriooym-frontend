@@ -63,7 +63,7 @@ export class AreaComponent implements OnInit {
     const dataArea: AreaElement[] = [];
 
     if (resp.metadata[0].code == "00") {
-      let listAreas = resp.areaResponsableProyectoResponse.areas;
+      let listAreas = resp.areaResponse.areas;
       listAreas.forEach((element: AreaElement ) => {
         dataArea.push(element);
       });
@@ -95,7 +95,7 @@ export class AreaComponent implements OnInit {
   delete(idArea: any) {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '450px',
-      data: { idAreaResponsableProyecto: idArea, module: "area" }
+      data: { idArea: idArea, module: "area" }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {

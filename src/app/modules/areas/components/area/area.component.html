@@ -15,7 +15,7 @@
         <mat-card-content>
             <div class="container-buscador">
                 <mat-form-field style="margin-top: 20px;" appearance="outline">
-                    <mat-label>Ingresa el texto para búscar el Departamento</mat-label>
+                    <mat-label>Ingresa el texto para buscar el Departamento</mat-label>
                     <input matInput (keyup)="filtrarAreas($event)" #input>
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
@@ -29,7 +29,7 @@
                 <!--id column-->
                 <ng-container matColumnDef="idArea">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-                    <td mat-cell *matCellDef="let element">{{ element.idAreaResponsableProyecto }}</td>
+                    <td mat-cell *matCellDef="let element">{{ element.idArea }}</td>
                 </ng-container>
                 <!--name column-->
                 <ng-container matColumnDef="nombre">
@@ -45,10 +45,10 @@
                 <ng-container matColumnDef="acciones">
                     <th mat-header-cell *matHeaderCellDef>Acciones</th>
                     <td mat-cell *matCellDef="let element; let i=index;">
-                        <button *ngIf="isAdmin" matTooltip="Editar" (click)="update(element.idAreaResponsableProyecto, element.nombre, element.descripcion)" mat-icon-button color="accent">
+                        <button *ngIf="isAdmin" matTooltip="Editar" (click)="update(element.idArea, element.nombre, element.descripcion)" mat-icon-button color="accent">
                             <mat-icon aria-label="Edit">edit</mat-icon>
                         </button>
-                        <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element.idAreaResponsableProyecto)" mat-icon-button color="warn">
+                        <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element.idArea)" mat-icon-button color="warn">
                             <mat-icon aria-label="Delete">delete</mat-icon>
                         </button>
                     </td>
