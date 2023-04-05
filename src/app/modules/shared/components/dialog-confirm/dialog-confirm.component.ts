@@ -16,7 +16,7 @@ export class DialogConfirmComponent implements OnInit {
   private areaService: AreaService) { }
 
   ngOnInit(): void {
-    this.idAreaDeleted = this.data.idAreaResponsableProyecto;
+    this.idAreaDeleted = this.data.idArea;
   }
 
   // Confirmacion para eliminar el registro seleccionado
@@ -24,7 +24,7 @@ export class DialogConfirmComponent implements OnInit {
     if (this.data != null) {
 
       if (this.data.module == "area") {
-        this.areaService.deleteArea(this.data.idAreaResponsableProyecto).subscribe((data: any) => {
+        this.areaService.deleteArea(this.data.idArea).subscribe((data: any) => {
           this.dialogRef.close(1);
         }, (error: any) => {
           this.dialogRef.close(2);
