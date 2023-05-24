@@ -7,14 +7,17 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
+import { ThemeSwitcherComponent } from './components/theme-switcher/theme-switcher.component';
 
 @NgModule({
   declarations: [
     SidenavComponent,
-    DialogConfirmComponent
+    DialogConfirmComponent,
+    ThemeSwitcherComponent
   ],
   exports: [
-    SidenavComponent
+    SidenavComponent,
+    ThemeSwitcherComponent
   ],
   imports: [
     CommonModule,

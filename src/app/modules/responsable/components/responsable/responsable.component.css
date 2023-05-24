@@ -4,7 +4,7 @@
 }
 
 .header-image {
-    background-image: url('../../../../../assets/img/areas.png');
+    background-image: url('../../../../../assets/img/responsables.jpg');
     background-size: cover;
 }
 
@@ -14,7 +14,7 @@
 }
 
 mat-form-field {
-    width: 450px;
+    width: 700px;
 }
 
 ul li {
@@ -26,7 +26,7 @@ table {
 }
 
 tr.element-row:hover {
-    background: #E0E0E0;
+    background: whitesmoke;
 }
 
 td.cdk-cell:hover {

@@ -1,7 +1,7 @@
-<h1 *ngIf="data.module === 'area'" class="mat-dialog-title centrar-texto">Eliminar Área</h1>
+<h1 *ngIf="data.module === 'area'" class="mat-dialog-title centrar-texto">Eliminar Departamento</h1>
 <h1 *ngIf="data.module === 'responsable'" class="mat-dialog-title centrar-texto">Eliminar Responsable</h1>
 <div class="centrar-texto" mat-dialog-content>
-    <p *ngIf="data.module === 'area'">¿Está seguro que desea eliminar el área con el ID: <strong>{{ idAreaDeleted }}</strong>?</p>
+    <p *ngIf="data.module === 'area'">¿Está seguro que desea eliminar el departamento con el ID: <strong>{{ idAreaDeleted }}</strong>?</p>
     <p *ngIf="data.module === 'responsable'">¿Está seguro que desea eliminar el responsable con el ID: <strong>{{ idResponsableDeleted }}</strong>?</p>
 </div>
 <div class="container-buttons" mat-dialog-actions>

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AreaService } from '../../services/area.service';
+import { ResponsableService } from '../../services/responsable.service';
 
 @Component({
   selector: 'app-dialog-confirm',
@@ -13,10 +14,11 @@ export class DialogConfirmComponent implements OnInit {
   idResponsableDeleted = 0;
 
   constructor(public dialogRef: MatDialogRef<DialogConfirmComponent>, @Inject (MAT_DIALOG_DATA) public data: any,
-  private areaService: AreaService) { }
+  private areaService: AreaService, private responsableService: ResponsableService) { }
 
   ngOnInit(): void {
     this.idAreaDeleted = this.data.idArea;
+    this.idResponsableDeleted = this.data.idResponsable;
   }
 
   // Confirmacion para eliminar el registro seleccionado
@@ -31,7 +33,11 @@ export class DialogConfirmComponent implements OnInit {
         });
 
       } else if (this.data.module == "responsable") {
-        
+        this.responsableService.deleteResponsable(this.data.idResponsable).subscribe((data: any) => {
+          this.dialogRef.close(1);
+        }, (error: any) => {
+          this.dialogRef.close(2);
+        });
       }
       
     } else {

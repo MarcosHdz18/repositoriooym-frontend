@@ -59,4 +59,17 @@ export class AreaService {
 
     return this.http.delete(endpoint);
   }
+
+  /**
+   * Metodo que permite la exportacion de los datos en formato de libro de excel
+   * @returns file export excel
+   */
+  exportAreasExcel() {
+    const endpoint = `${endpoint_url}/areas/export/excel`;
+
+    return this.http.get(endpoint, {
+      responseType: 'blob'
+    });
+
+  }
 }

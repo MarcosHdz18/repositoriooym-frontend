@@ -5,27 +5,27 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBar
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogConfirmComponent } from 'src/app/modules/shared/components/dialog-confirm/dialog-confirm.component';
-import { AreaService } from 'src/app/modules/shared/services/area.service';
+import { ResponsableService } from 'src/app/modules/shared/services/responsable.service';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
-import { NewAreaComponent } from '../new-area/new-area.component';
+import { NewResponsableComponent } from '../new-responsable/new-responsable.component';
 
 @Component({
-  selector: 'app-area',
-  templateUrl: './area.component.html',
-  styleUrls: ['./area.component.css']
+  selector: 'app-responsable',
+  templateUrl: './responsable.component.html',
+  styleUrls: ['./responsable.component.css']
 })
-export class AreaComponent implements OnInit {
+export class ResponsableComponent implements OnInit {
 
   isAdmin: any;
 
-  constructor(private areaService: AreaService, private paginatorLabel: MatPaginatorIntl, public dialog: MatDialog,
+  constructor(private responsableService: ResponsableService, private paginatorLabel: MatPaginatorIntl, public dialog: MatDialog,
     private snackbar: MatSnackBar, private utils: UtilsService) { }
 
   // Fuente de datos
-  dataSource = new MatTableDataSource<AreaElement>();
+  dataSource = new MatTableDataSource<ResponsableElement>();
 
   // Cabeceras de las columnas que se mostraran
-  displayColumns: string[] = ['idArea', 'nombre', 'descripcion', 'acciones'];
+  displayColumns: string[] = ['idResponsable', 'nombre', 'apellidoPaterno', 'apellidoMaterno', 'numeroEmpleado', 'area', 'acciones'];
 
   // Paginador del componente
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -44,85 +44,86 @@ export class AreaComponent implements OnInit {
     this.paginatorLabel.previousPageLabel = "Anterior";
     this.paginatorLabel.nextPageLabel = "Siguiente";
     this.paginatorLabel.lastPageLabel = "Última Página";
-    this.getAreas();
+    this.getResponsables();
     this.isAdmin = this.utils.isAdmin();
   }
 
-  // Metodo que obtiene todas las areas del servicio REST programado en el backend
-  getAreas() {
-    this.areaService.getAreas().subscribe((data: any) => {
-      console.log("Respuesta del servicio areas: ", data);
-      this.processAreasResponse(data);
+  // Metodo que obtiene todos los responsables del servicio REST programado en el backend
+  getResponsables() {
+    this.responsableService.getResponsables().subscribe((data: any) => {
+      console.log("Respuesta del servicio responsables: ", data);
+      this.processResponsablesResponse(data);
     }, (error: any) => {
       console.log("Error: ", error);
     });
   }
 
-  // Procesamiento de la peticion del servicio REST que obtiene todas las areas
-  processAreasResponse(resp: any) {
-    const dataArea: AreaElement[] = [];
+  // Procesamiento de la peticion del servicio REST que obtiene todos los responsables
+  processResponsablesResponse(resp: any) {
+    const dataResponsables: ResponsableElement[] = [];
 
     if (resp.metadata[0].code == "00") {
-      let listAreas = resp.areaResponse.areas;
-      listAreas.forEach((element: AreaElement ) => {
-        dataArea.push(element);
+      let listResponsables = resp.responsableResponse.responsables;
+      listResponsables.forEach((element: ResponsableElement ) => {
+        dataResponsables.push(element);
       });
-      this.dataSource = new MatTableDataSource<AreaElement>(dataArea);
+      this.dataSource = new MatTableDataSource<ResponsableElement>(dataResponsables);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.areaSort;
     }
   }
 
   // Metodo para actualizar un registro
-  update(idArea: number, nombre: string, descripcion: string) {
-    const dialogRef = this.dialog.open(NewAreaComponent, {
+  update(idResponsable: number, nombre: string, apellidoPaterno: string, apellidoMaterno: string, numeroEmpleado: number,
+    area: any) {
+    const dialogRef = this.dialog.open(NewResponsableComponent, {
       width: '450px',
-      data: { idArea: idArea, nombre: nombre, descripcion: descripcion }
+      data: { idResponsable: idResponsable, nombre: nombre, apellidoPaterno: apellidoPaterno, apellidoMaterno: apellidoMaterno, numeroEmpleado: numeroEmpleado, area: area }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
 
       if(result == 1) {
-        this.openSnackbar("Área actualizada con éxito", "Operación exitosa");
-        this.getAreas();
+        this.openSnackbar("Responsable actualizado con éxito", "Operación exitosa");
+        this.getResponsables();
       } else if (result == 2) {
-        this.openSnackbar("Se produjo un error al actualizar el área", "Operación fallida");
+        this.openSnackbar("Se produjo un error al actualizar el responsable", "Operación fallida");
       }
     });
   }
 
-  // Metodo para eliminar un area
-  delete(idArea: any) {
+  // Metodo para eliminar un responsable
+  delete(idResponsable: any) {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '450px',
-      data: { idArea: idArea, module: "area" }
+      data: { idResponsable: idResponsable, module: "responsable" }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
 
       if (result == 1) {
-        this.openSnackbar("Area eliminada con éxito", "Operación Exitosa");
-        this.getAreas();
+        this.openSnackbar("Responsable eliminado con éxito", "Operación Exitosa");
+        this.getResponsables();
       } else if (result == 2) {
-        this.openSnackbar("Se produjo un error al eliminar el área", "Operación fallida");
+        this.openSnackbar("Se produjo un error al eliminar el responsable", "Operación fallida");
       }
 
     })
   }
 
-  // Metodo para guardar un area
-  saveAreaDialog() {
-    const dialogRef = this.dialog.open(NewAreaComponent , {
+  // Metodo para guardar un responsable
+  saveResponsableDialog() {
+    const dialogRef = this.dialog.open(NewResponsableComponent, {
       width: '450px'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
 
       if (result == 1) {
-        this.openSnackbar("Área guardada con éxito", "Operación Exitosa");
-        this.getAreas();
+        this.openSnackbar("Responsable guardado con éxito", "Operación Exitosa");
+        this.getResponsables();
       } else if (result == 2) {
-        this.openSnackbar("Se produjo un error al guardar el área", "Operación fallida");
+        this.openSnackbar("Se produjo un error al guardar el responsable", "Operación fallida");
       }
     });
   }
@@ -137,30 +138,18 @@ export class AreaComponent implements OnInit {
   }
 
   // Metodo para poder filtrar el contenido de la tabla
-  filtrarAreas(event: Event) {
+  filtrarResponsables(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  // Metodo que realiza la exportacion de los datos a un archivo de excel
-  exportDataFileExcel() {
-    this.areaService.exportAreasExcel().subscribe((data: any) => {
-      let file = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-      let fileURL = URL.createObjectURL(file);
-      var anchor = document.createElement("a");
-      anchor.download = "Reporte Departamentos.xlsx";
-      anchor.href = fileURL;
-      anchor.click();
-      this.openSnackbar("Exportación de archivo correcta", "Operación exitosa");
-    }, (error: any) => {
-      this.openSnackbar("Exportación de archivo incorrecta", "Operación fallida");
-    });
   }
 }
 
 // Contrato con los datos del empate con el servicio REST del backend
-export interface AreaElement {
-  idArea: number;
+export interface ResponsableElement {
+  idResponsable: number;
   nombre: string;
-  descripcion: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+  numeroEmpleado: number;
+  area: any;
 }

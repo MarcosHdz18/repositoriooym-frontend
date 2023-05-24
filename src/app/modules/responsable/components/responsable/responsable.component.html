@@ -5,8 +5,8 @@
         <mat-card-header>
             <!--Boton para agregar una categoria-->            
             <div mat-card-avatar class="header-image"></div>
-            <mat-card-title>Departamentos de la Gerencia OYM Recepción Infraestructura, Aplicativos Y Sistemas Virtualizados</mat-card-title>
-            <mat-card-subtitle>Listado de Departamentos</mat-card-subtitle>
+            <mat-card-title>Responsables de Proyectos de la Gerencia OYM Recepción Infraestructura, Aplicativos Y Sistemas Virtualizados</mat-card-title>
+            <mat-card-subtitle>Listado de Responsables de Proyectos</mat-card-subtitle>
         </mat-card-header>
 
         <div mat-card-image></div>
@@ -15,40 +15,56 @@
         <mat-card-content>
             <div class="container-buscador">
                 <mat-form-field style="margin-top: 20px;" appearance="outline">
-                    <mat-label>Buscar departamento de OYM Recepción</mat-label>
-                    <input matInput (keyup)="filtrarAreas($event)" #input>
+                    <mat-label>Buscar responsable de proyecto de OYM Recepción</mat-label>
+                    <input matInput (keyup)="filtrarResponsables($event)" #input>
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
                 <div fxLayoutAlign="flex-end">
-                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveAreaDialog()">Añadir nueva área</button>
-                    <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent" (click)="exportDataFileExcel()">Exportar a Excel</button>
+                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveResponsableDialog()">Añadir nuevo responsable</button>
+                    <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent">Exportar a Excel</button>
                 </div>
             </div>
             
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
                 <!--id column-->
-                <ng-container matColumnDef="idArea">
+                <ng-container matColumnDef="idResponsable">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-                    <td mat-cell *matCellDef="let element">{{ element.idArea }}</td>
+                    <td mat-cell *matCellDef="let element">{{ element.idResponsable }}</td>
                 </ng-container>
                 <!--name column-->
                 <ng-container matColumnDef="nombre">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
                     <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
                 </ng-container>
-                <!--description column-->
-                <ng-container matColumnDef="descripcion">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
-                    <td mat-cell *matCellDef="let element">{{ element.descripcion }}</td>
+                <!--apellidoPaterno column-->
+                <ng-container matColumnDef="apellidoPaterno">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido Paterno</th>
+                    <td mat-cell *matCellDef="let element">{{ element.apellidoPaterno }}</td>
+                </ng-container>
+                 <!--apellidoMaterno column-->
+                 <ng-container matColumnDef="apellidoMaterno">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido Materno</th>
+                    <td mat-cell *matCellDef="let element">{{ element.apellidoMaterno }}</td>
+                </ng-container>
+                 <!--numeroEmpleado column-->
+                 <ng-container matColumnDef="numeroEmpleado">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Número de Empleado</th>
+                    <td mat-cell *matCellDef="let element">{{ element.numeroEmpleado }}</td>
+                </ng-container>
+                 <!--Area column-->
+                 <ng-container matColumnDef="area">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Área a la que pertenece</th>
+                    <td mat-cell *matCellDef="let element">{{ element.area.nombre }}</td>
                 </ng-container>
                 <!--actions column-->
                 <ng-container matColumnDef="acciones">
                     <th mat-header-cell *matHeaderCellDef>Acciones</th>
                     <td mat-cell *matCellDef="let element; let i=index;">
-                        <button *ngIf="isAdmin" matTooltip="Editar" (click)="update(element.idArea, element.nombre, element.descripcion)" mat-icon-button color="accent">
+                        <button *ngIf="isAdmin" matTooltip="Editar" (click)="update(element.idResponsable, element.nombre, element.apellidoPaterno, 
+                        element.apellidoMaterno, element.numeroEmpleado, element.area)" mat-icon-button color="accent">
                             <mat-icon aria-label="Edit">edit</mat-icon>
                         </button>
-                        <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element.idArea)" mat-icon-button color="warn">
+                        <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element.idResponsable)" mat-icon-button color="warn">
                             <mat-icon aria-label="Delete">delete</mat-icon>
                         </button>
                     </td>

@@ -1,0 +1,55 @@
+<h2 mat-dialog-title class="centrar-texto">{{ tituloFormulario }} responsable</h2>
+<mat-dialog-content>
+    <form [formGroup]="responsableForm">
+        <div class="responsable-container">
+            <!--Propiedad nombre del formulario-->
+            <mat-form-field>
+                <input formControlName="nombre" matInput placeholder="Nombre" required />
+                <mat-icon matSuffix>assignment</mat-icon>
+            </mat-form-field>
+            <!--Propiedad apellido paterno del formulario-->
+            <mat-form-field>
+                <input formControlName="apellidoPaterno" matInput placeholder="Apellido paterno" required/>
+                <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+            <!--Propiedad apellido materno del formulario-->
+            <mat-form-field>
+                <input formControlName="apellidoMaterno" matInput placeholder="Apellido materno" required/>
+                <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+            <!--Propiedad numero empleado del formulario-->
+            <mat-form-field>
+                <input formControlName="numeroEmpleado" type="number" matInput placeholder="Número de Empleado" required/>
+                <mat-icon matSuffix>contacts</mat-icon>
+            </mat-form-field>
+            <!--Propiedad category del formulario-->
+            <mat-form-field>
+                <mat-label>Departamento</mat-label>
+                <mat-select formControlName="area">
+                    <mat-option *ngFor="let area of areas" [value]="area.idArea">
+                        {{ area.nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!--Propiedad picture del formulario
+            <div class="container-upload">
+                <mat-label>Imagen: </mat-label>
+                <label for="file-upload" class="upload">
+                    Seleccionar archivo
+                </label>
+                <input class="input-file" id="file-upload" type="file" accept="image/png, image/jpeg" (change)="onFileChanged($event)"
+                       formControlName="picture"/>
+                <span style="margin-left: 10px;">{{ nameImage }}</span>
+            </div>-->
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button (click)="onSave()" [disabled]="responsableForm.invalid" mat-raised-button color="primary">
+        <mat-icon>save</mat-icon> {{ botonLabel }}
+    </button>
+    <button (click)="onCancel()" mat-raised-button color="accent">
+        <mat-icon>cancel</mat-icon> Cancelar
+    </button>
+</mat-dialog-actions>
