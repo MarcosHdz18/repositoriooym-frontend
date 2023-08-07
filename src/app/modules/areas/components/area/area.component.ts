@@ -83,7 +83,7 @@ export class AreaComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
 
       if(result == 1) {
-        this.openSnackbar("Área actualizada con éxito", "Operación exitosa");
+        this.openSnackbar("Departamento actualizado con éxito", "Operación exitosa");
         this.getAreas();
       } else if (result == 2) {
         this.openSnackbar("Se produjo un error al actualizar el área", "Operación fallida");
@@ -101,10 +101,10 @@ export class AreaComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
 
       if (result == 1) {
-        this.openSnackbar("Area eliminada con éxito", "Operación Exitosa");
+        this.openSnackbar("Departamento eliminado con éxito", "Operación Exitosa");
         this.getAreas();
       } else if (result == 2) {
-        this.openSnackbar("Se produjo un error al eliminar el área", "Operación fallida");
+        this.openSnackbar("Se produjo un error al eliminar el departamento", "Operación fallida");
       }
 
     })
@@ -119,10 +119,10 @@ export class AreaComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
 
       if (result == 1) {
-        this.openSnackbar("Área guardada con éxito", "Operación Exitosa");
+        this.openSnackbar("Departamento guardado con éxito", "Operación Exitosa");
         this.getAreas();
       } else if (result == 2) {
-        this.openSnackbar("Se produjo un error al guardar el área", "Operación fallida");
+        this.openSnackbar("Se produjo un error al guardar el departamento", "Operación fallida");
       }
     });
   }
