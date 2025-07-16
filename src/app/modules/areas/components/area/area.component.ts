@@ -130,7 +130,7 @@ export class AreaComponent implements OnInit {
   // Dialogo de operacion
   openSnackbar(message: string, action: string) : MatSnackBarRef<SimpleSnackBar> {
     return this.snackbar.open(message, action, {
-      duration: 5000,
+      duration: 10000,
       horizontalPosition: this.horizontalPositionSnackbar,
       verticalPosition: this.verticalPositionSnackbar
     });

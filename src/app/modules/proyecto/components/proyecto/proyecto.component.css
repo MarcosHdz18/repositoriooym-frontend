@@ -1,0 +1,78 @@
+.centrar {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.header-image {
+    background-image: url('../../../../../assets/img/proyectos.png');
+    background-size: cover;
+}
+
+.card {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+mat-form-field {
+    width: 700px;
+}
+
+ul li {
+    list-style: none;
+}
+
+table {
+    width: 100%;
+}
+
+tr.element-row:hover {
+    background: whitesmoke;
+}
+
+.container-buscador {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: 50px;
+}
+
+.button-agregar {
+    max-height: 45px;
+}
+
+.button-excel {
+    margin-left: 8px;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}
+
+/* El chip que muestre “ver más” */
+.ver-mas {
+    display: block;
+    margin: 4px auto 0;
+    text-align: center;
+    font-style: italic;
+    color: #3f51b5;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+/* Cuando no hay nodos que mostrar */
+.no-nodos {
+    display: block;
+    color: #888;
+    text-align: center;
+    font-style: italic;
+    padding: 8px 0;
+}
+
+/* (Opcional) Estilos para el tooltip que aparece “above” */
+.mat-tooltip.above {
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    padding: 6px 8px;
+}

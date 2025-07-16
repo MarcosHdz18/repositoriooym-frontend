@@ -6,6 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { MaterialModule } from '../shared/material.module';
 import { AreasModule } from '../areas/areas.module';
 import { ResponsableModule } from '../responsable/responsable.module';
+import { ProyectoModule } from '../proyecto/proyecto.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ResponsableModule } from '../responsable/responsable.module';
     SharedModule,
     MaterialModule,
     AreasModule,
-    ResponsableModule
+    ResponsableModule,
+    ProyectoModule
   ]
 })
 export class DashboardModule { }

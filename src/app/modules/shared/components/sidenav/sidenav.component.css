@@ -41,3 +41,7 @@ ul li {
 .icono {
     margin-right: 10px;
 }
+
+mat-sidenav {
+    width: 360px;
+}

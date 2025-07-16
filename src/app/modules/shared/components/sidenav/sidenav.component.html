@@ -3,6 +3,9 @@
     <mat-toolbar color="primary" class="dashboard-toolbar">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
         <h1 class="app-name">Repositorio de Información de OYM Recepción</h1>
+        <div>
+            <img src="../../../../../assets/img/toolbar_logo.png" alt="telcel_logo" style="width: 100px; margin: 10px 0 0 500px;">
+        </div>
         <!--Botones de ayuda y cierre de sesion-->
         <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
             <ul fxLayout="row" fxLayoutGap="20px">
@@ -45,8 +48,7 @@
                 <mat-divider></mat-divider>
 
                 <a mat-list-item [routerLink]="nav.route" *ngFor="let nav of menuNav">
-                    <mat-icon class="icono">{{ nav.icon }}</mat-icon>
-                    {{ nav.name }}
+                    <mat-icon class="icono">{{ nav.icon }}</mat-icon>{{ nav.name }}
                 </a>
             </mat-nav-list>
         </mat-sidenav>
@@ -56,6 +58,5 @@
             <!--Cargará el componencte home por la route child configurada-->
             <router-outlet></router-outlet>
         </mat-sidenav-content>
-
     </mat-sidenav-container>
 </div>

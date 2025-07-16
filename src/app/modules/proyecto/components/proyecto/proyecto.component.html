@@ -1,0 +1,126 @@
+<!--Componente card-->
+<div style="margin-top: 20px; margin-bottom: 20px;">
+    <mat-card class="card">
+        <!--Encabezado del card-->
+        <mat-card-header>
+            <!--Boton para agregar un proyecto-->
+            <div mat-card-avatar class="header-image"></div>
+            <mat-card-title>Proyectos</mat-card-title>
+            <mat-card-subtitle>Lista de Proyectos</mat-card-subtitle>
+        </mat-card-header>
+
+        <div mat-card-image></div>
+
+        <!--Contenido de la tarjeta-->
+        <mat-card-content>
+            <div class="container-buscador">
+                <mat-form-field style="margin-top: 20px;" appearance="outline">
+                    <mat-label>Buscar proyecto</mat-label>
+                    <input matInput (keyup)="filtrarProyectos($event)" #input>
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+                <div fxLayoutAlign="flex-end">
+                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary"
+                        (click)="openProyectoDialog()">Nuevo proyecto</button>
+                    <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent"
+                        (click)="exportDataFileExcel()">Exportar a Excel</button>
+                </div>
+            </div>
+
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+                <!--id column-->
+                <ng-container matColumnDef="idProyecto">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element">{{ element.idProyecto }}</td>
+                </ng-container>
+                <!--name column-->
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                    <td mat-cell *matCellDef="let element">{{ element.nombre.toUpperCase() }}</td>
+                </ng-container>
+                <!--nodos column-->
+                <ng-container matColumnDef="nodos">
+                    <th mat-header-cell *matHeaderCellDef>Nodos</th>
+                    <td mat-cell *matCellDef="let element">
+                        <!-- Solo renderiza si hay al menos 1 nodo -->
+                        <div *ngIf="element.nodosList.length > 0; else sinNodos">
+                            <!-- Muestra hasta maxMostrar -->
+                            <div *ngFor="let nodo of element.nodosList.slice(0, maxMostrar)">
+                                {{ nodo | uppercase}}
+                            </div>
+                            <!-- Si hay más, muestra el chip "ver más..." con tooltip -->
+                            <div *ngIf="element.nodosList.length > maxMostrar" class="ver-mas"
+                                matTooltip="{{ element.nodosList.slice(maxMostrar).join(', ') }}"
+                                matTooltipPosition="above">
+                                ver más…{{ element.nodosList.length - 6}}
+                            </div>
+                        </div>
+                        <!-- Si no hay nodos -->
+                        <ng-template #sinNodos>
+                            <span class="no-nodos">—</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <!--fechaLiberacion column-->
+                <ng-container matColumnDef="fechaLiberacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Liberaci&oacute;n</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="element.fechaLiberacion !== 'Pendiente' ; else pendienteTpl">
+                            {{ element.fechaLiberacion | date: 'dd/MM/yyyy' }}
+                        </ng-container>
+                        <ng-template #pendienteTpl>
+                            <span class="pendiente">Pendiente</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <!--anio column-->
+                <ng-container matColumnDef="anio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Año</th>
+                    <td mat-cell *matCellDef="let element">{{ element.anio }}</td>
+                </ng-container>
+                <!--responsableProyecto column-->
+                <ng-container matColumnDef="responsableProyecto">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Responsable</th>
+                    <td mat-cell *matCellDef="let element">{{ element.responsableProyecto.nombre }} {{
+                        element.responsableProyecto.apellidoPaterno }}</td>
+                </ng-container>
+                <!--actions column-->
+                <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                    <td mat-cell *matCellDef="let element; let i=index;">
+                        <!--<mat-label *ngIf="isAdmin">Editar</mat-label>-->
+                        <button *ngIf="isAdmin" matTooltip="Detalle" mat-icon-button color="primary"
+                            (click)="detalleProyecto(element.idProyecto, element.nombre, element.fechaLiberacion,
+                        element.f60, element.nodos, element.lld, element.hld, element.reporteTransferenciaOperativa, element.atpFisico, element.atpLogico, element.atpFisicoFirmado,
+                        element.atpLogicoFirmado, element.cartaResponsivaPlataforma, element.cartaResponsivaIaaS, element.cartaResponsivaStorage, element.cartaResponsivaHa, 
+                        element.cartaResponsivaGsoc, element.layout, element.sla, element.reporteFotografico, element.asignacionFuerzaEspacio, element.inventarioHardware)">
+                            <mat-icon aria-label="Delete">remove_red_eye</mat-icon>
+                        </button>
+                        <button *ngIf="isAdmin" matTooltip="Editar" mat-icon-button color="accent"
+                            (click)="editProyecto(element.idProyecto, element.nombre, element.fechaLiberacion, element.responsableProyecto)">
+                            <mat-icon aria-label="Edit">edit</mat-icon>
+                        </button>
+                        <button *ngIf="isAdmin" matTooltip="Eliminar" mat-icon-button color="warn"
+                            (click)="deleteProyecto(element.idProyecto)">
+                            <mat-icon aria-label="Delete">delete</mat-icon>
+                        </button>
+                        <!--<mat-label *ngIf="isAdmin">Eliminar</mat-label>-->
+                    </td>
+                </ng-container>
+
+                <!--Mostrar registro de las filas desplegadas-->
+                <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayColumns;" class="element-row"></tr>
+                <!--Registro no encontrado-->
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No existen datos con la búsqueda proporcionada: "{{ input.value }}"
+                    </td>
+                </tr>
+            </table>
+            <!--Paginacion-->
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                aria-label="Selecciona la página de los elementos indicados">
+            </mat-paginator>
+        </mat-card-content>
+    </mat-card>
+</div>

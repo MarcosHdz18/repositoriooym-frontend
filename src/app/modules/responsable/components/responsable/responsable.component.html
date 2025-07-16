@@ -3,10 +3,10 @@
     <mat-card class="card">
         <!--Encabezado del card-->
         <mat-card-header>
-            <!--Boton para agregar una categoria-->            
+            <!--Boton para agregar un responsable-->            
             <div mat-card-avatar class="header-image"></div>
-            <mat-card-title>Responsables de Proyectos de la Gerencia O&M Recepción Infraestructura, Aplicativos y Sistemas Virtualizados</mat-card-title>
-            <mat-card-subtitle>Listado de Responsables de Proyectos</mat-card-subtitle>
+            <mat-card-title>Responsables</mat-card-title>
+            <mat-card-subtitle>Lista de Responsables</mat-card-subtitle>
         </mat-card-header>
 
         <div mat-card-image></div>
@@ -15,12 +15,12 @@
         <mat-card-content>
             <div class="container-buscador">
                 <mat-form-field style="margin-top: 20px;" appearance="outline">
-                    <mat-label>Buscar responsable de proyecto de OYM Recepción</mat-label>
+                    <mat-label>Buscar responsable</mat-label>
                     <input matInput (keyup)="filtrarResponsables($event)" #input>
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
                 <div fxLayoutAlign="flex-end">
-                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveResponsableDialog()">Añadir nuevo responsable</button>
+                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveResponsableDialog()">Nuevo responsable</button>
                     <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent">Exportar a Excel</button>
                 </div>
             </div>

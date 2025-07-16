@@ -1,0 +1,54 @@
+<h2 mat-dialog-title class="centrar-texto">Proyecto: {{ data.nombre }}</h2>
+<h2 mat-dialog-title class="centrar-texto">Fecha de liberación: &nbsp;
+    <ng-container *ngIf="data.fechaLiberacion !== 'Pendiente' ; else pendienteTpl">
+        {{ data.fechaLiberacion | date: 'dd/MM/yyyy' }}
+    </ng-container>
+    <ng-template #pendienteTpl>
+        <span class="pendiente">Pendiente</span>
+    </ng-template>
+</h2>
+
+<h3 class="centrar-texto">Documentación técnica</h3>
+<mat-divider></mat-divider>
+<br>
+
+<mat-dialog-content>
+
+    <mat-accordion>
+
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>Nodos</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="nodos-list" (wheel)="onNodoListWheel($event)">
+                <strong><p *ngIf="data.nodos; else sinNodos">{{ data.nodos | uppercase}}</p></strong>
+                <ng-template #sinNodos>
+                    <p class="no-nodos">No hay nodos registrados</p>
+                </ng-template>
+            </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel *ngFor="let doc of documentosSubidos">
+            <mat-expansion-panel-header>
+                <mat-panel-title>{{ doc.label }}</mat-panel-title>
+                <mat-panel-description>{{ doc.filename?.split('/')?.pop() }}</mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-dialog-actions align="center">
+                <button mat-raised-button color="primary" (click)="onDownloadFile(doc.key)" [disabled]="!doc.filename">
+                    <mat-icon>cloud_download</mat-icon> Descargar
+                </button>
+            </mat-dialog-actions>
+        </mat-expansion-panel>
+        <ng-container *ngIf="!documentosSubidos.length">
+            <p class="centrar-texto" style="margin:20px 0;">No hay documentos disponibles para este proyecto.</p>
+        </ng-container>
+    </mat-accordion>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button (click)="onCancel()" mat-raised-button color="warn" class="close-button">
+        <mat-icon>cancel</mat-icon> Cerrar
+    </button>
+</mat-dialog-actions>

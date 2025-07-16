@@ -1,0 +1,14 @@
+.dashboard {
+    margin: 50px 0 50px 100px;
+    text-align: center;
+}
+
+.card {
+    max-width: 970px;
+    margin: 0 auto;
+}
+
+.avatar-image {
+    background-image: url('../../../../../assets/img/avatar_telcel.png');
+    background-size: cover;
+}
