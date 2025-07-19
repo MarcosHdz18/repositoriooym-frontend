@@ -6,6 +6,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakAngularModule } from 'keycloak-angular';
+import { SharedModule } from "./modules/shared/shared.module";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -34,8 +35,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
     AppRoutingModule,
     DashboardModule,
     BrowserAnimationsModule,
-    KeycloakAngularModule
-  ],
+    KeycloakAngularModule,
+    SharedModule
+],
   providers: [
     {
       provide: APP_INITIALIZER,

@@ -1,0 +1,102 @@
+.centrar-texto {
+    text-align: center;
+}
+
+.proyecto-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.container-files {
+    margin-top: 30px;
+}
+
+.proyecto-container>* {
+    width: 100%;
+}
+
+.position-f60,
+.position-lld,
+.position-hld,
+.position-instructivos,
+.position-respaldos,
+.position-rutinas,
+.position-licencias,
+.position-manuales,
+.position-matriz,
+.position-layout,
+.position-sla,
+.position-reporte,
+.position-fuerza-espacio,
+.position-inventario,
+.position-atp-fisico,
+.position-atp-logico,
+.position-transferencia,
+.position-responsiva-plataforma,
+.position-responsiva-iaas,
+.position-responsiva-storage,
+.position-responsiva-ha,
+.position-responsiva-gsoc,
+.position-atp-fisico-firmado,
+.position-atp-logico-firmado {
+    display: flex;
+    width: 100%;
+}
+
+mat-dialog-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+}
+
+.input-file {
+    display: none;
+}
+
+.upload {
+    margin: 0 auto;
+    text-align: center;
+    width: 15px;
+    padding: 8px 20px;
+    background: #3f51b5;
+    color: #fff;
+    border: 0px solid #fff;
+    border-radius: 10px;
+    margin-right: 50px;
+}
+
+.upload:hover {
+    cursor: pointer;
+    background: #ff4081;
+}
+
+.container-files {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    row-gap: 20px;
+    margin-bottom: 20px;
+}
+
+.color-archivo {
+    margin: 5px 0 5px 0;
+    color: #21756e;
+}
+
+.requeridos {
+    margin: 16px 0;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.full-width {
+    width: 100%;
+}
+
+.chip-preview {
+    max-height: 120px;
+    overflow: auto;
+    margin-top: 8px;
+}

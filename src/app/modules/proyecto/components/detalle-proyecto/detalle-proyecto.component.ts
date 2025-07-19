@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { ProyectoService } from 'src/app/modules/shared/services/proyecto.service';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 
@@ -103,16 +104,6 @@ export class DetalleProyectoComponent implements OnInit {
     el.scrollLeft += event.deltaY;
   }
 
-  /*
-  getProyectos() {
-    this.proyectoService.getProyectos().subscribe((data: any) => {
-      console.log('Respuesta del servicio proyectos', data);
-      this.processProyectosResponse(data);
-    }, (error: any) => {
-      console.log('Error', error);
-    });
-  }*/
-
   // Procesamiento del servicio REST y se recorre el json
   processProyectosResponse(resp: any) {
 
@@ -195,31 +186,4 @@ export class DetalleProyectoComponent implements OnInit {
     ];
     console.log('Documentos cargados:', this.documentos);
   }
-}
-
-// Contrato con los datos del empate con el servicio REST
-export interface ProyectoElement {
-
-  idProyecto: number;
-  nombre: string;
-  fechaLiberacion: string;
-  nodos: string;
-  f60: string;
-  lld: string;
-  hld: string;
-  layout: string;
-  sla: string;
-  reporteFotografico: string;
-  asignacionFuerzaEspacio: string;
-  inventarioHardware: string;
-  atpFisico: string;
-  atpFisicoFirmado: string;
-  atpLogico: string;
-  atpLogicoFirmado: string;
-  reporteTransferenciaOperativa: string;
-  cartaResponsivaIaaS: string;
-  cartaResponsivaPlataforma: string;
-  cartaResponsivaStorage: string;
-  cartaResponsivaHa: string;
-  cartaResponsivaGsoc: string;
 }

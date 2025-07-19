@@ -76,3 +76,7 @@ th.mat-sort-header-sorted {
     border-radius: 4px;
     padding: 6px 8px;
 }
+
+.mat-content {
+    padding-bottom: 60px; /* Espacio para el footer */
+}

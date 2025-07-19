@@ -2,9 +2,10 @@
     <!--Toolbar del site-->
     <mat-toolbar color="primary" class="dashboard-toolbar">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-        <h1 class="app-name">Repositorio de Información de OYM Recepción</h1>
+        <h1 class="app-name">REPOSITORIO DE INFORMACIÓN <mat-icon>move_to_inbox</mat-icon></h1>
         <div>
-            <img src="../../../../../assets/img/toolbar_logo.png" alt="telcel_logo" style="width: 100px; margin: 10px 0 0 500px;">
+            <img src="../../../../../assets/img/toolbar_logo.png" alt="telcel_logo"
+                style="width: 100px; margin: 10px 0 0 500px;">
         </div>
         <!--Botones de ayuda y cierre de sesion-->
         <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
@@ -28,13 +29,14 @@
                 <li>
                     <app-theme-switcher></app-theme-switcher>
                 </li>
-            </ul>            
+            </ul>
         </div>
     </mat-toolbar>
 
     <!--Sidenav-->
     <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+            fixedTopGap="56">
             <mat-nav-list>
                 <!--Perfil-->
                 <div class="profile-card">
@@ -51,6 +53,7 @@
                     <mat-icon class="icono">{{ nav.icon }}</mat-icon>{{ nav.name }}
                 </a>
             </mat-nav-list>
+            <mat-divider></mat-divider>
         </mat-sidenav>
 
         <!--Contenido del SideNav-->

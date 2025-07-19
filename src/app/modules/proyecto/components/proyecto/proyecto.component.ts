@@ -9,6 +9,8 @@ import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 import { NewProyectoComponent } from '../new-proyecto/new-proyecto.component';
 import { DialogConfirmComponent } from 'src/app/modules/shared/components/dialog-confirm/dialog-confirm.component';
 import { DetalleProyectoComponent } from '../detalle-proyecto/detalle-proyecto.component';
+import { EditProyectoComponent } from '../edit-proyecto/edit-proyecto.component';
+import { ProyectoElement } from 'src/app/models/proyecto.model';
 
 @Component({
   selector: 'app-proyecto',
@@ -43,6 +45,21 @@ export class ProyectoComponent implements OnInit {
     this.isAdmin = this.util.isAdmin();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.sort = this.proyectoSort;
+    // opcional: normalizar comparaciones (por ejemplo fecha como Date y responsable por nombre)
+    this.dataSource.sortingDataAccessor = (item, prop) => {
+      if (prop === 'fechaLiberacion') {
+        return new Date(item.fechaLiberacion);
+      }
+      if (prop === 'responsable') {
+        return item.responsableProyecto.nombre.toLowerCase();
+      }
+      // @ts-ignore
+      return item[prop];
+    };
+  }
+
   //DataSource de los datos a pintar
   dataSource = new MatTableDataSource<ProyectoElement>();
 
@@ -66,7 +83,8 @@ export class ProyectoComponent implements OnInit {
       this.proyectos = data.proyectoResponse.proyectos.map((p: any) => ({
         ...p,
         nodosList: p.nodos ? p.nodos.split(/\s+/)              // separa por espacios
-            .filter((w: { trim: () => { (): any; new(): any; length: number; }; 
+          .filter((w: {
+            trim: () => { (): any; new(): any; length: number; };
           }) => w.trim().length > 0) : [] // filtra palabras vacías
       }));
       this.dataSource.data = this.proyectos;
@@ -97,7 +115,7 @@ export class ProyectoComponent implements OnInit {
   // Metodo que actualiza un registro de proyecto en la base de datos
   editProyecto(idProyecto: number, nombre: string, fechaLiberacion: string, responsableProyecto: any) {
 
-    const dialogRef = this.dialog.open(NewProyectoComponent, {
+    const dialogRef = this.dialog.open(EditProyectoComponent, {
       width: '450px',
       data: { idProyecto: idProyecto, nombre: nombre, fechaLiberacion: fechaLiberacion, responsableProyecto: responsableProyecto }
     });
@@ -146,17 +164,33 @@ export class ProyectoComponent implements OnInit {
   }
 
   // Dialog para un nuevo registro en la base
-  openProyectoDialog() {
+  openNewProyectoDialog() {
     const dialogRef = this.dialog.open(NewProyectoComponent, {
       width: '1000px'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      if (result == 1) {
+      if (result === 1) {
         this.openSnackbar("¡Proyecto guardado con éxito!", "Operación exitosa");
         this.getProyectos();
-      } else if (result == 2) {
+      } else if (result === 2) {
         this.openSnackbar("¡Se produjo un error al guardar el proyecto!", "Operación fallida");
+      }
+    });
+  }
+
+  // Dialog para editar un registro en la base
+  openEditProyectoDialog(proyecto: ProyectoElement) {
+    const dialogRef = this.dialog.open(EditProyectoComponent, {
+      width: '1000px',
+      data: proyecto
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result === 1) {
+        this.openSnackbar("¡Proyecto actualizado con éxito!", "Operación exitosa");
+        this.getProyectos(); // Actualiza la lista de proyectos
+      } else if (result === 2) {
+        this.openSnackbar("¡Se produjo un error al actualizar el proyecto!", "Operación fallida");
       }
     });
   }
@@ -180,34 +214,4 @@ export class ProyectoComponent implements OnInit {
   exportDataFileExcel() {
 
   }
-}
-
-// Contrato con los datos del empate con el servicio REST
-export interface ProyectoElement {
-
-  idProyecto: number;
-  nombre: string;
-  nodos: string;
-  nodosList: string[];
-  fechaLiberacion: string;
-  anio: number;
-  f60: string;
-  lld: string;
-  hld: string;
-  layout: string;
-  sla: string;
-  formatoFiltrado: string;
-  reporteFotografico: string;
-  asignacionFuerzaEspacio: string;
-  inventarioHardware: string;
-  atpFisico: string;
-  atpFisicoFirmado: string;
-  atpLogico: string;
-  atpLogicoFirmado: string;
-  reporteTransferenciaOperativa: string;
-  cartaResponsivaIaaS: string;
-  cartaResponsivaPlataforma: string;
-  cartaResponsivaStorage: string;
-  cartaResponsivaHa: string;
-  cartaResponsivaGsoc: string;
 }

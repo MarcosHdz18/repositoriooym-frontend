@@ -1,45 +1,26 @@
-import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ProyectoElement } from 'src/app/models/proyecto.model';
+import { ResponsableElement } from 'src/app/models/responsable.model';
 import { ProyectoService } from 'src/app/modules/shared/services/proyecto.service';
 import { ResponsableService } from 'src/app/modules/shared/services/responsable.service';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { ResponsableElement } from 'src/app/models/responsable.model';
 
 @Component({
-  selector: 'app-new-proyecto',
-  templateUrl: './new-proyecto.component.html',
-  styleUrls: ['./new-proyecto.component.css'],
-  providers: [DatePipe]
+  selector: 'app-edit-proyecto',
+  templateUrl: './edit-proyecto.component.html',
+  styleUrls: ['./edit-proyecto.component.css']
 })
-export class NewProyectoComponent implements OnInit {
+export class EditProyectoComponent implements OnInit {
 
-  readonly separatorKeysCodes = [ENTER, COMMA] as const;
   nodosList: string[] = [];
 
-  public proyectoForm: FormGroup;
-  tituloFormulario: string;
-  botonLabel: string;
+  public proyectoForm!: FormGroup;
+  tituloFormulario!: string;
+  botonLabel!: string;
   responsables: ResponsableElement[] = [];
-  selectedFileF60: any;
-  selectedFileLld: any;
-  selectedFileHld: any;
-  selectedFileLayout: any;
-  selectedFileSla: any;
-  selectedFileReporteFotografico: any;
-  selectedFileFuerzaEspacio: any;
-  selectedFileInventario: any;
-  selectedFileAtpFisico: any;
-  selectedFileAtpLogico: any;
-  selectedFileRto: any;
-  selectedFileCartaPlataforma: any;
-  selectedFileCartaIaaS: any;
-  selectedFileCartaStorage: any;
-  selectedFileCartaGsoc: any;
-  selectedFileCartaHa: any;
-  selectedFileAtpFisicoFirmado: any;
-  selectedFileAtpLogicoFirmado: any;
+
+  // Variables para almacenar los nombres de los archivos
   nombreArchivoF60: string = '';
   nombreArchivoLld: string = '';
   nombreArchivoHld: string = '';
@@ -60,20 +41,42 @@ export class NewProyectoComponent implements OnInit {
   nombreArchivoAtpFisicoFirmado: string = '';
   nombreArchivoAtpLogicoFirmado: string = '';
 
-  constructor(private fb: FormBuilder, private responsableService: ResponsableService, private proyectoService: ProyectoService,
-    private dialogRef: MatDialogRef<NewProyectoComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  // Variables para almacenar los archivos seleccionados
+  selectedFileF60: File | null = null;
+  selectedFileLld: File | null = null;
+  selectedFileHld: File | null = null;
+  selectedFileLayout: File | null = null;
+  selectedFileSla: File | null = null;
+  selectedFileReporteFotografico: File | null = null;
+  selectedFileFuerzaEspacio: File | null = null;
+  selectedFileInventario: File | null = null;
+  selectedFileAtpFisico: File | null = null;
+  selectedFileAtpLogico: File | null = null;
+  selectedFileRto: File | null = null;
+  selectedFileCartaPlataforma: File | null = null;
+  selectedFileCartaIaaS: File | null = null;
+  selectedFileCartaStorage: File | null = null;
+  selectedFileCartaGsoc: File | null = null;
+  selectedFileCartaHa: File | null = null;
+  selectedFileAtpFisicoFirmado: File | null = null;
+  selectedFileAtpLogicoFirmado: File | null = null;
 
-    this.tituloFormulario = 'Agregar nuevo';
-    this.botonLabel = 'Guardar';
 
+  constructor( private fb: FormBuilder, private responsableService: ResponsableService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<EditProyectoComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: ProyectoElement ) {
+    // Configuración del título y botón del formulario
+    this.tituloFormulario = 'Actualizar';
+    this.botonLabel = 'Actualizar';
+
+    // Inicializar el formulario reactivo
     this.proyectoForm = this.fb.group({
       nombre: ['', Validators.required],
       nodosTexto: ['', Validators.required],
-      fechaLiberacion: [null],
-      responsable: [''],
-      fileLld: ['', Validators.required],
-      fileF60: ['', Validators.required],
-      fileHld: ['', Validators.required],
+      fechaLiberacion: [null, Validators.required],
+      responsable: [this.data.responsableProyecto.idResponsable, Validators.required],
+      fileLld: ['',],
+      fileF60: ['',],
+      fileHld: ['',],
       fileLayout: [''],
       fileSla: [''],
       fileReporteFotografico: [''],
@@ -92,14 +95,67 @@ export class NewProyectoComponent implements OnInit {
     });
   }
 
+  /**
+   * Método que se ejecuta al iniciar el componente
+   */
   ngOnInit(): void {
+
+    // Convertir la fecha de liberación a un objeto Date si es necesario
+    // Asumiendo que data.fechaLiberacion es una cadena en formato ISO o 'Pendiente'
+    // Si es 'Pendiente', se dejará como null
+    const fechaISO = this.data.fechaLiberacion;
+    let fecha: Date | null = null;
+
+    if (fechaISO && fechaISO !== 'Pendiente') {
+      // Convertir la fecha ISO a un objeto Date
+      const [year, month, day] = fechaISO.split('-').map(n => parseInt(n, 10));
+      fecha = new Date(year, month - 1, day); // Meses en JavaScript son 0-indexados
+    }
+
+    // 1) parchear el formulario
+    this.proyectoForm.patchValue({
+      nombre: this.data.nombre,
+      nodosTexto: this.data.nodos,
+      fechaLiberacion: fecha ? fecha : null,
+      responsable: this.data.responsableProyecto.idResponsable
+    });
+
+    // 2) inicializar los nombres de archivo existentes
+    this.nombreArchivoF60 = this.fileNameSinCarpeta(this.data.f60);
+    this.nombreArchivoLld = this.fileNameSinCarpeta(this.data.lld);
+    this.nombreArchivoHld = this.fileNameSinCarpeta(this.data.hld);
+    this.nombreArchivoLayout = this.fileNameSinCarpeta(this.data.layout);
+    this.nombreArchivoSla = this.fileNameSinCarpeta(this.data.sla);
+    this.nombreArchivoReporteFotografico = this.fileNameSinCarpeta(this.data.reporteFotografico);
+    this.nombreArchivoAsignacionFuerzaEspacio = this.fileNameSinCarpeta(this.data.asignacionFuerzaEspacio);
+    this.nombreArchivoInventarioHardware = this.fileNameSinCarpeta(this.data.inventarioHardware);
+    this.nombreArchivoAtpFisico = this.fileNameSinCarpeta(this.data.atpFisico);
+    this.nombreArchivoAtpLogico = this.fileNameSinCarpeta(this.data.atpLogico);
+    this.nombreArchivoRto = this.fileNameSinCarpeta(this.data.reporteTransferenciaOperativa);
+    this.nombreArchivoCartaResponsivaPlataforma = this.fileNameSinCarpeta(this.data.cartaResponsivaPlataforma);
+    this.nombreArchivoCartaResponsivaIaaS = this.fileNameSinCarpeta(this.data.cartaResponsivaIaaS);
+    this.nombreArchivoCartaResponsivaStorage = this.fileNameSinCarpeta(this.data.cartaResponsivaStorage);
+    this.nombreArchivoCartaResponsivaGsoc = this.fileNameSinCarpeta(this.data.cartaResponsivaGsoc);
+    this.nombreArchivoCartaResponsivaHa = this.fileNameSinCarpeta(this.data.cartaResponsivaHA);
+    this.nombreArchivoAtpFisicoFirmado = this.fileNameSinCarpeta(this.data.atpFisicoFirmado);
+    this.nombreArchivoAtpLogicoFirmado = this.fileNameSinCarpeta(this.data.atpLogicoFirmado);
+
     this.getResponsables();
   }
 
   // Limpiar lista de nodos al iniciar el componente
   parseNodos() {
     const txt = this.proyectoForm.get('nodosTexto')!.value as string;
-    this.nodosList = txt.split(/[\s,]+/).map(w => w.trim()).filter(w => w.length>0);  // descartando cadenas vacías  
+    this.nodosList = txt.split(/[\s,]+/).map(w => w.trim()).filter(w => w.length > 0);  // descartando cadenas vacías  
+  }
+
+  // Función para limpiar el nombre del archivo sin mostrar la carpeta o nombre del proyecto
+  fileNameSinCarpeta(path: string): string {
+    if (!path || path === 'Pendiente') {
+      return 'Pendiente';
+    }
+    const parts = path.split('/');
+    return parts[parts.length - 1];
   }
 
   /**
@@ -281,60 +337,54 @@ export class NewProyectoComponent implements OnInit {
    */
   onSave() {
 
-    // Construimos el formData para enviar los archivos y otros datos del formulario
-    const subirDatos = new FormData();
+    const formData = new FormData();
+    // campos de texto
+    formData.append('nombre', this.proyectoForm.value.nombre);
+    formData.append('nodos', this.proyectoForm.value.nodosTexto);
+    formData.append('fechaLiberacion',
+      this.proyectoForm.value.fechaLiberacion
+        ? (this.proyectoForm.value.fechaLiberacion as Date).toISOString().slice(0, 10)
+        : 'Pendiente'
+    );
+    formData.append('responsableId', this.proyectoForm.value.responsable);
 
-    // Convertir la fecha a formato ISO y luego a string con el formato YYYY-MM-DD
-    // Esto es necesario porque el backend espera la fecha en este formato
-    // Si la fecha es nula, se asigna una cadena vacía
-    // Nota: Asegurarse de que el campo fechaLiberacion en el formulario sea de tipo Date o null
-    // Conversión de fecha a ISO-string o cadena vacía
-    const fechaLiberacionVal: string = this.proyectoForm.get('fechaLiberacion')!.value ? (this.proyectoForm.get('fechaLiberacion')!.value as Date).toISOString()
-      .split('T')[0]
-      : 'Pendiente';
-    subirDatos.append('fechaLiberacion', fechaLiberacionVal);
-
-    // Campos obligatorios del formulario
-    subirDatos.append('nombre', this.proyectoForm.get('nombre')?.value as string);
-    subirDatos.append('nodos', this.proyectoForm.get('nodosTexto')?.value as string);
-    subirDatos.append('responsableId', this.proyectoForm.get('responsable')?.value as string);
-
-    // Archivos opcionales del formulario: si existen, los agregamos al FormData; si no, enviamos "Pendiente de archivo"
-    const pendingFiles = (fieldName: string, file: File | null) => {
+    // helper para los archivos opcionales / existentes
+    const appendFileOrPendiente = (campo: string, file: File | null, nombreActual: string) => {
       if (file) {
-        subirDatos.append(fieldName, file, file.name);
+        formData.append(campo, file, file.name);
       } else {
-        subirDatos.append(fieldName, 'Pendiente de archivo');
+        // si no subió archivo nuevo, seguimos con el nombre que ya tenía en el back
+        formData.append(campo, nombreActual || 'Pendiente');
       }
     };
 
-    pendingFiles('fileLld', this.selectedFileLld);
-    pendingFiles('fileF60', this.selectedFileF60);
-    pendingFiles('fileHld', this.selectedFileHld);
-    pendingFiles('fileLayout', this.selectedFileLayout);
-    pendingFiles('fileSla', this.selectedFileSla);
-    pendingFiles('fileReporteFotografico', this.selectedFileReporteFotografico);
-    pendingFiles('fileAsignacionFuerzaEspacio', this.selectedFileFuerzaEspacio);
-    pendingFiles('fileInventarioHardware', this.selectedFileInventario);
-    pendingFiles('fileAtpFisico', this.selectedFileAtpFisico);
-    pendingFiles('fileAtpLogico', this.selectedFileAtpLogico);
-    pendingFiles('fileReporteTransferenciaOperativa', this.selectedFileRto);
-    pendingFiles('fileCartaResponsivaPlataforma', this.selectedFileCartaPlataforma);
-    pendingFiles('fileCartaResponsivaIaaS', this.selectedFileCartaIaaS);
-    pendingFiles('fileCartaResponsivaStorage', this.selectedFileCartaStorage);
-    pendingFiles('fileCartaResponsivaGsoc', this.selectedFileCartaGsoc);
-    pendingFiles('fileCartaResponsivaHa', this.selectedFileCartaHa);
-    pendingFiles('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado);
-    pendingFiles('fileAtpLogicoFirmado', this.selectedFileAtpLogicoFirmado);
+    appendFileOrPendiente('fileF60', this.selectedFileF60, this.nombreArchivoF60);
+    appendFileOrPendiente('fileLld', this.selectedFileLld, this.nombreArchivoLld);
+    appendFileOrPendiente('fileHld', this.selectedFileHld, this.nombreArchivoHld);
+    appendFileOrPendiente('fileLayout', this.selectedFileLayout, this.nombreArchivoLayout);
+    appendFileOrPendiente('fileSla', this.selectedFileSla, this.nombreArchivoSla);
+    appendFileOrPendiente('fileReporteFotografico', this.selectedFileReporteFotografico, this.nombreArchivoReporteFotografico);
+    appendFileOrPendiente('fileAsignacionFuerzaEspacio', this.selectedFileFuerzaEspacio, this.nombreArchivoAsignacionFuerzaEspacio);
+    appendFileOrPendiente('fileInventarioHardware', this.selectedFileInventario, this.nombreArchivoInventarioHardware);
+    appendFileOrPendiente('fileAtpFisico', this.selectedFileAtpFisico, this.nombreArchivoAtpFisico);
+    appendFileOrPendiente('fileAtpLogico', this.selectedFileAtpLogico, this.nombreArchivoAtpLogico);
+    appendFileOrPendiente('fileReporteTransferenciaOperativa', this.selectedFileRto, this.nombreArchivoRto);
+    appendFileOrPendiente('fileCartaResponsivaPlataforma', this.selectedFileCartaPlataforma, this.nombreArchivoCartaResponsivaPlataforma);
+    appendFileOrPendiente('fileCartaResponsivaIaaS', this.selectedFileCartaIaaS, this.nombreArchivoCartaResponsivaIaaS);
+    appendFileOrPendiente('fileCartaResponsivaStorage', this.selectedFileCartaStorage, this.nombreArchivoCartaResponsivaStorage);
+    appendFileOrPendiente('fileCartaResponsivaGsoc', this.selectedFileCartaGsoc, this.nombreArchivoCartaResponsivaGsoc);
+    appendFileOrPendiente('fileCartaResponsivaHa', this.selectedFileCartaHa, this.nombreArchivoCartaResponsivaHa);
+    appendFileOrPendiente('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado, this.nombreArchivoAtpFisicoFirmado);
+    appendFileOrPendiente('fileAtpLogicoFirmado', this.selectedFileAtpLogicoFirmado, this.nombreArchivoAtpLogicoFirmado);
 
-    // Llamada al servicio para guardar el proyecto
-    this.proyectoService.saveProyecto(subirDatos).subscribe({
+    // Llamada al servicio para actualizar el proyecto
+    this.proyectoService.updateProyecto(this.data.idProyecto, formData).subscribe({
       next: () => {
         // 1 = éxito
         this.dialogRef.close(1);
       },
       error: err => {
-        console.error('error guardando proyecto', err);
+        console.error('error actualizando proyecto', err);
         // 2 = fracaso
         this.dialogRef.close(2);
       }

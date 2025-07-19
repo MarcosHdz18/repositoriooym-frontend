@@ -1,9 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { environment } from 'src/environments/environment';
-import { ProyectoComponent } from '../../proyecto/components/proyecto/proyecto.component';
-import { ProyectoElement } from '../../proyecto/components/detalle-proyecto/detalle-proyecto.component';
 
 // Enpoint de los servicios REST del backend
 const base_url = environment.endpoint_url;
@@ -46,10 +45,10 @@ export class ProyectoService {
    * @param idProyecto identificador unico que se utilizara para la actualizacion
    * @returns json con la data actualizada
    */
-  updateProyecto(body: any, idProyecto: any) {
+  updateProyecto(idProyecto: number, formData: FormData): Observable<ProyectoElement> {
     const endpoint = `${base_url}/proyectos/${idProyecto}`;
 
-    return this.http.put(endpoint, body);
+    return this.http.put<ProyectoElement>(endpoint, formData);
   }
 
   /**
