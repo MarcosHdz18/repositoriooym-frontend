@@ -98,4 +98,17 @@ export class ProyectoService {
       headers: new HttpHeaders({ 'Accept': 'application/octet-stream' })
     });
   }
+
+  /**
+   * Metodo que permite la exportacion de los datos en formato de libro de excel
+   * @returns file export excel
+   */
+  exportProyectosExcel() {
+    const endpoint = `${base_url}/proyectos/export/excel`;
+
+    return this.http.get(endpoint, { 
+      responseType: 'blob'
+    });
+
+  }
 }

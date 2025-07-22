@@ -145,4 +145,19 @@ export class ResponsableComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  // Metodo que realiza la exportacion de los datos a un archivo de excel
+  exportDataFileExcel() {
+    this.responsableService.exportResponsablesExcel().subscribe((data: any) => {
+      let file = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      let fileURL = URL.createObjectURL(file);
+      var anchor = document.createElement("a");
+      anchor.download = "Reporte responsables.xlsx";
+      anchor.href = fileURL;
+      anchor.click();
+      this.openSnackbar("Exportación de archivo correcta", "Operación exitosa");
+    }, (error: any) => {
+      this.openSnackbar("Exportación de archivo incorrecta", "Operación fallida");
+    });
+  }
 }

@@ -21,7 +21,7 @@
                 </mat-form-field>
                 <div fxLayoutAlign="flex-end">
                     <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveResponsableDialog()">Nuevo responsable</button>
-                    <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent">Exportar a Excel</button>
+                    <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent" (click)="exportDataFileExcel()">Exportar a Excel</button>
                 </div>
             </div>
             
