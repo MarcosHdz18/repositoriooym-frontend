@@ -80,9 +80,13 @@
                 </ng-container>
                 <!--responsableProyecto column-->
                 <ng-container matColumnDef="responsableProyecto">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Responsable</th>
-                    <td mat-cell *matCellDef="let element">{{ element.responsableProyecto.nombre }} {{
-                        element.responsableProyecto.apellidoPaterno }}</td>
+                    <th  mat-header-cell *matHeaderCellDef mat-sort-header><span *ngIf="isAdmin">Responsable</span></th>
+                    <td  mat-cell *matCellDef="let element">
+                        <span *ngIf="isAdmin">                            
+                            {{ element.responsableProyecto.nombre }} 
+                            {{ element.responsableProyecto.apellidoPaterno }}
+                        </span>
+                    </td>
                 </ng-container>
                 <!--actions column-->
                 <ng-container matColumnDef="acciones">

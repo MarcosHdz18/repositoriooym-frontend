@@ -4,13 +4,19 @@ import { AreaComponent } from '../areas/components/area/area.component';
 import { ResponsableComponent } from '../responsable/components/responsable/responsable.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProyectoComponent } from '../proyecto/components/proyecto/proyecto.component';
+import { MisionComponent } from './pages/mision/mision.component';
+import { VisionComponent } from './pages/vision/vision.component';
+import { ObjetivosComponent } from './pages/objetivos/objetivos.component';
 
 const childRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'mision', component: MisionComponent },
+  { path: 'vision', component: VisionComponent },
+  { path: 'objetivos', component: ObjetivosComponent },
   { path: 'area', component: AreaComponent },
   { path: 'responsable', component: ResponsableComponent },
-  { path: 'proyecto', component: ProyectoComponent}
+  { path: 'proyecto', component: ProyectoComponent},
 ]
 
 @NgModule({

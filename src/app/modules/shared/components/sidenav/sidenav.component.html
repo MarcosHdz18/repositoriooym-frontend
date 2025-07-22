@@ -36,7 +36,7 @@
     <!--Sidenav-->
     <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
         <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
-            fixedTopGap="56">
+            fixedTopGap="56" (backdropClick)="snav.close()" [opened]="!mobileQuery.matches">
             <mat-nav-list>
                 <!--Perfil-->
                 <div class="profile-card">
@@ -46,14 +46,34 @@
                     </div>
                 </div>
 
-                <!--Menu-->
                 <mat-divider></mat-divider>
 
-                <a mat-list-item [routerLink]="nav.route" *ngFor="let nav of menuNav">
-                    <mat-icon class="icono">{{ nav.icon }}</mat-icon>{{ nav.name }}
+                <mat-list class="menu-title">Inicio</mat-list>
+                <mat-divider></mat-divider>
+                <a mat-list-item class="active-link" [routerLink]="['/dashboard/home']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <mat-icon class="icono">home</mat-icon>Inicio
                 </a>
+
+                <mat-list class="menu-title">Información</mat-list>
+                <mat-divider></mat-divider>
+                <a mat-list-item class="active-link" [routerLink]="navInfo.route" *ngFor="let navInfo of infoNav" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <mat-icon class="icono">{{ navInfo.icon }}</mat-icon>{{ navInfo.name }}
+                </a>
+
+                <mat-list class="menu-title">Operaciones</mat-list>
+                <mat-divider></mat-divider>
+                <a *ngIf="isAdmin" mat-list-item class="active-link" [routerLink]="['/dashboard/area']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <mat-icon class="icono">account_balance</mat-icon>Departamentos
+                </a>
+                <a *ngIf="isAdmin" mat-list-item class="active-link" [routerLink]="['/dashboard/responsable']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <mat-icon class="icono">accessibility</mat-icon>Responsables
+                </a>
+
+                <a mat-list-item class="active-link" [routerLink]="['/dashboard/proyecto']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <mat-icon class="icono">important_devices</mat-icon>Proyectos
+                </a>
+                <mat-divider></mat-divider>
             </mat-nav-list>
-            <mat-divider></mat-divider>
         </mat-sidenav>
 
         <!--Contenido del SideNav-->

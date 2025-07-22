@@ -7,11 +7,17 @@ import { MaterialModule } from '../shared/material.module';
 import { AreasModule } from '../areas/areas.module';
 import { ResponsableModule } from '../responsable/responsable.module';
 import { ProyectoModule } from '../proyecto/proyecto.module';
+import { MisionComponent } from './pages/mision/mision.component';
+import { VisionComponent } from './pages/vision/vision.component';
+import { ObjetivosComponent } from './pages/objetivos/objetivos.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    HomeComponent
+    HomeComponent,
+    MisionComponent,
+    VisionComponent,
+    ObjetivosComponent
   ],
   imports: [
     CommonModule,
