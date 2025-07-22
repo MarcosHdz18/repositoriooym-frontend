@@ -8,6 +8,7 @@ import { DialogConfirmComponent } from 'src/app/modules/shared/components/dialog
 import { AreaService } from 'src/app/modules/shared/services/area.service';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 import { NewAreaComponent } from '../new-area/new-area.component';
+import { AreaElement } from 'src/app/models/area.model';
 
 @Component({
   selector: 'app-area',
@@ -92,10 +93,10 @@ export class AreaComponent implements OnInit {
   }
 
   // Metodo para eliminar un area
-  delete(idArea: any) {
+  delete(area: AreaElement) {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '450px',
-      data: { idArea: idArea, module: "area" }
+      data: { idArea: area.idArea, nombreArea: area.nombre, module: "area" }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -103,7 +104,7 @@ export class AreaComponent implements OnInit {
       if (result == 1) {
         this.openSnackbar("Departamento eliminado con éxito", "Operación Exitosa");
         this.getAreas();
-      } else if (result == 2) {
+      } else if (result == 2) {        
         this.openSnackbar("Se produjo un error al eliminar el departamento", "Operación fallida");
       }
 
@@ -156,11 +157,4 @@ export class AreaComponent implements OnInit {
       this.openSnackbar("Exportación de archivo incorrecta", "Operación fallida");
     });
   }
-}
-
-// Contrato con los datos del empate con el servicio REST del backend
-export interface AreaElement {
-  idArea: number;
-  nombre: string;
-  descripcion: string;
 }

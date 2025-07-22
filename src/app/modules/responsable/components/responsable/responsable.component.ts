@@ -8,6 +8,7 @@ import { DialogConfirmComponent } from 'src/app/modules/shared/components/dialog
 import { ResponsableService } from 'src/app/modules/shared/services/responsable.service';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 import { NewResponsableComponent } from '../new-responsable/new-responsable.component';
+import { ResponsableElement } from 'src/app/models/responsable.model';
 
 @Component({
   selector: 'app-responsable',
@@ -93,10 +94,12 @@ export class ResponsableComponent implements OnInit {
   }
 
   // Metodo para eliminar un responsable
-  delete(idResponsable: any) {
+  delete(responsable: ResponsableElement) {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '450px',
-      data: { idResponsable: idResponsable, module: "responsable" }
+      data: { idResponsable: responsable.idResponsable, 
+        nombreResponsable: `${responsable.nombre} ${responsable.apellidoPaterno} ${responsable.apellidoMaterno}`, 
+        module: "responsable" }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -142,14 +145,4 @@ export class ResponsableComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-}
-
-// Contrato con los datos del empate con el servicio REST del backend
-export interface ResponsableElement {
-  idResponsable: number;
-  nombre: string;
-  apellidoPaterno: string;
-  apellidoMaterno: string;
-  numeroEmpleado: number;
-  area: any;
 }

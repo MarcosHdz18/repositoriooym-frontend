@@ -123,27 +123,27 @@ export class ProyectoComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
 
       if (result == 1) {
-        this.openSnackbar("¡Proyecto actualizado con éxito!", "Operación exitosa");
+        this.openSnackbar("Proyecto actualizado con éxito", "Operación exitosa");
         this.getProyectos();
       } else if (result == 2) {
-        this.openSnackbar("¡Se produjo un error al actualizar el proyecto!", "Operación fallida");
+        this.openSnackbar("Se produjo un error al actualizar el proyecto", "Operación fallida");
       }
     });
   }
 
   // Metodo que elimina un registro en la base de datos
-  deleteProyecto(idProyecto: any) {
+  deleteProyecto(proyecto: ProyectoElement) {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '450px',
-      data: { idProyecto: idProyecto, module: "proyecto" }
+      data: { idProyecto: proyecto.idProyecto, nombreProyecto: proyecto.nombre ,module: "proyecto" }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result == 1) {
-        this.openSnackbar("¡Proyecto eliminado con éxito", "Operación exitosa");
+        this.openSnackbar("Proyecto eliminado con éxito", "Operación exitosa");
         this.getProyectos();
       } else if (result == 2) {
-        this.openSnackbar("¡Se produjo un error al eliminar el proyecto!", "Operación fallida");
+        this.openSnackbar("Se produjo un error al eliminar el proyecto", "Operación fallida");
       }
     });
   }
@@ -171,10 +171,10 @@ export class ProyectoComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result === 1) {
-        this.openSnackbar("¡Proyecto guardado con éxito!", "Operación exitosa");
+        this.openSnackbar("Proyecto guardado con éxito", "Operación exitosa");
         this.getProyectos();
       } else if (result === 2) {
-        this.openSnackbar("¡Se produjo un error al guardar el proyecto!", "Operación fallida");
+        this.openSnackbar("Se produjo un error al guardar el proyecto", "Operación fallida");
       }
     });
   }
@@ -187,10 +187,10 @@ export class ProyectoComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result === 1) {
-        this.openSnackbar("¡Proyecto actualizado con éxito!", "Operación exitosa");
+        this.openSnackbar("Proyecto actualizado con éxito", "Operación exitosa");
         this.getProyectos(); // Actualiza la lista de proyectos
       } else if (result === 2) {
-        this.openSnackbar("¡Se produjo un error al actualizar el proyecto!", "Operación fallida");
+        this.openSnackbar("Se produjo un error al actualizar el proyecto", "Operación fallida");
       }
     });
   }

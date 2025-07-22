@@ -64,7 +64,7 @@
                         element.apellidoMaterno, element.numeroEmpleado, element.area)" mat-icon-button color="accent">
                             <mat-icon aria-label="Edit">edit</mat-icon>
                         </button>
-                        <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element.idResponsable)" mat-icon-button color="warn">
+                        <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element)" mat-icon-button color="warn">
                             <mat-icon aria-label="Delete">delete</mat-icon>
                         </button>
                     </td>

@@ -56,10 +56,10 @@ export class ProyectoService {
    * @param idProyecto identificador unico del proyecto que se eliminara
    * @returns null
    */
-  deleteProyecto(idProyecto: any) {
+  deleteProyecto(idProyecto: number): Observable<void> {
     const endpoint = `${base_url}/proyectos/${idProyecto}`;
 
-    return this.http.delete(endpoint);
+    return this.http.delete<void>(endpoint);
   }
 
   /**
