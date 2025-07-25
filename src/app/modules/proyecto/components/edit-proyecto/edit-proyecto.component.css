@@ -40,9 +40,12 @@
 .position-responsiva-ha,
 .position-responsiva-gsoc,
 .position-atp-fisico-firmado,
-.position-atp-logico-firmado {
+.position-atp-logico-firmado,
+.position-otros {
     display: flex;
     width: 100%;
+    font-size: 13px;
+    text-transform: uppercase;
 }
 
 mat-dialog-actions {
@@ -80,9 +83,14 @@ mat-dialog-actions {
     margin-bottom: 20px;
 }
 
-.color-archivo {
+.color-archivo-verde {
     margin: 5px 0 5px 0;
     color: #21756e;
+}
+
+.color-archivo-rojo {
+    margin: 5px 0 5px 0;
+    color: #d32f2f;
 }
 
 .requeridos {

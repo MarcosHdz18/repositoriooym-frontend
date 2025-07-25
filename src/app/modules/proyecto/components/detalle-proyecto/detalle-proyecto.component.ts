@@ -64,6 +64,7 @@ export class DetalleProyectoComponent implements OnInit {
       { label: 'Carta Responsiva Storage', key: 'cartaresponsivastorage', filename: this.data.cartaResponsivaStorage, icon: 'integration_instructions' },
       { label: 'Carta Responsiva HA', key: 'cartaresponsivaha', filename: this.data.cartaResponsivaHa, icon: 'integration_instructions' },
       { label: 'Carta Responsiva GSOC', key: 'cartaresponsivagsoc', filename: this.data.cartaResponsivaGsoc, icon: 'integration_instructions' },
+      { label: 'Otros', key: 'otros', filename: this.data.otros, icon: 'integration_instructions' }
     ];
 
     // 2) Filtramos todo aquello que NO sea "Pendiente"
@@ -182,7 +183,8 @@ export class DetalleProyectoComponent implements OnInit {
       { key: 'cartaResponsivaIaaS', label: 'Carta Responsiva IaaS', filename: this.data.cartaResponsivaIaaS, icon: 'integration_instructions' },
       { key: 'cartaResponsivaStorage', label: 'Carta Responsiva Storage', filename: this.data.cartaResponsivaStorage, icon: 'integration_instructions' },
       { key: 'cartaResponsivaHa', label: 'Carta Responsiva HA', filename: this.data.cartaResponsivaHa, icon: 'integration_instructions' },
-      { key: 'cartaResponsivaGsoc', label: 'Carta Responsiva GSOC', filename: this.data.cartaResponsivaGsoc, icon: 'integration_instructions' }
+      { key: 'cartaResponsivaGsoc', label: 'Carta Responsiva GSOC', filename: this.data.cartaResponsivaGsoc, icon: 'integration_instructions' },
+      { key: 'otros', label: 'Otros', filename: this.data.otros, icon: 'integration_instructions' }
     ];
     console.log('Documentos cargados:', this.documentos);
   }

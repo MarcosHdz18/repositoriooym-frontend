@@ -37,4 +37,5 @@ export interface ProyectoElement {
   cartaResponsivaStorage: string;
   cartaResponsivaHA:      string;
   cartaResponsivaGsoc:    string;
+  otros: string; // Nuevo campo para otros archivos
 }

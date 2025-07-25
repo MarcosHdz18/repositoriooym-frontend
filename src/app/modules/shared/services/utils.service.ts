@@ -29,4 +29,34 @@ export class UtilsService {
       return false;
     }
   }
+
+  isEdit() {
+    let roles = this.keycloakService.getUserRoles().filter(role => role == 'edit-user');
+
+    if (roles.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isPerfilApp() {
+    let roles = this.keycloakService.getUserRoles().filter(role => role == 'perfil-app');
+
+    if (roles.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isPerfilInfraestructura() {
+    let roles = this.keycloakService.getUserRoles().filter(role => role == 'perfil-infraestructura');
+
+    if (roles.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

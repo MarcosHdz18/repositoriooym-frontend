@@ -5,6 +5,7 @@ import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { ResponsableElement } from 'src/app/models/responsable.model';
 import { ProyectoService } from 'src/app/modules/shared/services/proyecto.service';
 import { ResponsableService } from 'src/app/modules/shared/services/responsable.service';
+import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 
 @Component({
   selector: 'app-edit-proyecto',
@@ -14,6 +15,8 @@ import { ResponsableService } from 'src/app/modules/shared/services/responsable.
 export class EditProyectoComponent implements OnInit {
 
   nodosList: string[] = [];
+  isPerfilApp: any;
+  isPerfilInfraestructura: any;
 
   public proyectoForm!: FormGroup;
   tituloFormulario!: string;
@@ -40,6 +43,7 @@ export class EditProyectoComponent implements OnInit {
   nombreArchivoCartaResponsivaHa: string = '';
   nombreArchivoAtpFisicoFirmado: string = '';
   nombreArchivoAtpLogicoFirmado: string = '';
+  nombreArchivoOtros: string = '';
 
   // Variables para almacenar los archivos seleccionados
   selectedFileF60: File | null = null;
@@ -60,10 +64,11 @@ export class EditProyectoComponent implements OnInit {
   selectedFileCartaHa: File | null = null;
   selectedFileAtpFisicoFirmado: File | null = null;
   selectedFileAtpLogicoFirmado: File | null = null;
+  selectedFileOtros: File | null = null;
 
 
   constructor( private fb: FormBuilder, private responsableService: ResponsableService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<EditProyectoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ProyectoElement ) {
+    @Inject(MAT_DIALOG_DATA) public data: ProyectoElement, private util: UtilsService ) {
     // Configuración del título y botón del formulario
     this.tituloFormulario = 'Actualizar';
     this.botonLabel = 'Actualizar';
@@ -72,7 +77,7 @@ export class EditProyectoComponent implements OnInit {
     this.proyectoForm = this.fb.group({
       nombre: ['', Validators.required],
       nodosTexto: ['', Validators.required],
-      fechaLiberacion: [null, Validators.required],
+      fechaLiberacion: [null],
       responsable: [this.data.responsableProyecto.idResponsable, Validators.required],
       fileLld: ['',],
       fileF60: ['',],
@@ -91,7 +96,8 @@ export class EditProyectoComponent implements OnInit {
       fileCartaResponsivaGsoc: [''],
       fileCartaResponsivaHa: [''],
       fileAtpFisicoFirmado: [''],
-      fileAtpLogicoFirmado: ['']
+      fileAtpLogicoFirmado: [''],
+      fileOtros: ['']
     });
   }
 
@@ -99,6 +105,9 @@ export class EditProyectoComponent implements OnInit {
    * Método que se ejecuta al iniciar el componente
    */
   ngOnInit(): void {
+
+    this.isPerfilApp = this.util.isPerfilApp();
+    this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
 
     // Convertir la fecha de liberación a un objeto Date si es necesario
     // Asumiendo que data.fechaLiberacion es una cadena en formato ISO o 'Pendiente'
@@ -139,6 +148,7 @@ export class EditProyectoComponent implements OnInit {
     this.nombreArchivoCartaResponsivaHa = this.fileNameSinCarpeta(this.data.cartaResponsivaHA);
     this.nombreArchivoAtpFisicoFirmado = this.fileNameSinCarpeta(this.data.atpFisicoFirmado);
     this.nombreArchivoAtpLogicoFirmado = this.fileNameSinCarpeta(this.data.atpLogicoFirmado);
+    this.nombreArchivoOtros = this.fileNameSinCarpeta(this.data.otros);
 
     this.getResponsables();
   }
@@ -333,6 +343,15 @@ export class EditProyectoComponent implements OnInit {
   }
 
   /**
+  * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+  * @param event evento que propicia la carga del archivo
+  */
+  onFileChangedOtros(event: any) {
+    this.selectedFileOtros = event.target.files[0];
+    this.nombreArchivoOtros = event.target.files[0].name;
+  }
+
+  /**
    * Metodo que realizara el guardado de los datos a traves del servicio REST destinado para tal fin
    */
   onSave() {
@@ -376,6 +395,7 @@ export class EditProyectoComponent implements OnInit {
     appendFileOrPendiente('fileCartaResponsivaHa', this.selectedFileCartaHa, this.nombreArchivoCartaResponsivaHa);
     appendFileOrPendiente('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado, this.nombreArchivoAtpFisicoFirmado);
     appendFileOrPendiente('fileAtpLogicoFirmado', this.selectedFileAtpLogicoFirmado, this.nombreArchivoAtpLogicoFirmado);
+    appendFileOrPendiente('fileOtros', this.selectedFileOtros, this.nombreArchivoOtros);
 
     // Llamada al servicio para actualizar el proyecto
     this.proyectoService.updateProyecto(this.data.idProyecto, formData).subscribe({
@@ -394,7 +414,7 @@ export class EditProyectoComponent implements OnInit {
   /**
    * Metodo que actualiza el formulario con los datos del registro seleccionado
    * @param data valor de la data ya llenado
-   */
+   
   updateForm(data: any) {
     this.proyectoForm = this.fb.group({
       nombre: [data.nombre, Validators.required],
@@ -417,9 +437,10 @@ export class EditProyectoComponent implements OnInit {
       fileCartaResponsivaGsoc: ['', Validators.required],
       fileCartaResponsivaHa: ['', Validators.required],
       fileAtpFisicoFirmado: ['', Validators.required],
-      fileAtpLogicoFirmado: ['', Validators.required]
-    });
-  }
+      fileAtpLogicoFirmado: ['', Validators.required],
+      fileOtros: ['', Validators.required]
+    });*
+  }*/
 
   /**
    * Metodo para cerrar el dialog

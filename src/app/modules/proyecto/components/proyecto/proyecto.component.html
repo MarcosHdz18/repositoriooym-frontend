@@ -15,12 +15,12 @@
         <mat-card-content>
             <div class="container-buscador">
                 <mat-form-field style="margin-top: 20px;" appearance="outline">
-                    <mat-label>Buscar proyecto</mat-label>
+                    <mat-label>Buscar proyecto por nombre o nodo(s)</mat-label>
                     <input matInput (keyup)="filtrarProyectos($event)" #input>
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
                 <div fxLayoutAlign="flex-end">
-                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary"
+                    <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" class="button-agregar" mat-raised-button color="primary"
                         (click)="openNewProyectoDialog()">Nuevo proyecto</button>
                     <button class="button-excel" mat-raised-button color="accent"
                         (click)="exportDataFileExcel()">Exportar a Excel</button>
@@ -100,7 +100,7 @@
                         element.cartaResponsivaGsoc, element.layout, element.sla, element.reporteFotografico, element.asignacionFuerzaEspacio, element.inventarioHardware)">
                             <mat-icon aria-label="Delete">remove_red_eye</mat-icon>
                         </button>
-                        <button *ngIf="isAdmin" matTooltip="Editar" mat-icon-button color="accent"
+                        <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" matTooltip="Editar" mat-icon-button color="accent"
                             (click)="openEditProyectoDialog(element)">
                             <mat-icon aria-label="Edit">edit</mat-icon>
                         </button>
@@ -108,7 +108,6 @@
                             (click)="deleteProyecto(element)">
                             <mat-icon aria-label="Delete">delete</mat-icon>
                         </button>
-                        <!--<mat-label *ngIf="isAdmin">Eliminar</mat-label>-->
                     </td>
                 </ng-container>
 

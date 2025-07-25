@@ -20,6 +20,9 @@ import { ProyectoElement } from 'src/app/models/proyecto.model';
 export class ProyectoComponent implements OnInit {
 
   isAdmin: any;
+  isEdit: any;
+  isPefilApp: any;
+  isPerfilInfraestructura: any;
   proyectos: ProyectoElement[] = [];
   maxMostrar = 6; // Número máximo de nodos a mostrar antes de "ver más"
 
@@ -43,6 +46,9 @@ export class ProyectoComponent implements OnInit {
     this.paginatorLabel.lastPageLabel = "Última Página";
     this.getProyectos();
     this.isAdmin = this.util.isAdmin();
+    this.isEdit = this.util.isEdit();
+    this.isPefilApp = this.util.isPerfilApp();
+    this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
   }
 
   ngAfterViewInit() {

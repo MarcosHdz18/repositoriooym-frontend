@@ -35,9 +35,12 @@
         <mat-list>
             <mat-list-item>Selecciona los archivos del proyecto</mat-list-item>
             <mat-divider style="margin-bottom: 20px;"></mat-divider>
-            <p class="requeridos">
+            <!--<p class="requeridos">
                 Los siguientes archivos son <span style="color: red;">requeridos</span> como parte de la documentación
                 inicial del proyecto : <strong>F60, LLD y HLD.</strong>
+            </p>-->
+            <p class="requeridos">
+                Si no cuentas con alguno de los archivos, puedes dejarlo en blanco y subirlo más tarde.
             </p>
         </mat-list>
         <!--Propiedad files del formulario-->
@@ -45,63 +48,72 @@
 
             <!--File F60-->
             <div class="position-f60">
-                <mat-label style="color: red;">F60*: <span class="color-archivo">{{ nombreArchivoF60 }}</span></mat-label><br>
+                <mat-label>F60*: <span [ngClass]="{'color-archivo-rojo': nombreArchivoF60 == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoF60 != 'Pendiente'}" >{{ nombreArchivoF60 }}</span></mat-label><br>
                 <label *ngIf="selectedFileF60==null" for="file-f60" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-f60" type="file" (change)="onFileChangedF60($event)" formControlName="fileF60"/><br>
             </div>
 
             <!--File LLD-->
-            <div class="position-lld">
-                <mat-label style="color: red;">LLD*: <span class="color-archivo">{{ nombreArchivoLld }}</span></mat-label>
+            <div *ngIf="isPerfilInfraestructura" class="position-lld">
+                <mat-label>LLD*: <span [ngClass]="{'color-archivo-rojo': nombreArchivoLld == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoLld != 'Pendiente'}" >{{ nombreArchivoLld }}</span></mat-label>
                 <label *ngIf="selectedFileLld==null" for="file-lld" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-lld" type="file" (change)="onFileChangedLld($event)" formControlName="fileLld"/><br>
             </div>
 
             <!--File HLD-->
             <div class="position-hld">
-                <mat-label style="color: red;">HLD*: <span class="color-archivo">{{ nombreArchivoHld }}</span></mat-label>
+                <mat-label>HLD*: <span [ngClass]="{'color-archivo-rojo': nombreArchivoHld == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoHld != 'Pendiente'}" >{{ nombreArchivoHld }}</span></mat-label>
                 <label *ngIf="selectedFileHld==null" for="file-hld" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-hld" type="file" (change)="onFileChangedHld($event)" formControlName="fileHld"/><br>
             </div>
 
             <!--File RTO-->
             <div class="position-transferencia">
-                <mat-label>RTO: <span class="color-archivo">{{ nombreArchivoRto }}</span></mat-label>
+                <mat-label>RTO: <span [ngClass]="{'color-archivo-rojo': nombreArchivoRto == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoRto != 'Pendiente'}" >{{ nombreArchivoRto }}</span></mat-label>
                 <label *ngIf="selectedFileRto==null" for="file-rto" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-rto" type="file" (change)="onFileChangedRto($event)" formControlName="fileReporteTransferenciaOperativa"/><br>
             </div>
 
             <!--File Layout-->
             <div class="position-layout">
-                <mat-label>Layout: <span class="color-archivo">{{ nombreArchivoLayout }}</span></mat-label>
+                <mat-label>Layout: <span [ngClass]="{'color-archivo-rojo': nombreArchivoLayout == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoLayout != 'Pendiente'}">{{ nombreArchivoLayout }}</span></mat-label>
                 <label *ngIf="selectedFileLayout==null" for="file-layout" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-layout" type="file" (change)="onFileChangedLayout($event)" formControlName="fileLayout"/><br>
             </div>
 
             <!--File SLA-->
             <div class="position-sla">
-                <mat-label>SLA: <span class="color-archivo">{{ nombreArchivoSla }}</span></mat-label>
+                <mat-label>SLA: <span [ngClass]="{'color-archivo-rojo': nombreArchivoSla == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoSla != 'Pendiente'}">{{ nombreArchivoSla }}</span></mat-label>
                 <label *ngIf="selectedFileSla==null" for="file-sla" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-sla" type="file" (change)="onFileChangedSla($event)" formControlName="fileSla"/><br>
             </div>
 
             <!--File ATP Fisico-->
-            <div class="position-atp-fisico">
-                <mat-label>ATP Físico: <span class="color-archivo">{{ nombreArchivoAtpFisico }}</span></mat-label>
+            <div *ngIf="isPerfilInfraestructura" class="position-atp-fisico">
+                <mat-label>ATP Físico: <span [ngClass]="{'color-archivo-rojo': nombreArchivoAtpFisico == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoAtpFisico != 'Pendiente'}">{{ nombreArchivoAtpFisico }}</span></mat-label>
                 <label *ngIf="selectedFileAtpFisico==null" for="file-atpFisico" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-atpFisico" type="file" (change)="onFileChangedAtpFisico($event)" formControlName="fileAtpFisico"/><br>
             </div>
 
             <!--File ATP Logico-->
             <div class="position-atp-logico">
-                <mat-label>ATP Lógico: <span class="color-archivo">{{ nombreArchivoAtpLogico }}</span></mat-label>
+                <mat-label>ATP Lógico: <span [ngClass]="{'color-archivo-rojo': nombreArchivoAtpLogico == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoAtpLogico != 'Pendiente'}">{{ nombreArchivoAtpLogico }}</span></mat-label>
                 <label *ngIf="selectedFileAtpLogico==null" for="file-atpLogico" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-atpLogico" type="file" (change)="onFileChangedAtpLogico($event)" formControlName="fileAtpLogico"/><br>
             </div>
 
             <!--File ATP Fisico Firmado-->
-            <div class="position-atp-fisico-firmado">
-                <mat-label>ATP Físico Firmado: <span class="color-archivo">{{ nombreArchivoAtpFisicoFirmado }}</span></mat-label>
+            <div *ngIf="isPerfilInfraestructura" class="position-atp-fisico-firmado">
+                <mat-label>ATP Físico Firmado: <span [ngClass]="{'color-archivo-rojo': nombreArchivoAtpFisicoFirmado == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoAtpFisicoFirmado!= 'Pendiente'}">{{ nombreArchivoAtpFisicoFirmado }}</span></mat-label>
                 <label *ngIf="selectedFileAtpFisicoFirmado==null" for="file-atpFisicoFirmado" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-atpFisicoFirmado" type="file"
                     (change)="onFileChangedAtpFisicoFirmado($event)" formControlName="fileAtpFisicoFirmado"/><br>
@@ -109,15 +121,17 @@
 
             <!--File ATP Logico Firmado-->
             <div class="position-atp-logico-firmado">
-                <mat-label>ATP Lógico Firmado: <span class="color-archivo">{{ nombreArchivoAtpLogicoFirmado }}</span></mat-label>
+                <mat-label>ATP Lógico Firmado: <span [ngClass]="{'color-archivo-rojo': nombreArchivoAtpLogicoFirmado == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoAtpLogicoFirmado != 'Pendiente'}" >{{ nombreArchivoAtpLogicoFirmado }}</span></mat-label>
                 <label *ngIf="selectedFileAtpLogicoFirmado==null" for="file-atpLogicoFirmado" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-atpLogicoFirmado" type="file"
                     (change)="onFileChangedAtpLogicoFirmado($event)" formControlName="fileAtpLogicoFirmado"/><br>
             </div>
 
             <!--File Responsiva Plataforma-->
-            <div class="position-responsiva-plataforma">
-                <mat-label>Carta responsiva Plataforma: <span class="color-archivo">{{ nombreArchivoCartaResponsivaPlataforma }}</span></mat-label>
+            <div *ngIf="isPerfilInfraestructura" class="position-responsiva-plataforma">
+                <mat-label>Carta responsiva Plataforma: <span [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaPlataforma == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoCartaResponsivaPlataforma != 'Pendiente'}" >{{ nombreArchivoCartaResponsivaPlataforma }}</span></mat-label>
                 <label *ngIf="selectedFileCartaPlataforma==null" for="file-cartaResponsivaPlataforma"
                     class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-cartaResponsivaPlataforma" type="file"
@@ -125,16 +139,18 @@
             </div>
 
             <!--File Responsiva IaaS-->
-            <div class="position-responsiva-iaas">
-                <mat-label>Carta responsiva IaaS: <span class="color-archivo">{{ nombreArchivoCartaResponsivaIaaS }}</span></mat-label>
+            <div *ngIf="isPerfilInfraestructura" class="position-responsiva-iaas">
+                <mat-label>Carta responsiva IaaS: <span [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaIaaS == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoCartaResponsivaIaaS != 'Pendiente'}" >{{ nombreArchivoCartaResponsivaIaaS }}</span></mat-label>
                 <label *ngIf="selectedFileCartaIaaS==null" for="file-cartaResponsivaIaaS" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-cartaResponsivaIaaS" type="file"
                     (change)="onFileChangedCartaResponsivaIaaS($event)" formControlName="fileCartaResponsivaIaaS"/><br>
             </div>
 
             <!--File Responsiva Storage-->
-            <div class="position-responsiva-storage">
-                <mat-label>Carta responsiva Storage: <span class="color-archivo">{{ nombreArchivoCartaResponsivaStorage }}</span></mat-label>
+            <div *ngIf="isPerfilInfraestructura" class="position-responsiva-storage">
+                <mat-label>Carta responsiva Storage: <span [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaStorage == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoCartaResponsivaStorage != 'Pendiente'}" >{{ nombreArchivoCartaResponsivaStorage }}</span></mat-label>
                 <label *ngIf="selectedFileCartaStorage==null" for="file-cartaResponsivaStorage"
                     class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-cartaResponsivaStorage" type="file"
@@ -142,24 +158,27 @@
             </div>
 
             <!--File Responsiva HA-->
-            <div class="position-responsiva-ha">
-                <mat-label>Carta responsiva HA: <span class="color-archivo">{{ nombreArchivoCartaResponsivaHa }}</span></mat-label>
+            <div *ngIf="isPerfilInfraestructura" class="position-responsiva-ha">
+                <mat-label>Carta responsiva HA: <span [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaHa == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoCartaResponsivaHa != 'Pendiente'}" >{{ nombreArchivoCartaResponsivaHa }}</span></mat-label>
                 <label *ngIf="selectedFileCartaHa==null" for="file-cartaResponsivaHa" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-cartaResponsivaHa" type="file"
                     (change)="onFileChangedCartaResponsivaHa($event)" formControlName="fileCartaResponsivaHa"/><br>
             </div>
 
             <!--File Responsiva GSOC-->
-            <div class="position-responsiva-gsoc">
-                <mat-label>Carta responsiva GSOC: <span class="color-archivo">{{ nombreArchivoCartaResponsivaGsoc }}</span></mat-label>
+            <div *ngIf="isPerfilInfraestructura" class="position-responsiva-gsoc">
+                <mat-label>Carta responsiva GSOC: <span [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaGsoc == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoCartaResponsivaGsoc != 'Pendiente'}" >{{ nombreArchivoCartaResponsivaGsoc }}</span></mat-label>
                 <label *ngIf="selectedFileCartaGsoc==null" for="file-cartaResponsivaGsoc" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-cartaResponsivaGsoc" type="file"
                     (change)="onFileChangedCartaResponsivaGsoc($event)" formControlName="fileCartaResponsivaGsoc"/><br>
             </div>
 
             <!--File Reporte-->
-            <div class="position-reporte">
-                <mat-label>Reporte fotográfico: <span class="color-archivo">{{ nombreArchivoReporteFotografico }}</span></mat-label>
+            <div *ngIf="isPerfilInfraestructura" class="position-reporte">
+                <mat-label>Reporte fotográfico: <span [ngClass]="{'color-archivo-rojo': nombreArchivoReporteFotografico == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoReporteFotografico != 'Pendiente'}" >{{ nombreArchivoReporteFotografico }}</span></mat-label>
                 <label *ngIf="selectedFileReporteFotografico==null" for="file-reporteFotografico"
                     class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-reporteFotografico" type="file"
@@ -167,8 +186,9 @@
             </div>
 
             <!--File Fuerza Espacio-->
-            <div class="position-fuerza-espacio">
-                <mat-label>Fuerza y espacio: <span class="color-archivo">{{ nombreArchivoAsignacionFuerzaEspacio }}</span></mat-label>
+            <div *ngIf="isPerfilInfraestructura" class="position-fuerza-espacio">
+                <mat-label>Fuerza y espacio: <span [ngClass]="{'color-archivo-rojo': nombreArchivoAsignacionFuerzaEspacio == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoAsignacionFuerzaEspacio != 'Pendiente'}" >{{ nombreArchivoAsignacionFuerzaEspacio }}</span></mat-label>
                 <label *ngIf="selectedFileFuerzaEspacio==null" for="file-asignacionFuerzaEspacio"
                     class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-asignacionFuerzaEspacio" type="file"
@@ -176,11 +196,21 @@
             </div>
 
             <!--File Inventario-->
-            <div class="position-inventario">
-                <mat-label>Inventario hardware: <span class="color-archivo">{{ nombreArchivoInventarioHardware }}</span></mat-label>
+            <div *ngIf="isPerfilInfraestructura" class="position-inventario">
+                <mat-label>Inventario hardware: <span [ngClass]="{'color-archivo-rojo': nombreArchivoInventarioHardware == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoInventarioHardware != 'Pendiente'}" >{{ nombreArchivoInventarioHardware }}</span></mat-label>
                 <label *ngIf="selectedFileInventario==null" for="file-inventarioHardware" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-inventarioHardware" type="file"
                     (change)="onFileChangedInventarioHardware($event)" formControlName="fileInventarioHardware"/><br>
+            </div>
+            
+            <!--File Otros-->
+            <div class="position-otros">
+                <mat-label>Otros: <span [ngClass]="{'color-archivo-rojo': nombreArchivoOtros == 'Pendiente', 
+                'color-archivo-verde': nombreArchivoOtros != 'Pendiente'}" >{{ nombreArchivoOtros }}</span></mat-label>
+                <label *ngIf="selectedFileOtros==null" for="file-otros" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
+                <input class="input-file" id="file-otros" type="file"
+                    (change)="onFileChangedOtros($event)" formControlName="fileOtros"/><br>
             </div>
         </div>
     </form>

@@ -62,10 +62,10 @@
 
                 <mat-list class="menu-title">Operaciones</mat-list>
                 <mat-divider></mat-divider>
-                <a *ngIf="isAdmin" mat-list-item class="active-link" [routerLink]="['/dashboard/area']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a *ngIf="isAdmin||isPerfilApp" mat-list-item class="active-link" [routerLink]="['/dashboard/area']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                     <mat-icon class="icono">account_balance</mat-icon>Departamentos
                 </a>
-                <a *ngIf="isAdmin" mat-list-item class="active-link" [routerLink]="['/dashboard/responsable']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a *ngIf="isAdmin||isPerfilApp" mat-list-item class="active-link" [routerLink]="['/dashboard/responsable']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                     <mat-icon class="icono">accessibility</mat-icon>Responsables
                 </a>
 

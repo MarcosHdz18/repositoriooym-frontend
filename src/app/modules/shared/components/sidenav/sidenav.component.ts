@@ -13,6 +13,7 @@ export class SidenavComponent implements OnInit {
   mobileQuery: MediaQueryList;
   username: any;
   isAdmin: any;
+  isPerfilApp: any;
 
   inicioMenu = [
     { name: "Inicio", route: "home", icon: "home" }, 
@@ -40,6 +41,7 @@ export class SidenavComponent implements OnInit {
   ngOnInit(): void {
     this.username = this.keycloakService.getUsername();
     this.isAdmin = this.utils.isAdmin();
+    this.isPerfilApp = this.utils.isPerfilApp();
   }
 
   cerrarSesion() {

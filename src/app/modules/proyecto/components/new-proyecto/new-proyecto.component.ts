@@ -6,6 +6,7 @@ import { ProyectoService } from 'src/app/modules/shared/services/proyecto.servic
 import { ResponsableService } from 'src/app/modules/shared/services/responsable.service';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { ResponsableElement } from 'src/app/models/responsable.model';
+import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 
 @Component({
   selector: 'app-new-proyecto',
@@ -17,6 +18,8 @@ export class NewProyectoComponent implements OnInit {
 
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   nodosList: string[] = [];
+  isPerfilApp: any;
+  isPerfilInfraestructura: any;
 
   public proyectoForm: FormGroup;
   tituloFormulario: string;
@@ -40,6 +43,7 @@ export class NewProyectoComponent implements OnInit {
   selectedFileCartaHa: any;
   selectedFileAtpFisicoFirmado: any;
   selectedFileAtpLogicoFirmado: any;
+  selectedFileOtros: any;
   nombreArchivoF60: string = '';
   nombreArchivoLld: string = '';
   nombreArchivoHld: string = '';
@@ -59,40 +63,47 @@ export class NewProyectoComponent implements OnInit {
   nombreArchivoCartaResponsivaHa: string = '';
   nombreArchivoAtpFisicoFirmado: string = '';
   nombreArchivoAtpLogicoFirmado: string = '';
+  nombreArchivoOtros: string = '';
 
   constructor(private fb: FormBuilder, private responsableService: ResponsableService, private proyectoService: ProyectoService,
-    private dialogRef: MatDialogRef<NewProyectoComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+    private dialogRef: MatDialogRef<NewProyectoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private util: UtilsService) {
 
-    this.tituloFormulario = 'Agregar nuevo';
-    this.botonLabel = 'Guardar';
+      this.tituloFormulario = 'Agregar nuevo';
+      this.botonLabel = 'Guardar';
 
-    this.proyectoForm = this.fb.group({
-      nombre: ['', Validators.required],
-      nodosTexto: ['', Validators.required],
-      fechaLiberacion: [null],
-      responsable: [''],
-      fileLld: ['', Validators.required],
-      fileF60: ['', Validators.required],
-      fileHld: ['', Validators.required],
-      fileLayout: [''],
-      fileSla: [''],
-      fileReporteFotografico: [''],
-      fileAsignacionFuerzaEspacio: [''],
-      fileInventarioHardware: [''],
-      fileAtpFisico: [''],
-      fileAtpLogico: [''],
-      fileReporteTransferenciaOperativa: [''],
-      fileCartaResponsivaPlataforma: [''],
-      fileCartaResponsivaIaaS: [''],
-      fileCartaResponsivaStorage: [''],
-      fileCartaResponsivaGsoc: [''],
-      fileCartaResponsivaHa: [''],
-      fileAtpFisicoFirmado: [''],
-      fileAtpLogicoFirmado: ['']
-    });
+      this.proyectoForm = this.fb.group({
+        nombre: ['', Validators.required],
+        nodosTexto: ['', Validators.required],
+        fechaLiberacion: [null],
+        responsable: ['', Validators.required],
+        fileLld: [''],
+        fileF60: [''],
+        fileHld: [''],
+        fileLayout: [''],
+        fileSla: [''],
+        fileReporteFotografico: [''],
+        fileAsignacionFuerzaEspacio: [''],
+        fileInventarioHardware: [''],
+        fileAtpFisico: [''],
+        fileAtpLogico: [''],
+        fileReporteTransferenciaOperativa: [''],
+        fileCartaResponsivaPlataforma: [''],
+        fileCartaResponsivaIaaS: [''],
+        fileCartaResponsivaStorage: [''],
+        fileCartaResponsivaGsoc: [''],
+        fileCartaResponsivaHa: [''],
+        fileAtpFisicoFirmado: [''],
+        fileAtpLogicoFirmado: [''],
+        fileOtros: [''],
+      });
   }
 
   ngOnInit(): void {
+    // Perfil de Aplicaciones
+    this.isPerfilApp = this.util.isPerfilApp();
+    // Perfil de Infraestructura
+    this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
+    // Lista de responsables
     this.getResponsables();
   }
 
@@ -277,6 +288,15 @@ export class NewProyectoComponent implements OnInit {
   }
 
   /**
+  * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+  * @param event evento que propicia la carga del archivo
+  */
+  onFileChangedOtros(event: any) {
+    this.selectedFileOtros = event.target.files[0];
+    this.nombreArchivoOtros = event.target.files[0].name;
+  }
+
+  /**
    * Metodo que realizara el guardado de los datos a traves del servicio REST destinado para tal fin
    */
   onSave() {
@@ -326,6 +346,7 @@ export class NewProyectoComponent implements OnInit {
     pendingFiles('fileCartaResponsivaHa', this.selectedFileCartaHa);
     pendingFiles('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado);
     pendingFiles('fileAtpLogicoFirmado', this.selectedFileAtpLogicoFirmado);
+    pendingFiles('fileOtros', this.selectedFileOtros);
 
     // Llamada al servicio para guardar el proyecto
     this.proyectoService.saveProyecto(subirDatos).subscribe({
@@ -367,7 +388,8 @@ export class NewProyectoComponent implements OnInit {
       fileCartaResponsivaGsoc: ['', Validators.required],
       fileCartaResponsivaHa: ['', Validators.required],
       fileAtpFisicoFirmado: ['', Validators.required],
-      fileAtpLogicoFirmado: ['', Validators.required]
+      fileAtpLogicoFirmado: ['', Validators.required],
+      fileOtros: ['', Validators.required]
     });
   }
 
