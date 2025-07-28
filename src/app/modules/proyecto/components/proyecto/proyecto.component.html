@@ -4,7 +4,7 @@
         <!--Encabezado del card-->
         <mat-card-header>
             <!--Boton para agregar un proyecto-->
-            <div mat-card-avatar class="header-image"></div>
+            <div mat-card-avatar [ngStyle]="{ 'width.px': 80, 'height.px': 80, 'min-width.px': 80, 'min-height.px': 80 }" class="header-image"></div>
             <mat-card-title>Proyectos</mat-card-title>
             <mat-card-subtitle>Lista de Proyectos</mat-card-subtitle>
         </mat-card-header>
@@ -85,6 +85,15 @@
                         <span *ngIf="isAdmin">                            
                             {{ element.responsableProyecto.nombre }} 
                             {{ element.responsableProyecto.apellidoPaterno }}
+                        </span>
+                    </td>
+                </ng-container>
+                <!--tipoProyecto column-->
+                <ng-container matColumnDef="tipoProyecto">
+                    <th  mat-header-cell *matHeaderCellDef mat-sort-header><span *ngIf="isAdmin">Tipo de Proyecto</span></th>
+                    <td  mat-cell *matCellDef="let element">
+                        <span *ngIf="isAdmin">                            
+                            {{ element.tipoProyecto.nombre }}
                         </span>
                     </td>
                 </ng-container>

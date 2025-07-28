@@ -3,8 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { ResponsableElement } from 'src/app/models/responsable.model';
+import { TipoProyectoElement } from 'src/app/models/tipoProyectoElement';
 import { ProyectoService } from 'src/app/modules/shared/services/proyecto.service';
 import { ResponsableService } from 'src/app/modules/shared/services/responsable.service';
+import { TipoProyectoService } from 'src/app/modules/shared/services/tipoProyectoService.service';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 
 @Component({
@@ -22,6 +24,7 @@ export class EditProyectoComponent implements OnInit {
   tituloFormulario!: string;
   botonLabel!: string;
   responsables: ResponsableElement[] = [];
+  tiposProyecto: TipoProyectoElement[] = [];
 
   // Variables para almacenar los nombres de los archivos
   nombreArchivoF60: string = '';
@@ -67,8 +70,8 @@ export class EditProyectoComponent implements OnInit {
   selectedFileOtros: File | null = null;
 
 
-  constructor( private fb: FormBuilder, private responsableService: ResponsableService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<EditProyectoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ProyectoElement, private util: UtilsService ) {
+  constructor( private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService, private proyectoService: ProyectoService, 
+    private dialogRef: MatDialogRef<EditProyectoComponent>, @Inject(MAT_DIALOG_DATA) public data: ProyectoElement, private util: UtilsService ) {
     // Configuración del título y botón del formulario
     this.tituloFormulario = 'Actualizar';
     this.botonLabel = 'Actualizar';
@@ -79,6 +82,7 @@ export class EditProyectoComponent implements OnInit {
       nodosTexto: ['', Validators.required],
       fechaLiberacion: [null],
       responsable: [this.data.responsableProyecto.idResponsable, Validators.required],
+      tipoProyecto: [this.data.tipoProyecto.idTipoProyecto, Validators.required],
       fileLld: ['',],
       fileF60: ['',],
       fileHld: ['',],
@@ -126,7 +130,8 @@ export class EditProyectoComponent implements OnInit {
       nombre: this.data.nombre,
       nodosTexto: this.data.nodos,
       fechaLiberacion: fecha ? fecha : null,
-      responsable: this.data.responsableProyecto.idResponsable
+      responsable: this.data.responsableProyecto.idResponsable,
+      tipoProyecto: this.data.tipoProyecto.idTipoProyecto
     });
 
     // 2) inicializar los nombres de archivo existentes
@@ -151,6 +156,7 @@ export class EditProyectoComponent implements OnInit {
     this.nombreArchivoOtros = this.fileNameSinCarpeta(this.data.otros);
 
     this.getResponsables();
+    this.getTiposProyecto();
   }
 
   // Limpiar lista de nodos al iniciar el componente
@@ -175,6 +181,18 @@ export class EditProyectoComponent implements OnInit {
     this.responsableService.getResponsables().subscribe((data: any) => {
       console.log("Respuesta del servicio responsables: ", data);
       this.responsables = data.responsableResponse.responsables;
+    }, (error: any) => {
+      console.log("Error: ", error);
+    });
+  }
+
+  /**
+   * Metodo que obtiene todos los tipos de proyecto para pintarse en el select del formulario
+   */
+  getTiposProyecto() {
+    this.tipoProyectoService.getTiposProyecto().subscribe((data: any) => {
+      console.log("Respuesta del servicio tipos de proyecto: ", data);
+      this.tiposProyecto = data.tipoProyectoResponse.tiposProyecto;
     }, (error: any) => {
       console.log("Error: ", error);
     });
@@ -366,6 +384,7 @@ export class EditProyectoComponent implements OnInit {
         : 'Pendiente'
     );
     formData.append('responsableId', this.proyectoForm.value.responsable);
+    formData.append('tipoProyectoId', this.proyectoForm.value.tipoProyecto);
 
     // helper para los archivos opcionales / existentes
     const appendFileOrPendiente = (campo: string, file: File | null, nombreActual: string) => {

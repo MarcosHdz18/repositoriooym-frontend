@@ -4,6 +4,7 @@
 <div class="centrar-texto" mat-dialog-content>
     <p *ngIf="data.module === 'area'">¿Está seguro que desea eliminar el departamento con el ID: <strong>{{ idAreaDeleted }} - {{ nombreArea }} </strong>?</p>
     <p *ngIf="data.module === 'responsable'">¿Está seguro que desea eliminar el responsable con el ID: <strong>{{ idResponsableDeleted }} - {{ nombreResponsable }}</strong>?</p>
+    <p *ngIf="data.module === 'tipoProyecto'">¿Está seguro que desea eliminar el tipo de proyecto con el ID: <strong>{{ idTipoProyectoDeleted }} - {{ nombreTipoProyecto }}</strong>?</p>
     <p *ngIf="data.module === 'proyecto'">¿Está seguro que desea eliminar el proyecto y sus archivos asociados con el ID: <strong>{{ idProyectoDeleted }} - {{ nombreProyecto }}</strong>?</p>
     <p style="color: red;">Esta acción no se puede deshacer.</p>
 </div>

@@ -1,6 +1,6 @@
-<h2 mat-dialog-title class="centrar-texto">{{ tituloFormulario }} departamento</h2>
+<h2 mat-dialog-title class="centrar-texto">{{ tituloFormulario }} tipo de proyecto</h2>
 <mat-dialog-content>
-    <form [formGroup]="areaForm">
+    <form [formGroup]="tipoProyectoForm">
         <div class="category-container">
             <mat-form-field>
                 <input formControlName="nombre" matInput placeholder="Nombre" required/>
@@ -14,10 +14,11 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <button (click)="onSave()" [disabled]="areaForm.invalid" mat-raised-button color="primary">
+    <button (click)="onSave()" [disabled]="tipoProyectoForm.invalid" mat-raised-button color="primary">
         <mat-icon>save</mat-icon> {{ botonLabel }}
     </button>
     <button (click)="onCancel()" mat-raised-button color="accent">
         <mat-icon>cancel</mat-icon> Cancelar
     </button>
 </mat-dialog-actions>
+

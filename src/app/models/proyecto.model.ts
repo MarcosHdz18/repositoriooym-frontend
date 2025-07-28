@@ -18,6 +18,12 @@ export interface ProyectoElement {
     apellidoMaterno: string;
   };
 
+  tipoProyecto: {
+    idTipoProyecto: number;
+    nombre: string;
+    descripcion: string;
+  };
+
   // Campos de los nombres de archivo que guardas
   f60:               string;
   lld:               string;

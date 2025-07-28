@@ -7,6 +7,7 @@ import { ResponsableService } from 'src/app/modules/shared/services/responsable.
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { ResponsableElement } from 'src/app/models/responsable.model';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
+import { TipoProyectoService } from 'src/app/modules/shared/services/tipoProyectoService.service';
 
 @Component({
   selector: 'app-new-proyecto',
@@ -25,6 +26,7 @@ export class NewProyectoComponent implements OnInit {
   tituloFormulario: string;
   botonLabel: string;
   responsables: ResponsableElement[] = [];
+  tiposProyecto: any[] = [];
   selectedFileF60: any;
   selectedFileLld: any;
   selectedFileHld: any;
@@ -65,7 +67,7 @@ export class NewProyectoComponent implements OnInit {
   nombreArchivoAtpLogicoFirmado: string = '';
   nombreArchivoOtros: string = '';
 
-  constructor(private fb: FormBuilder, private responsableService: ResponsableService, private proyectoService: ProyectoService,
+  constructor(private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService, private proyectoService: ProyectoService,
     private dialogRef: MatDialogRef<NewProyectoComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private util: UtilsService) {
 
       this.tituloFormulario = 'Agregar nuevo';
@@ -76,6 +78,7 @@ export class NewProyectoComponent implements OnInit {
         nodosTexto: ['', Validators.required],
         fechaLiberacion: [null],
         responsable: ['', Validators.required],
+        tipoProyecto: ['', Validators.required],
         fileLld: [''],
         fileF60: [''],
         fileHld: [''],
@@ -105,6 +108,8 @@ export class NewProyectoComponent implements OnInit {
     this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
     // Lista de responsables
     this.getResponsables();
+    // Lista de tipos de proyecto
+    this.getTiposProyecto();
   }
 
   // Limpiar lista de nodos al iniciar el componente
@@ -120,6 +125,18 @@ export class NewProyectoComponent implements OnInit {
     this.responsableService.getResponsables().subscribe((data: any) => {
       console.log("Respuesta del servicio responsables: ", data);
       this.responsables = data.responsableResponse.responsables;
+    }, (error: any) => {
+      console.log("Error: ", error);
+    });
+  }
+
+  /**
+   * Metodo que obtiene todos los tipos de proyecto para pintarse en el select del formulario
+   */
+  getTiposProyecto() {
+    this.tipoProyectoService.getTiposProyecto().subscribe((data: any) => {
+      console.log("Respuesta del servicio tipos de proyecto: ", data);
+      this.tiposProyecto = data.tipoProyectoResponse.tiposProyecto;
     }, (error: any) => {
       console.log("Error: ", error);
     });
@@ -318,6 +335,7 @@ export class NewProyectoComponent implements OnInit {
     subirDatos.append('nombre', this.proyectoForm.get('nombre')?.value as string);
     subirDatos.append('nodos', this.proyectoForm.get('nodosTexto')?.value as string);
     subirDatos.append('responsableId', this.proyectoForm.get('responsable')?.value as string);
+    subirDatos.append('tipoProyectoId', this.proyectoForm.get('tipoProyecto')?.value as string);
 
     // Archivos opcionales del formulario: si existen, los agregamos al FormData; si no, enviamos "Pendiente de archivo"
     const pendingFiles = (fieldName: string, file: File | null) => {

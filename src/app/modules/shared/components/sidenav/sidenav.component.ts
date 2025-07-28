@@ -22,7 +22,9 @@ export class SidenavComponent implements OnInit {
   systemNav = [
     { name: "Departamentos", route: "area", icon: "account_balance" },
     { name: "Responsables", route: "responsable", icon: "accessibility" },
-    { name: "Proyectos", route: "proyecto", icon: "important_devices" }
+    { name: "Tipos de Proyecto", route: "tipoProyecto", icon: "list_alt" },
+    { name: "Proyectos", route: "proyecto", icon: "important_devices" },
+    { nam: "Proyectos Legacy", route: "proyectosLegacy", icon: "history" }
   ];
 
   infoNav = [

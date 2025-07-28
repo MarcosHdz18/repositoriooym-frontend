@@ -23,6 +23,15 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <!--Propiedad tipo de proyecto del formulario-->
+            <mat-form-field>
+                <mat-label>Tipo de Proyecto</mat-label>
+                <mat-select formControlName="tipoProyecto">
+                    <mat-option *ngFor="let tipoProyecto of tiposProyecto" [value]="tipoProyecto.idTipoProyecto">
+                        {{ tipoProyecto.nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
             <!--Propiedad nodos del formulario-->
             <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Ingresa los nodos (separados por espacios, comas o saltos)</mat-label>

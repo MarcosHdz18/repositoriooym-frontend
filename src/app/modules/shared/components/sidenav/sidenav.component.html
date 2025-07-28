@@ -68,9 +68,18 @@
                 <a *ngIf="isAdmin||isPerfilApp" mat-list-item class="active-link" [routerLink]="['/dashboard/responsable']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                     <mat-icon class="icono">accessibility</mat-icon>Responsables
                 </a>
+                <a *ngIf="isAdmin||isPerfilApp" mat-list-item class="active-link" [routerLink]="['/dashboard/tipoProyecto']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <mat-icon class="icono">list_alt</mat-icon>Tipos de Proyecto
+                </a>
 
                 <a mat-list-item class="active-link" [routerLink]="['/dashboard/proyecto']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <mat-icon class="icono">important_devices</mat-icon>Proyectos
+                    <mat-icon class="icono">important_devices</mat-icon>Proyectos Septiembre 2025
+                </a>
+                <mat-divider></mat-divider>
+                <mat-list class="menu-title">Histórico</mat-list>
+                <mat-divider></mat-divider>
+                <a mat-list-item class="active-link" [routerLink]="['/dashboard/proyectosLegacy']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <mat-icon class="icono">history</mat-icon>Proyectos 2007 - Agosto 2025
                 </a>
                 <mat-divider></mat-divider>
             </mat-nav-list>

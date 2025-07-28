@@ -7,6 +7,8 @@ import { ProyectoComponent } from '../proyecto/components/proyecto/proyecto.comp
 import { MisionComponent } from './pages/mision/mision.component';
 import { VisionComponent } from './pages/vision/vision.component';
 import { ObjetivosComponent } from './pages/objetivos/objetivos.component';
+import { TipoProyectoComponent } from '../tipoProyecto/components/tipo-proyecto/tipo-proyecto.component';
+import { ProyectosLegacyComponent } from './pages/proyectos-legacy/proyectos-legacy.component';
 
 const childRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,7 +18,9 @@ const childRoutes: Routes = [
   { path: 'objetivos', component: ObjetivosComponent },
   { path: 'area', component: AreaComponent },
   { path: 'responsable', component: ResponsableComponent },
+  { path: 'tipoProyecto', component: TipoProyectoComponent },
   { path: 'proyecto', component: ProyectoComponent},
+  { path: 'proyectosLegacy', component: ProyectosLegacyComponent}
 ]
 
 @NgModule({

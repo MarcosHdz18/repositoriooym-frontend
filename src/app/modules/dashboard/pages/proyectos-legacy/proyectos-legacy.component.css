@@ -1,0 +1,29 @@
+
+
+.legacy-container {
+    /* ancho máximo deseado y altura fija o relativa al viewport */
+    max-width: 1100px;
+    height: 750px;
+
+    /* centrar horizontalmente */
+    margin: 0 auto;
+
+    /* si quieres scroll interno: */
+    overflow: auto;
+
+    /* opcional: un borde para separar visualmente */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.legacy-frame {
+    width: 100%;
+    height: 100%;
+    border: none; /* para quitar el borde del iframe */
+}
+
+.legacy-card {
+    max-width: 1500px;
+    margin: 20px auto;
+}

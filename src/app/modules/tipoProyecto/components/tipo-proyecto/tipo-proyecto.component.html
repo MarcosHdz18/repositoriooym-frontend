@@ -2,11 +2,15 @@
 <div style="margin-top: 20px; margin-bottom: 20px;">
     <mat-card class="card">
         <!--Encabezado del card-->
-        <mat-card-header>
-            <!--Boton para agregar una categoria-->            
-            <div mat-card-avatar [ngStyle]="{ 'width.px': 80, 'height.px': 80, 'min-width.px': 80, 'min-height.px': 80 }" class="header-image"></div>
-            <mat-card-title>Departamentos</mat-card-title>
-            <mat-card-subtitle>Lista de Departamentos</mat-card-subtitle>
+        <mat-card-header class="header-card">
+            <!--Boton para agregar una categoria-->
+            <div [ngStyle]="{ 'width.px': 80, 'height.px': 80, 'min-width.px': 80, 'min-height.px': 80 }" mat-card-avatar class="header-image"></div>
+
+            <div class="header-content">
+                <mat-card-title>Tipos de proyecto</mat-card-title>
+                <mat-card-subtitle>Lista de Tipos de Proyecto</mat-card-subtitle>
+            </div>
+
         </mat-card-header>
 
         <div mat-card-image></div>
@@ -15,21 +19,23 @@
         <mat-card-content>
             <div class="container-buscador">
                 <mat-form-field style="margin-top: 20px;" appearance="outline">
-                    <mat-label>Buscar departamento</mat-label>
-                    <input matInput (keyup)="filtrarAreas($event)" #input>
+                    <mat-label>Buscar tipos de proyecto</mat-label>
+                    <input matInput (keyup)="filtrarTiposProyecto($event)" #input>
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
                 <div fxLayoutAlign="flex-end">
-                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveAreaDialog()">Nuevo departamento</button>
-                    <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent" (click)="exportDataFileExcel()">Exportar a Excel</button>
+                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary"
+                        (click)="saveTipoProyectoDialog()">Nuevo tipo proyecto</button>
+                    <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent"
+                        (click)="exportDataFileExcel()">Exportar a Excel</button>
                 </div>
             </div>
-            
+
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
                 <!--id column-->
-                <ng-container matColumnDef="idArea">
+                <ng-container matColumnDef="idTipoProyecto">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-                    <td mat-cell *matCellDef="let element">{{ element.idArea }}</td>
+                    <td mat-cell *matCellDef="let element">{{ element.idTipoProyecto }}</td>
                 </ng-container>
                 <!--name column-->
                 <ng-container matColumnDef="nombre">
@@ -45,25 +51,30 @@
                 <ng-container matColumnDef="acciones">
                     <th mat-header-cell *matHeaderCellDef><span *ngIf="isAdmin">Acciones</span></th>
                     <td mat-cell *matCellDef="let element; let i=index;">
-                        <button *ngIf="isAdmin" matTooltip="Editar" (click)="update(element.idArea, element.nombre, element.descripcion)" mat-icon-button color="accent">
+                        <button *ngIf="isAdmin" matTooltip="Editar"
+                            (click)="update(element.idTipoProyecto, element.nombre, element.descripcion)"
+                            mat-icon-button color="accent">
                             <mat-icon aria-label="Edit">edit</mat-icon>
                         </button>
-                        <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element)" mat-icon-button color="warn">
+                        <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element)" mat-icon-button
+                            color="warn">
                             <mat-icon aria-label="Delete">delete</mat-icon>
                         </button>
                     </td>
                 </ng-container>
-                
+
                 <!--Mostrar registro de las filas desplegadas-->
                 <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayColumns;" class="element-row"></tr>
                 <!--Registro no encontrado-->
                 <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell" colspan="4">No existen datos con la búsqueda proporcionada: "{{ input.value }}"</td>
+                    <td class="mat-cell" colspan="4">No existen datos con la búsqueda proporcionada: "{{ input.value }}"
+                    </td>
                 </tr>
             </table>
             <!--Paginacion-->
-            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Selecciona la página de los elementos indicados">
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                aria-label="Selecciona la página de los elementos indicados">
             </mat-paginator>
         </mat-card-content>
     </mat-card>

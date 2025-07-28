@@ -70,7 +70,7 @@ export class ProyectoComponent implements OnInit {
   dataSource = new MatTableDataSource<ProyectoElement>();
 
   // Columnas que se mostraran en la tabla
-  displayColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaLiberacion', 'anio', 'responsableProyecto', 'acciones'];
+  displayColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaLiberacion', 'anio', 'responsableProyecto', 'tipoProyecto', 'acciones'];
 
   // Paginador del componente
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -119,11 +119,11 @@ export class ProyectoComponent implements OnInit {
   }
 
   // Metodo que actualiza un registro de proyecto en la base de datos
-  editProyecto(idProyecto: number, nombre: string, fechaLiberacion: string, responsableProyecto: any) {
+  editProyecto(idProyecto: number, nombre: string, fechaLiberacion: string, responsableProyecto: any, tipoProyecto: string) {
 
     const dialogRef = this.dialog.open(EditProyectoComponent, {
       width: '450px',
-      data: { idProyecto: idProyecto, nombre: nombre, fechaLiberacion: fechaLiberacion, responsableProyecto: responsableProyecto }
+      data: { idProyecto: idProyecto, nombre: nombre, fechaLiberacion: fechaLiberacion, responsableProyecto: responsableProyecto, tipoProyecto: tipoProyecto }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
