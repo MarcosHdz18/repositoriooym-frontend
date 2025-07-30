@@ -4,11 +4,12 @@
 }
 
 .card {
-    max-width: 970px;
+    max-width: 1020px;
     margin: 0 auto;
 }
 
 .avatar-image {
-    background-image: url('../../../../../assets/img/avatar_telcel.png');
+    background-image: url('../../../../../assets/img/repositorio_logo.png');
     background-size: cover;
 }
+

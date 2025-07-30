@@ -30,8 +30,8 @@ export class UtilsService {
     }
   }
 
-  isEdit() {
-    let roles = this.keycloakService.getUserRoles().filter(role => role == 'edit-user');
+  isUser() {
+    let roles = this.keycloakService.getUserRoles().filter(role => role == 'user');
 
     if (roles.length > 0) {
       return true;

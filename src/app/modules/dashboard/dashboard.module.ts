@@ -12,6 +12,7 @@ import { VisionComponent } from './pages/vision/vision.component';
 import { ObjetivosComponent } from './pages/objetivos/objetivos.component';
 import { TipoProyectoModule } from '../tipoProyecto/tipoProyecto.module';
 import { ProyectosLegacyComponent } from './pages/proyectos-legacy/proyectos-legacy.component';
+import { OrganigramaComponent } from './pages/organigrama/organigrama.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ProyectosLegacyComponent } from './pages/proyectos-legacy/proyectos-leg
     MisionComponent,
     VisionComponent,
     ObjetivosComponent,
-    ProyectosLegacyComponent
+    ProyectosLegacyComponent,
+    OrganigramaComponent
   ],
   imports: [
     CommonModule,

@@ -1,14 +1,14 @@
 .vision {
-    margin: 25px 0 50px 100px;
+    margin: 40px 0 50px 100px;
     text-align: center;
 }
 
 .card {
-    max-width: 970px;
+    max-width: 1050px;
     margin: 0 auto;
 }
 
 .avatar-image {
-    background-image: url('../../../../../assets/img/avatar_telcel.png');
+    background-image: url('../../../../../assets/img/repositorio_logo.png');
     background-size: cover;
 }

@@ -43,7 +43,7 @@ ul li {
 }
 
 mat-sidenav {
-    width: 300px;
+    width: 360px;
 }
 
 .menu-title {
@@ -51,4 +51,8 @@ mat-sidenav {
     font-weight: bold;
     margin: 10px 0;
     font-style: italic;
+}
+
+.spacer {
+    flex: 1 1 auto;
 }

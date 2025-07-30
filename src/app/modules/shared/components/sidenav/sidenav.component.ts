@@ -14,6 +14,7 @@ export class SidenavComponent implements OnInit {
   username: any;
   isAdmin: any;
   isPerfilApp: any;
+  isPerfilInfraestructura: any;
 
   inicioMenu = [
     { name: "Inicio", route: "home", icon: "home" }, 
@@ -32,6 +33,7 @@ export class SidenavComponent implements OnInit {
     { name: "Misión", route: "mision", icon: "flag" },
     { name: "Visión", route: "vision", icon: "visibility" },
     { name: "Objetivos", route: "objetivos", icon: "track_changes" },
+    { name: "Organigrama", route: "organigrama", icon: "account_tree" }
   ];
 
 
@@ -44,6 +46,7 @@ export class SidenavComponent implements OnInit {
     this.username = this.keycloakService.getUsername();
     this.isAdmin = this.utils.isAdmin();
     this.isPerfilApp = this.utils.isPerfilApp();
+    this.isPerfilInfraestructura = this.utils.isPerfilInfraestructura();
   }
 
   cerrarSesion() {

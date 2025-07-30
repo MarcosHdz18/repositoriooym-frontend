@@ -3,10 +3,7 @@
     <mat-toolbar color="primary" class="dashboard-toolbar">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
         <h1 class="app-name">REPOSITORIO DE INFORMACIÓN <mat-icon>move_to_inbox</mat-icon></h1>
-        <div>
-            <img src="../../../../../assets/img/toolbar_logo.png" alt="telcel_logo"
-                style="width: 100px; margin: 10px 0 0 500px;">
-        </div>
+        <span class="spacer"></span>
         <!--Botones de ayuda y cierre de sesion-->
         <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
             <ul fxLayout="row" fxLayoutGap="20px">
@@ -62,18 +59,18 @@
 
                 <mat-list class="menu-title">Operaciones</mat-list>
                 <mat-divider></mat-divider>
-                <a *ngIf="isAdmin||isPerfilApp" mat-list-item class="active-link" [routerLink]="['/dashboard/area']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a *ngIf="isAdmin||isPerfilApp||isPerfilInfraestructura" mat-list-item class="active-link" [routerLink]="['/dashboard/area']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                     <mat-icon class="icono">account_balance</mat-icon>Departamentos
                 </a>
-                <a *ngIf="isAdmin||isPerfilApp" mat-list-item class="active-link" [routerLink]="['/dashboard/responsable']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a *ngIf="isAdmin||isPerfilApp||isPerfilInfraestructura" mat-list-item class="active-link" [routerLink]="['/dashboard/responsable']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                     <mat-icon class="icono">accessibility</mat-icon>Responsables
                 </a>
-                <a *ngIf="isAdmin||isPerfilApp" mat-list-item class="active-link" [routerLink]="['/dashboard/tipoProyecto']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a *ngIf="isAdmin||isPerfilApp||isPerfilInfraestructura" mat-list-item class="active-link" [routerLink]="['/dashboard/tipoProyecto']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                     <mat-icon class="icono">list_alt</mat-icon>Tipos de Proyecto
                 </a>
 
                 <a mat-list-item class="active-link" [routerLink]="['/dashboard/proyecto']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <mat-icon class="icono">important_devices</mat-icon>Proyectos Septiembre 2025
+                    <mat-icon class="icono">important_devices</mat-icon>Proyectos Septiembre 2025 - Actualidad
                 </a>
                 <mat-divider></mat-divider>
                 <mat-list class="menu-title">Histórico</mat-list>

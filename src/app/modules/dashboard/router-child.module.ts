@@ -9,6 +9,7 @@ import { VisionComponent } from './pages/vision/vision.component';
 import { ObjetivosComponent } from './pages/objetivos/objetivos.component';
 import { TipoProyectoComponent } from '../tipoProyecto/components/tipo-proyecto/tipo-proyecto.component';
 import { ProyectosLegacyComponent } from './pages/proyectos-legacy/proyectos-legacy.component';
+import { OrganigramaComponent } from './pages/organigrama/organigrama.component';
 
 const childRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +17,7 @@ const childRoutes: Routes = [
   { path: 'mision', component: MisionComponent },
   { path: 'vision', component: VisionComponent },
   { path: 'objetivos', component: ObjetivosComponent },
+  { path: 'organigrama', component: OrganigramaComponent },
   { path: 'area', component: AreaComponent },
   { path: 'responsable', component: ResponsableComponent },
   { path: 'tipoProyecto', component: TipoProyectoComponent },
