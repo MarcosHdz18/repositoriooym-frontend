@@ -3,10 +3,10 @@
     <mat-card class="card">
         <!--Encabezado del card-->
         <mat-card-header>
-            <!--Boton para agregar un responsable-->            
+            <!--Boton para agregar un sitio-->            
             <div mat-card-avatar [ngStyle]="{ 'width.px': 80, 'height.px': 80, 'min-width.px': 80, 'min-height.px': 80 }" class="header-image"></div>
-            <mat-card-title>Responsables</mat-card-title>
-            <mat-card-subtitle>Lista de Responsables</mat-card-subtitle>
+            <mat-card-title>Sitios</mat-card-title>
+            <mat-card-subtitle>Lista de Sitios</mat-card-subtitle>
         </mat-card-header>
 
         <div mat-card-image></div>
@@ -15,55 +15,66 @@
         <mat-card-content>
             <div class="container-buscador">
                 <mat-form-field style="margin-top: 20px;" appearance="outline">
-                    <mat-label>Buscar responsable</mat-label>
-                    <input matInput (keyup)="filtrarResponsables($event)" #input>
+                    <mat-label>Buscar sitio</mat-label>
+                    <input matInput (keyup)="filtrarSitios($event)" #input>
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
                 <div fxLayoutAlign="flex-end">
-                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveResponsableDialog()">Nuevo responsable</button>
+                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveSitioDialog()">Nuevo sitio</button>
                     <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent" (click)="exportDataFileExcel()">Exportar a Excel</button>
                 </div>
             </div>
-            
+
             <div class="table-wrapper mat-elevation-z8">
                 <div class="table-scroll">
+                
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
                     <!--id column-->
-                    <ng-container matColumnDef="idResponsable">
+                    <ng-container matColumnDef="idSitio">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-                        <td mat-cell *matCellDef="let element">{{ element.idResponsable }}</td>
+                        <td mat-cell *matCellDef="let element">{{ element.idSitio }}</td>
                     </ng-container>
                     <!--name column-->
                     <ng-container matColumnDef="nombre">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Central</th>
                         <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
                     </ng-container>
-                    <!--apellidoPaterno column-->
-                    <ng-container matColumnDef="apellidoPaterno">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido Paterno</th>
-                        <td mat-cell *matCellDef="let element">{{ element.apellidoPaterno }}</td>
+                    <!--treeChar column-->
+                    <ng-container matColumnDef="treeChar">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>3CHAR</th>
+                        <td mat-cell *matCellDef="let element">{{ element.treeChar }}</td>
                     </ng-container>
-                    <!--apellidoMaterno column-->
-                    <ng-container matColumnDef="apellidoMaterno">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido Materno</th>
-                        <td mat-cell *matCellDef="let element">{{ element.apellidoMaterno }}</td>
+                    <!--region column-->
+                    <ng-container matColumnDef="region">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Región</th>
+                        <td mat-cell *matCellDef="let element">{{ element.region.nombre }}</td>
                     </ng-container>
-                    <!--numeroEmpleado column-->
-                    <ng-container matColumnDef="numeroEmpleado">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Número de Empleado</th>
-                        <td mat-cell *matCellDef="let element">{{ element.numeroEmpleado }}</td>
+                    <!--direccion column-->
+                    <ng-container matColumnDef="direccion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header col-direccion>Dirección</th>
+                        <td mat-cell *matCellDef="let element">{{ element.direccion }}</td>
                     </ng-container>
-                    <!--Area column-->
-                    <ng-container matColumnDef="area">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Área a la que pertenece</th>
-                        <td mat-cell *matCellDef="let element">{{ element.area.nombre }}</td>
+                    <!--nombreContacto column-->
+                    <ng-container matColumnDef="nombreContacto">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Contacto</th>
+                        <td mat-cell *matCellDef="let element">{{ element.nombreContacto }}</td>
+                    </ng-container>
+                    <!--nombreContacto column-->
+                    <ng-container matColumnDef="telefonoContacto">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefono Contacto</th>
+                        <td mat-cell *matCellDef="let element">{{ element.telefonoContacto }}</td>
+                    </ng-container>
+                    <!--nombreContacto column-->
+                    <ng-container matColumnDef="correoContacto">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header col-correo>Correo Contacto</th>
+                        <td mat-cell *matCellDef="let element">{{ element.correoContacto }}</td>
                     </ng-container>
                     <!--actions column-->
                     <ng-container matColumnDef="acciones">
                         <th mat-header-cell *matHeaderCellDef><span *ngIf="isAdmin">Acciones</span></th>
                         <td mat-cell *matCellDef="let element; let i=index;">
-                            <button *ngIf="isAdmin" matTooltip="Editar" (click)="update(element.idResponsable, element.nombre, element.apellidoPaterno, 
-                            element.apellidoMaterno, element.numeroEmpleado, element.area)" mat-icon-button color="accent">
+                            <button *ngIf="isAdmin" matTooltip="Editar" (click)="update(element.idSitio, element.nombre, element.treeChar, 
+                            element.direccion, element.nombreContacto, element.telefonoContacto, element.correoContacto, element.region)" mat-icon-button color="accent">
                                 <mat-icon aria-label="Edit">edit</mat-icon>
                             </button>
                             <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element)" mat-icon-button color="warn">

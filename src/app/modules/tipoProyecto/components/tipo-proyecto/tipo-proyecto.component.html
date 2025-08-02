@@ -31,47 +31,51 @@
                 </div>
             </div>
 
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-                <!--id column-->
-                <ng-container matColumnDef="idTipoProyecto">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-                    <td mat-cell *matCellDef="let element">{{ element.idTipoProyecto }}</td>
-                </ng-container>
-                <!--name column-->
-                <ng-container matColumnDef="nombre">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-                    <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
-                </ng-container>
-                <!--description column-->
-                <ng-container matColumnDef="descripcion">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
-                    <td mat-cell *matCellDef="let element">{{ element.descripcion }}</td>
-                </ng-container>
-                <!--actions column-->
-                <ng-container matColumnDef="acciones">
-                    <th mat-header-cell *matHeaderCellDef><span *ngIf="isAdmin">Acciones</span></th>
-                    <td mat-cell *matCellDef="let element; let i=index;">
-                        <button *ngIf="isAdmin" matTooltip="Editar"
-                            (click)="update(element.idTipoProyecto, element.nombre, element.descripcion)"
-                            mat-icon-button color="accent">
-                            <mat-icon aria-label="Edit">edit</mat-icon>
-                        </button>
-                        <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element)" mat-icon-button
-                            color="warn">
-                            <mat-icon aria-label="Delete">delete</mat-icon>
-                        </button>
-                    </td>
-                </ng-container>
+            <div class="table-wrapper mat-elevation-z8">
+                <div class="table-scroll">
+                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+                        <!--id column-->
+                        <ng-container matColumnDef="idTipoProyecto">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                            <td mat-cell *matCellDef="let element">{{ element.idTipoProyecto }}</td>
+                        </ng-container>
+                        <!--name column-->
+                        <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                            <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+                        </ng-container>
+                        <!--description column-->
+                        <ng-container matColumnDef="descripcion">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
+                            <td mat-cell *matCellDef="let element">{{ element.descripcion }}</td>
+                        </ng-container>
+                        <!--actions column-->
+                        <ng-container matColumnDef="acciones">
+                            <th mat-header-cell *matHeaderCellDef><span *ngIf="isAdmin">Acciones</span></th>
+                            <td mat-cell *matCellDef="let element; let i=index;">
+                                <button *ngIf="isAdmin" matTooltip="Editar"
+                                    (click)="update(element.idTipoProyecto, element.nombre, element.descripcion)"
+                                    mat-icon-button color="accent">
+                                    <mat-icon aria-label="Edit">edit</mat-icon>
+                                </button>
+                                <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element)" mat-icon-button
+                                    color="warn">
+                                    <mat-icon aria-label="Delete">delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
 
-                <!--Mostrar registro de las filas desplegadas-->
-                <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayColumns;" class="element-row"></tr>
-                <!--Registro no encontrado-->
-                <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell" colspan="4">No existen datos con la búsqueda proporcionada: "{{ input.value }}"
-                    </td>
-                </tr>
-            </table>
+                        <!--Mostrar registro de las filas desplegadas-->
+                        <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayColumns;" class="element-row"></tr>
+                        <!--Registro no encontrado-->
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">No existen datos con la búsqueda proporcionada: "{{ input.value }}"
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             <!--Paginacion-->
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
                 aria-label="Selecciona la página de los elementos indicados">

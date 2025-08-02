@@ -1,0 +1,56 @@
+<h2 mat-dialog-title class="centrar-texto">{{ tituloFormulario }} sitio</h2>
+<mat-dialog-content>
+    <form [formGroup]="sitioForm">
+        <div class="sitio-container">
+            <!--Propiedad nombre del formulario-->
+            <mat-form-field>
+                <input formControlName="nombre" matInput placeholder="Central" required />
+                <mat-icon matSuffix>assignment</mat-icon>
+            </mat-form-field>
+            <!--Propiedad tree char del formulario-->
+            <mat-form-field>
+                <input formControlName="treeChar" matInput placeholder="Tree Chart" required/>
+                <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+            <!--Propiedad direccion del formulario-->
+            <mat-form-field>
+                <input formControlName="direccion" matInput placeholder="Dirección" required/>
+                <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+            <!--Propiedad numero empleado del formulario-->
+            <mat-form-field>
+                <input formControlName="nombreContacto" matInput placeholder="Contacto del Sitio" required/>
+                <mat-icon matSuffix>contacts</mat-icon>
+            </mat-form-field>
+            <!--Propiedad numero empleado del formulario-->
+            <mat-form-field>
+                <input formControlName="telefonoContacto" type="number" matInput placeholder="Telefono Contacto" required/>
+                <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+            <!--Propiedad numero empleado del formulario-->
+            <mat-form-field>
+                <input formControlName="correoContacto" matInput placeholder="Correo del Contacto" required/>
+                <mat-icon matSuffix>email</mat-icon>
+            </mat-form-field>
+            <!--Propiedad region del formulario-->
+            <mat-form-field>
+                <mat-label>Región</mat-label>
+                <mat-select formControlName="region">
+                    <mat-option *ngFor="let region of regiones" [value]="region.idRegion">
+                        {{ region.nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button (click)="onSave()" [disabled]="sitioForm.invalid" mat-raised-button color="primary">
+        <mat-icon>save</mat-icon> {{ botonLabel }}
+    </button>
+    <button (click)="onCancel()" mat-raised-button color="accent">
+        <mat-icon>cancel</mat-icon> Cancelar
+    </button>
+</mat-dialog-actions>
+

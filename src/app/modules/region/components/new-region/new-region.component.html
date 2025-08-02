@@ -1,0 +1,20 @@
+<h2 mat-dialog-title class="centrar-texto">{{ tituloFormulario }} región</h2>
+<mat-dialog-content>
+    <form [formGroup]="regionForm">
+        <div class="category-container">
+            <mat-form-field>
+                <input formControlName="nombre" matInput placeholder="Nombre" required/>
+                <mat-icon matSuffix>assignment</mat-icon>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button (click)="onSave()" [disabled]="regionForm.invalid" mat-raised-button color="primary">
+        <mat-icon>save</mat-icon> {{ botonLabel }}
+    </button>
+    <button (click)="onCancel()" mat-raised-button color="accent">
+        <mat-icon>cancel</mat-icon> Cancelar
+    </button>
+</mat-dialog-actions>

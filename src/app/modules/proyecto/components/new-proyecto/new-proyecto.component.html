@@ -32,6 +32,15 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <!--Propiedad sitio del formulario-->
+            <mat-form-field>
+                <mat-label>Sitio</mat-label>
+                <mat-select formControlName="sitio">
+                    <mat-option *ngFor="let sitio of sitios" [value]="sitio.idSitio">
+                       {{ sitio.nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
             <!--Propiedad nodos del formulario-->
             <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Ingresa los nodos (separados por espacios, comas o saltos)</mat-label>

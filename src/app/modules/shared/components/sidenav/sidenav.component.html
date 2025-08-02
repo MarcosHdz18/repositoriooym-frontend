@@ -39,47 +39,35 @@
                 <div class="profile-card">
                     <div class="header">
                         <h2>Bienvenido</h2>
+                        <img [src]="userURLImage" alt="User Image" class="avatar">
                         <h3>{{ username }}</h3>
                     </div>
                 </div>
 
                 <mat-divider></mat-divider>
 
-                <mat-list class="menu-title">Inicio</mat-list>
-                <mat-divider></mat-divider>
-                <a mat-list-item class="active-link" [routerLink]="['/dashboard/home']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <mat-icon class="icono">home</mat-icon>Inicio
-                </a>
+                <!--Menu de navegación-->
+                <ng-container *ngFor="let sec of sections">
+                    <!-- Fila clicable -->
+                    <mat-list-item (click)="toggle(sec)" style="cursor: pointer;">
+                        <mat-icon matListIcon>
+                            {{ sec.expanded ? 'expand_more' : 'chevron_right' }}
+                        </mat-icon>
+                        {{ sec.title }}
+                    </mat-list-item>
 
-                <mat-list class="menu-title">Información</mat-list>
-                <mat-divider></mat-divider>
-                <a mat-list-item class="active-link" [routerLink]="navInfo.route" *ngFor="let navInfo of infoNav" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <mat-icon class="icono">{{ navInfo.icon }}</mat-icon>{{ navInfo.name }}
-                </a>
+                    <!-- Submenú -->
+                    <mat-nav-list *ngIf="sec.expanded" dense>
+                        <a mat-list-item class="sub-item" *ngFor="let it of sec.items" [routerLink]="it.route">
+                            <mat-icon matListIcon>{{ it.icon }}</mat-icon>
+                            {{ it.name }}
+                        </a>
+                    </mat-nav-list>
 
-                <mat-list class="menu-title">Operaciones</mat-list>
-                <mat-divider></mat-divider>
-                <a *ngIf="isAdmin||isPerfilApp||isPerfilInfraestructura" mat-list-item class="active-link" [routerLink]="['/dashboard/area']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <mat-icon class="icono">account_balance</mat-icon>Departamentos
-                </a>
-                <a *ngIf="isAdmin||isPerfilApp||isPerfilInfraestructura" mat-list-item class="active-link" [routerLink]="['/dashboard/responsable']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <mat-icon class="icono">accessibility</mat-icon>Responsables
-                </a>
-                <a *ngIf="isAdmin||isPerfilApp||isPerfilInfraestructura" mat-list-item class="active-link" [routerLink]="['/dashboard/tipoProyecto']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <mat-icon class="icono">list_alt</mat-icon>Tipos de Proyecto
-                </a>
+                </ng-container>
 
-                <a mat-list-item class="active-link" [routerLink]="['/dashboard/proyecto']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <mat-icon class="icono">important_devices</mat-icon>Proyectos Septiembre 2025 - Actualidad
-                </a>
-                <mat-divider></mat-divider>
-                <mat-list class="menu-title">Histórico</mat-list>
-                <mat-divider></mat-divider>
-                <a mat-list-item class="active-link" [routerLink]="['/dashboard/proyectosLegacy']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <mat-icon class="icono">history</mat-icon>Proyectos 2007 - Agosto 2025
-                </a>
-                <mat-divider></mat-divider>
             </mat-nav-list>
+            <mat-divider></mat-divider>
         </mat-sidenav>
 
         <!--Contenido del SideNav-->

@@ -24,6 +24,20 @@ export interface ProyectoElement {
     descripcion: string;
   };
 
+  sitio: {
+    idSitio: number;
+    nombre: string;
+    treeChar: string;
+    direccion: string;
+    nombreContacto: string;
+    telefonoContacto: string;
+    correoContacto: string;
+    region: {
+      idRegion: number;
+      nombre: string;
+    }
+  };
+
   // Campos de los nombres de archivo que guardas
   f60:               string;
   lld:               string;

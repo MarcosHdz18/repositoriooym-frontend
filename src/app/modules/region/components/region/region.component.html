@@ -5,8 +5,8 @@
         <mat-card-header>
             <!--Boton para agregar una categoria-->            
             <div mat-card-avatar [ngStyle]="{ 'width.px': 80, 'height.px': 80, 'min-width.px': 80, 'min-height.px': 80 }" class="header-image"></div>
-            <mat-card-title>Departamentos</mat-card-title>
-            <mat-card-subtitle>Lista de Departamentos</mat-card-subtitle>
+            <mat-card-title>Regiones</mat-card-title>
+            <mat-card-subtitle>Lista de Regiones</mat-card-subtitle>
         </mat-card-header>
 
         <div mat-card-image></div>
@@ -15,39 +15,34 @@
         <mat-card-content>
             <div class="container-buscador">
                 <mat-form-field style="margin-top: 20px;" appearance="outline">
-                    <mat-label>Buscar departamento</mat-label>
-                    <input matInput (keyup)="filtrarAreas($event)" #input>
+                    <mat-label>Buscar región</mat-label>
+                    <input matInput (keyup)="filtrarRegiones($event)" #input>
                     <mat-icon matSuffix>search</mat-icon>
                 </mat-form-field>
                 <div fxLayoutAlign="flex-end">
-                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveAreaDialog()">Nuevo departamento</button>
+                    <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveRegionDialog()">Nueva región</button>
                     <button *ngIf="isAdmin" class="button-excel" mat-raised-button color="accent" (click)="exportDataFileExcel()">Exportar a Excel</button>
                 </div>
             </div>
             
             <div class="table-wrapper mat-elevation-z8">
-                <div class="table-scroll">            
+                <div class="table-scroll">
                     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
                         <!--id column-->
-                        <ng-container matColumnDef="idArea">
+                        <ng-container matColumnDef="idRegion">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-                            <td mat-cell *matCellDef="let element">{{ element.idArea }}</td>
+                            <td mat-cell *matCellDef="let element">{{ element.idRegion }}</td>
                         </ng-container>
                         <!--name column-->
                         <ng-container matColumnDef="nombre">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
                             <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
                         </ng-container>
-                        <!--description column-->
-                        <ng-container matColumnDef="descripcion">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
-                            <td mat-cell *matCellDef="let element">{{ element.descripcion }}</td>
-                        </ng-container>
                         <!--actions column-->
                         <ng-container matColumnDef="acciones">
                             <th mat-header-cell *matHeaderCellDef><span *ngIf="isAdmin">Acciones</span></th>
                             <td mat-cell *matCellDef="let element; let i=index;">
-                                <button *ngIf="isAdmin" matTooltip="Editar" (click)="update(element.idArea, element.nombre, element.descripcion)" mat-icon-button color="accent">
+                                <button *ngIf="isAdmin" matTooltip="Editar" (click)="update(element.idRegion, element.nombre)" mat-icon-button color="accent">
                                     <mat-icon aria-label="Edit">edit</mat-icon>
                                 </button>
                                 <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element)" mat-icon-button color="warn">

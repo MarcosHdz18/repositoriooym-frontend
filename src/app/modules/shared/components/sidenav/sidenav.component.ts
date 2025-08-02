@@ -15,42 +15,96 @@ export class SidenavComponent implements OnInit {
   isAdmin: any;
   isPerfilApp: any;
   isPerfilInfraestructura: any;
+  userURLImage= '../../../../../assets/img/user-image.jpg';
 
-  inicioMenu = [
-    { name: "Inicio", route: "home", icon: "home" }, 
+  inicioMenu: MenuItem[] = [
+    { name: "Inicio", route: "home", icon: "home" },
   ]
 
-  systemNav = [
-    { name: "Departamentos", route: "area", icon: "account_balance" },
-    { name: "Responsables", route: "responsable", icon: "accessibility" },
-    { name: "Tipos de Proyecto", route: "tipoProyecto", icon: "list_alt" },
-    { name: "Proyectos", route: "proyecto", icon: "important_devices" },
-    { nam: "Proyectos Legacy", route: "proyectosLegacy", icon: "history" }
+  systemNav: MenuItem[] = [
+    { name: "Departamentos", route: "area", icon: "account_balance", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
+    { name: "Responsables", route: "responsable", icon: "accessibility", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
+    { name: "Regiones", route: "region", icon: "business", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
+    { name: "Sitios", route: "sitio", icon: "home", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
+    { name: "Tipos de Proyecto", route: "tipoProyecto", icon: "list_alt", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
+    { name: "Proyectos Septiembre 2025", route: "proyecto", icon: "important_devices" }
   ];
 
-  infoNav = [
-  
+  historyNav: MenuItem[] = [
+    { name: "Proyectos 2007-Agosto 2025", route: "proyectosLegacy", icon: "history" }
+  ];
+
+  infoNav: MenuItem[] = [
+
     { name: "Misión", route: "mision", icon: "flag" },
     { name: "Visión", route: "vision", icon: "visibility" },
     { name: "Objetivos", route: "objetivos", icon: "track_changes" },
     { name: "Organigrama", route: "organigrama", icon: "account_tree" }
   ];
 
+  sections: MenuSection[] = [
+    { title: 'Inicio', items: this.inicioMenu, expanded: true },
+    { title: 'Información', items: this.infoNav, expanded: false },
+    { title: 'Operaciones', items: this.systemNav, expanded: true },
+    { title: 'Histórico', items: this.historyNav, expanded: false }
+  ];
 
+  toggle(sec: MenuSection) {
+    sec.expanded = !sec.expanded;
+  }
 
   constructor(media: MediaMatcher, private keycloakService: KeycloakService, private utils: UtilsService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
-   }
+  }
 
   ngOnInit(): void {
-    this.username = this.keycloakService.getUsername();
-    this.isAdmin = this.utils.isAdmin();
-    this.isPerfilApp = this.utils.isPerfilApp();
-    this.isPerfilInfraestructura = this.utils.isPerfilInfraestructura();
+
+    if (!this.username) {
+      this.keycloakService.loadUserProfile().then(profile => {
+        this.username = profile.firstName + ' ' + profile.lastName;
+      });
+    }
+
+    // Arreglo para filtrar perfiles de usuario
+    const userProfiles: string[] = [];
+
+    if (this.utils.isAdmin()) {
+      userProfiles.push('admin');
+    }
+
+    if (this.utils.isPerfilApp()) {
+      userProfiles.push('perfilApp');
+    }
+
+    if (this.utils.isPerfilInfraestructura()) {
+      userProfiles.push('perfilInfraestructura');
+    }
+
+    // Filtrar los items del menú según los perfiles del usuario
+    this.sections.forEach(sec => {
+      sec.items = sec.items.filter(item => {
+        // si no tiene restricciones, entra
+        if (!item.allowedProfiles || !item.allowedProfiles.length) return true;
+        // si algún perfil del usuario coincide, entra
+        return item.allowedProfiles.some(p => userProfiles.includes(p));
+      });
+    });
   }
 
   cerrarSesion() {
     this.keycloakService.logout();
   }
+}
 
+export interface MenuItem {
+  name: string;
+  route: string;
+  icon: string;
+  allowedProfiles?: string[];
+}
+
+export interface MenuSection {
+  title: string;
+  items: MenuItem[];
+  expanded?: boolean;
 }

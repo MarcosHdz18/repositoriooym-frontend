@@ -13,6 +13,8 @@ import { ObjetivosComponent } from './pages/objetivos/objetivos.component';
 import { TipoProyectoModule } from '../tipoProyecto/tipoProyecto.module';
 import { ProyectosLegacyComponent } from './pages/proyectos-legacy/proyectos-legacy.component';
 import { OrganigramaComponent } from './pages/organigrama/organigrama.component';
+import { RegionModule } from '../region/region.module';
+import { SitioModule } from '../sitio/sitio.module';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { OrganigramaComponent } from './pages/organigrama/organigrama.component'
     MaterialModule,
     AreasModule,
     ResponsableModule,
+    RegionModule,
+    SitioModule,
     TipoProyectoModule,
     ProyectoModule
   ]

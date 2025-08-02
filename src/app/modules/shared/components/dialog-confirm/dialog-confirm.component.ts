@@ -4,6 +4,7 @@ import { AreaService } from '../../services/area.service';
 import { ResponsableService } from '../../services/responsable.service';
 import { ProyectoService } from '../../services/proyecto.service';
 import { TipoProyectoService } from '../../services/tipoProyectoService.service';
+import { RegionService } from '../../services/region.service';
 
 @Component({
   selector: 'app-dialog-confirm',
@@ -16,24 +17,28 @@ export class DialogConfirmComponent implements OnInit {
   idResponsableDeleted = 0;
   idProyectoDeleted = 0;
   idTipoProyectoDeleted = 0;
+  idRegionDeleted = 0;
 
   nombreArea = '';
   nombreResponsable = '';
+  nombreRegion = '';
   nombreProyecto = '';
   nombreTipoProyecto = '';
 
-  constructor(public dialogRef: MatDialogRef<DialogConfirmComponent>, @Inject (MAT_DIALOG_DATA) public data: any,
-  private areaService: AreaService, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService,
-  private proyectoService: ProyectoService) { }
+  constructor(public dialogRef: MatDialogRef<DialogConfirmComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
+    private areaService: AreaService, private responsableService: ResponsableService, private regionService: RegionService,
+    private tipoProyectoService: TipoProyectoService, private proyectoService: ProyectoService) { }
 
   ngOnInit(): void {
     this.idAreaDeleted = this.data.idArea;
     this.idResponsableDeleted = this.data.idResponsable;
     this.idProyectoDeleted = this.data.idProyecto;
     this.idTipoProyectoDeleted = this.data.idTipoProyecto;
+    this.idRegionDeleted = this.data.idRegion;
 
     this.nombreArea = this.data.nombreArea;
     this.nombreResponsable = this.data.nombreResponsable;
+    this.nombreRegion = this.data.nombreRegion;
     this.nombreProyecto = this.data.nombreProyecto;
     this.nombreTipoProyecto = this.data.nombreTipoProyecto;
   }
@@ -55,6 +60,12 @@ export class DialogConfirmComponent implements OnInit {
         }, (error: any) => {
           this.dialogRef.close(2);
         });
+      } else if (this.data.module == "region") {
+        this.regionService.deleteRegion(this.data.idRegion).subscribe((data: any) => {
+          this.dialogRef.close(1);
+        }, (error: any) => {
+          this.dialogRef.close(2);
+        });
       } else if (this.data.module == "tipoProyecto") {
         this.tipoProyectoService.deleteTipoProyecto(this.data.idTipoProyecto).subscribe((data: any) => {
           this.dialogRef.close(1);
@@ -68,7 +79,7 @@ export class DialogConfirmComponent implements OnInit {
           this.dialogRef.close(2);
         });
       }
-      
+
     } else {
       this.dialogRef.close(2);
     }

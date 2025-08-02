@@ -23,6 +23,7 @@ export class ProyectoComponent implements OnInit {
   isUser: any;
   isPefilApp: any;
   isPerfilInfraestructura: any;
+  anioActual = new Date().getFullYear();
   proyectos: ProyectoElement[] = [];
   maxMostrar = 6; // Número máximo de nodos a mostrar antes de "ver más"
 
@@ -70,7 +71,7 @@ export class ProyectoComponent implements OnInit {
   dataSource = new MatTableDataSource<ProyectoElement>();
 
   // Columnas que se mostraran en la tabla
-  displayColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaLiberacion', 'anio', 'responsableProyecto', 'tipoProyecto', 'acciones'];
+  displayColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaLiberacion', 'anio', 'responsableProyecto', 'tipoProyecto', 'region', 'sitio', 'acciones'];
 
   // Paginador del componente
   @ViewChild(MatPaginator) paginator!: MatPaginator;
