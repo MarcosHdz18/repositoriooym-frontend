@@ -9,10 +9,17 @@
             </mat-form-field>
             <!--Propiedad fechaLiberacion del formulario-->
             <mat-form-field>
+                <mat-label>Fecha de inicio</mat-label>
+                <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio" />
+                <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+                <mat-datepicker #pickerInicio></mat-datepicker>
+            </mat-form-field>
+            <!--Propiedad fechaLiberacion del formulario-->
+            <mat-form-field>
                 <mat-label>Fecha de liberación</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="fechaLiberacion" />
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+                <input matInput [matDatepicker]="pickerLiberacion" formControlName="fechaLiberacion" />
+                <mat-datepicker-toggle matSuffix [for]="pickerLiberacion"></mat-datepicker-toggle>
+                <mat-datepicker #pickerLiberacion></mat-datepicker>
             </mat-form-field>
             <!--Propiedad responsable del formulario-->
             <mat-form-field>
@@ -29,6 +36,15 @@
                 <mat-select formControlName="tipoProyecto">
                     <mat-option *ngFor="let tipoProyecto of tiposProyecto" [value]="tipoProyecto.idTipoProyecto">
                         {{ tipoProyecto.nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!--Propiedad tipo de proyecto del formulario-->
+            <mat-form-field>
+                <mat-label>Sitio</mat-label>
+                <mat-select formControlName="sitio">
+                    <mat-option *ngFor="let sitio of sitios" [value]="sitio.idSitio">
+                        {{ sitio.nombre }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -57,7 +73,7 @@
 
             <!--File F60-->
             <div class="position-f60">
-                <mat-label>F60*: <span [ngClass]="{'color-archivo-rojo': nombreArchivoF60 == 'Pendiente', 
+                <mat-label>F60: <span [ngClass]="{'color-archivo-rojo': nombreArchivoF60 == 'Pendiente', 
                 'color-archivo-verde': nombreArchivoF60 != 'Pendiente'}" >{{ nombreArchivoF60 }}</span></mat-label><br>
                 <label *ngIf="selectedFileF60==null" for="file-f60" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-f60" type="file" (change)="onFileChangedF60($event)" formControlName="fileF60"/><br>
@@ -65,7 +81,7 @@
 
             <!--File LLD-->
             <div *ngIf="isPerfilInfraestructura" class="position-lld">
-                <mat-label>LLD*: <span [ngClass]="{'color-archivo-rojo': nombreArchivoLld == 'Pendiente', 
+                <mat-label>LLD: <span [ngClass]="{'color-archivo-rojo': nombreArchivoLld == 'Pendiente', 
                 'color-archivo-verde': nombreArchivoLld != 'Pendiente'}" >{{ nombreArchivoLld }}</span></mat-label>
                 <label *ngIf="selectedFileLld==null" for="file-lld" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-lld" type="file" (change)="onFileChangedLld($event)" formControlName="fileLld"/><br>
@@ -73,7 +89,7 @@
 
             <!--File HLD-->
             <div class="position-hld">
-                <mat-label>HLD*: <span [ngClass]="{'color-archivo-rojo': nombreArchivoHld == 'Pendiente', 
+                <mat-label>HLD: <span [ngClass]="{'color-archivo-rojo': nombreArchivoHld == 'Pendiente', 
                 'color-archivo-verde': nombreArchivoHld != 'Pendiente'}" >{{ nombreArchivoHld }}</span></mat-label>
                 <label *ngIf="selectedFileHld==null" for="file-hld" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-hld" type="file" (change)="onFileChangedHld($event)" formControlName="fileHld"/><br>

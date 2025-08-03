@@ -5,6 +5,7 @@
 export interface ProyectoElement {
   idProyecto:        number;
   nombre:            string;
+  fechaInicio:       string;       // en ISO (YYYY-MM-DD) o "Pendiente"
   fechaLiberacion:   string;       // en ISO (YYYY-MM-DD) o "Pendiente"
   anio?:             number;       // campo calculado con @Transient en backend
   nodos:             string;       // la cadena completa

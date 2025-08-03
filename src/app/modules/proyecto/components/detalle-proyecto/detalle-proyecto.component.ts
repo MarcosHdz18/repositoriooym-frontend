@@ -29,9 +29,6 @@ export class DetalleProyectoComponent implements OnInit {
   //DataSource de los datos a pintar
   dataSource = new MatTableDataSource<ProyectoElement>();
 
-  // Columnas que se mostraran en la tabla
-  displayColumns: string[] = ['nodos', 'f60', 'lld', 'hld', 'reporteTransferenciaOperativa', 'atpFisico'];
-
   // Posicion en pantalla del snackbar
   horizontalPositionSnackbar: MatSnackBarHorizontalPosition = 'center';
   verticalPositionSnackbar: MatSnackBarVerticalPosition = 'bottom';

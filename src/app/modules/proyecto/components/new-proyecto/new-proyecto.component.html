@@ -7,12 +7,19 @@
                 <input formControlName="nombre" matInput placeholder="Nombre" required />
                 <mat-icon matSuffix>assignment</mat-icon>
             </mat-form-field>
+            <!--Propiedad fechaInicio del formulario-->
+            <mat-form-field>
+                <mat-label>Fecha de Inicio</mat-label>
+                <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio" />
+                <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+                <mat-datepicker #pickerInicio></mat-datepicker>
+            </mat-form-field>
             <!--Propiedad fechaLiberacion del formulario-->
             <mat-form-field>
                 <mat-label>Fecha de liberación</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="fechaLiberacion" />
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+                <input matInput [matDatepicker]="pickerLiberacion" formControlName="fechaLiberacion" />
+                <mat-datepicker-toggle matSuffix [for]="pickerLiberacion"></mat-datepicker-toggle>
+                <mat-datepicker #pickerLiberacion></mat-datepicker>
             </mat-form-field>
             <!--Propiedad responsable del formulario-->
             <mat-form-field>
@@ -66,7 +73,7 @@
 
             <!--File F60-->
             <div class="position-f60">
-                <mat-label>F60*: <span class="color-archivo">{{ nombreArchivoF60
+                <mat-label>F60: <span class="color-archivo">{{ nombreArchivoF60
                         }}</span></mat-label><br>
                 <label *ngIf="selectedFileF60==null" for="file-f60" class="upload">Seleccionar archivo</label>
                 <input class="input-file" id="file-f60" type="file" (change)="onFileChangedF60($event)"
@@ -75,7 +82,7 @@
 
             <!--File LLD-->
             <div   class="position-lld">
-                <mat-label>LLD*: <span class="color-archivo">{{ nombreArchivoLld
+                <mat-label>LLD: <span class="color-archivo">{{ nombreArchivoLld
                         }}</span></mat-label>
                 <label *ngIf="selectedFileLld==null" for="file-lld" class="upload">Seleccionar archivo</label>
                 <input class="input-file" id="file-lld" type="file" (change)="onFileChangedLld($event)"
@@ -84,7 +91,7 @@
 
             <!--File HLD-->
             <div class="position-hld">
-                <mat-label>HLD*: <span class="color-archivo">{{ nombreArchivoHld
+                <mat-label>HLD: <span class="color-archivo">{{ nombreArchivoHld
                         }}</span></mat-label>
                 <label *ngIf="selectedFileHld==null" for="file-hld" class="upload">Seleccionar archivo</label>
                 <input class="input-file" id="file-hld" type="file" (change)="onFileChangedHld($event)"

@@ -3,9 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { ResponsableElement } from 'src/app/models/responsable.model';
+import { SitioElement } from 'src/app/models/sitio.model';
 import { TipoProyectoElement } from 'src/app/models/tipoProyectoElement';
 import { ProyectoService } from 'src/app/modules/shared/services/proyecto.service';
 import { ResponsableService } from 'src/app/modules/shared/services/responsable.service';
+import { SitioService } from 'src/app/modules/shared/services/sitio.service';
 import { TipoProyectoService } from 'src/app/modules/shared/services/tipoProyectoService.service';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 
@@ -25,6 +27,7 @@ export class EditProyectoComponent implements OnInit {
   botonLabel!: string;
   responsables: ResponsableElement[] = [];
   tiposProyecto: TipoProyectoElement[] = [];
+  sitios: SitioElement[] = [];
 
   // Variables para almacenar los nombres de los archivos
   nombreArchivoF60: string = '';
@@ -70,8 +73,9 @@ export class EditProyectoComponent implements OnInit {
   selectedFileOtros: File | null = null;
 
 
-  constructor( private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService, private proyectoService: ProyectoService, 
-    private dialogRef: MatDialogRef<EditProyectoComponent>, @Inject(MAT_DIALOG_DATA) public data: ProyectoElement, private util: UtilsService ) {
+  constructor( private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService, 
+    private sitioService: SitioService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<EditProyectoComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: ProyectoElement, private util: UtilsService ) {
     // Configuración del título y botón del formulario
     this.tituloFormulario = 'Actualizar';
     this.botonLabel = 'Actualizar';
@@ -80,9 +84,11 @@ export class EditProyectoComponent implements OnInit {
     this.proyectoForm = this.fb.group({
       nombre: ['', Validators.required],
       nodosTexto: ['', Validators.required],
+      fechaInicio: [null],
       fechaLiberacion: [null],
       responsable: [this.data.responsableProyecto.idResponsable, Validators.required],
       tipoProyecto: [this.data.tipoProyecto.idTipoProyecto, Validators.required],
+      sitio: [this.data.sitio.idSitio, Validators.required],
       fileLld: ['',],
       fileF60: ['',],
       fileHld: ['',],
@@ -113,6 +119,16 @@ export class EditProyectoComponent implements OnInit {
     this.isPerfilApp = this.util.isPerfilApp();
     this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
 
+    // Fecha Inicio
+    const fechaISOInicio = this.data.fechaInicio;
+    let fechaInicioTransform: Date | null = null;
+
+    if (fechaISOInicio && fechaISOInicio !== 'Pendiente') {
+      // Convertir la fecha ISO a un objeto Date
+      const [year, month, day] = fechaISOInicio.split('-').map(n => parseInt(n, 10));
+      fechaInicioTransform = new Date(year, month - 1, day); // Meses en JavaScript son 0-indexados
+    }
+
     // Convertir la fecha de liberación a un objeto Date si es necesario
     // Asumiendo que data.fechaLiberacion es una cadena en formato ISO o 'Pendiente'
     // Si es 'Pendiente', se dejará como null
@@ -129,9 +145,11 @@ export class EditProyectoComponent implements OnInit {
     this.proyectoForm.patchValue({
       nombre: this.data.nombre,
       nodosTexto: this.data.nodos,
+      fechaInicio: fechaInicioTransform ? fechaInicioTransform : null,
       fechaLiberacion: fecha ? fecha : null,
       responsable: this.data.responsableProyecto.idResponsable,
-      tipoProyecto: this.data.tipoProyecto.idTipoProyecto
+      tipoProyecto: this.data.tipoProyecto.idTipoProyecto,
+      sitio: this.data.sitio.idSitio
     });
 
     // 2) inicializar los nombres de archivo existentes
@@ -157,6 +175,7 @@ export class EditProyectoComponent implements OnInit {
 
     this.getResponsables();
     this.getTiposProyecto();
+    this.getSitiosProyecto();
   }
 
   // Limpiar lista de nodos al iniciar el componente
@@ -193,6 +212,18 @@ export class EditProyectoComponent implements OnInit {
     this.tipoProyectoService.getTiposProyecto().subscribe((data: any) => {
       console.log("Respuesta del servicio tipos de proyecto: ", data);
       this.tiposProyecto = data.tipoProyectoResponse.tiposProyecto;
+    }, (error: any) => {
+      console.log("Error: ", error);
+    });
+  }
+
+  /**
+   * Metodo que obtiene todos los sitios para pintarse en el select del formulario
+   */
+  getSitiosProyecto() {
+    this.sitioService.getSitios().subscribe((data: any) => {
+      console.log("Respuesta del servicio sitios: ", data);
+      this.sitios = data.sitioResponse.sitios;
     }, (error: any) => {
       console.log("Error: ", error);
     });
@@ -378,6 +409,8 @@ export class EditProyectoComponent implements OnInit {
     // campos de texto
     formData.append('nombre', this.proyectoForm.value.nombre);
     formData.append('nodos', this.proyectoForm.value.nodosTexto);
+    formData.append('fechaInicio',
+      this.proyectoForm.value.fechaInicio ? (this.proyectoForm.value.fechaInicio as Date).toISOString().slice(0, 10) : 'Pendiente');
     formData.append('fechaLiberacion',
       this.proyectoForm.value.fechaLiberacion
         ? (this.proyectoForm.value.fechaLiberacion as Date).toISOString().slice(0, 10)
@@ -385,6 +418,7 @@ export class EditProyectoComponent implements OnInit {
     );
     formData.append('responsableId', this.proyectoForm.value.responsable);
     formData.append('tipoProyectoId', this.proyectoForm.value.tipoProyecto);
+    formData.append('sitioId', this.proyectoForm.value.sitio);
 
     // helper para los archivos opcionales / existentes
     const appendFileOrPendiente = (campo: string, file: File | null, nombreActual: string) => {
@@ -429,37 +463,6 @@ export class EditProyectoComponent implements OnInit {
       }
     });
   }
-
-  /**
-   * Metodo que actualiza el formulario con los datos del registro seleccionado
-   * @param data valor de la data ya llenado
-   
-  updateForm(data: any) {
-    this.proyectoForm = this.fb.group({
-      nombre: [data.nombre, Validators.required],
-      fechaLiberacion: [data.fechaLiberacion ? new Date(data.fechaLiberacion) : null, Validators.required],
-      responsable: [data.responsable.idResponsable, Validators.required],
-      fileLld: ['', Validators.required],
-      fileF60: ['', Validators.required],
-      fileHld: ['', Validators.required],
-      fileLayout: ['', Validators.required],
-      fileSla: ['', Validators.required],
-      fileReporteFotografico: ['', Validators.required],
-      fileAsignacionFuerzaEspacio: ['', Validators.required],
-      fileInventarioHardware: ['', Validators.required],
-      fileAtpFisico: ['', Validators.required],
-      fileAtpLogico: ['', Validators.required],
-      fileReporteTransferenciaOperativa: ['', Validators.required],
-      fileCartaResponsivaPlataforma: ['', Validators.required],
-      fileCartaResponsivaIaaS: ['', Validators.required],
-      fileCartaResponsivaStorage: ['', Validators.required],
-      fileCartaResponsivaGsoc: ['', Validators.required],
-      fileCartaResponsivaHa: ['', Validators.required],
-      fileAtpFisicoFirmado: ['', Validators.required],
-      fileAtpLogicoFirmado: ['', Validators.required],
-      fileOtros: ['', Validators.required]
-    });*
-  }*/
 
   /**
    * Metodo para cerrar el dialog

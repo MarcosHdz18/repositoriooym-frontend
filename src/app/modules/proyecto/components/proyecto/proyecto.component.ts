@@ -71,7 +71,7 @@ export class ProyectoComponent implements OnInit {
   dataSource = new MatTableDataSource<ProyectoElement>();
 
   // Columnas que se mostraran en la tabla
-  displayColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaLiberacion', 'anio', 'responsableProyecto', 'tipoProyecto', 'region', 'sitio', 'acciones'];
+  displayColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaInicio','fechaLiberacion', 'anio', 'responsableProyecto', 'tipoProyecto', 'region', 'sitio', 'acciones'];
 
   // Paginador del componente
   @ViewChild(MatPaginator) paginator!: MatPaginator;

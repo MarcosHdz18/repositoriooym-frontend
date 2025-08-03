@@ -79,6 +79,7 @@ export class NewProyectoComponent implements OnInit {
       this.proyectoForm = this.fb.group({
         nombre: ['', Validators.required],
         nodosTexto: ['', Validators.required],
+        fechaInicio: [null],
         fechaLiberacion: [null],
         responsable: ['', Validators.required],
         tipoProyecto: ['', Validators.required],
@@ -345,6 +346,16 @@ export class NewProyectoComponent implements OnInit {
     // Si la fecha es nula, se asigna una cadena vacía
     // Nota: Asegurarse de que el campo fechaLiberacion en el formulario sea de tipo Date o null
     // Conversión de fecha a ISO-string o cadena vacía
+    const fechaInicioVal: string = this.proyectoForm.get('fechaInicio')!.value ? (this.proyectoForm.get('fechaInicio')!.value as Date).toISOString()
+      .split('T')[0]
+      : 'Pendiente';
+    subirDatos.append('fechaInicio', fechaInicioVal);
+
+    // Convertir la fecha a formato ISO y luego a string con el formato YYYY-MM-DD
+    // Esto es necesario porque el backend espera la fecha en este formato
+    // Si la fecha es nula, se asigna una cadena vacía
+    // Nota: Asegurarse de que el campo fechaLiberacion en el formulario sea de tipo Date o null
+    // Conversión de fecha a ISO-string o cadena vacía
     const fechaLiberacionVal: string = this.proyectoForm.get('fechaLiberacion')!.value ? (this.proyectoForm.get('fechaLiberacion')!.value as Date).toISOString()
       .split('T')[0]
       : 'Pendiente';
@@ -356,7 +367,7 @@ export class NewProyectoComponent implements OnInit {
     subirDatos.append('responsableId', this.proyectoForm.get('responsable')?.value as string);
     subirDatos.append('tipoProyectoId', this.proyectoForm.get('tipoProyecto')?.value as string);
     subirDatos.append('sitioId', this.proyectoForm.get('sitio')?.value as string);
-    subirDatos.append('regionId', this.proyectoForm.get('region')?.value as string);
+    //subirDatos.append('regionId', this.proyectoForm.get('region')?.value as string);
 
     // Archivos opcionales del formulario: si existen, los agregamos al FormData; si no, enviamos "Pendiente de archivo"
     const pendingFiles = (fieldName: string, file: File | null) => {
