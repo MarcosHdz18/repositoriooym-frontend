@@ -68,7 +68,7 @@ export class DetalleProyectoComponent implements OnInit {
     this.documentosSubidos = todos.filter(doc =>
       doc.filename != null
       && doc.filename.trim() !== ''
-      && doc.filename.toLowerCase() !== 'pendiente'
+      && doc.filename.toLowerCase() !== 'na'
     );
 
     this.getProyectos();
