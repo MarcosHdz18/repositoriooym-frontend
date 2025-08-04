@@ -120,11 +120,12 @@ export class ProyectoComponent implements OnInit {
   }
 
   // Metodo que actualiza un registro de proyecto en la base de datos
-  editProyecto(idProyecto: number, nombre: string, fechaLiberacion: string, responsableProyecto: any, tipoProyecto: string) {
+  editProyecto(idProyecto: number, nombre: string, fechaInicio: string, fechaLiberacion: string, responsableProyecto: any, tipoProyecto: string, sitio: string) {
 
     const dialogRef = this.dialog.open(EditProyectoComponent, {
       width: '450px',
-      data: { idProyecto: idProyecto, nombre: nombre, fechaLiberacion: fechaLiberacion, responsableProyecto: responsableProyecto, tipoProyecto: tipoProyecto }
+      data: { idProyecto: idProyecto, nombre: nombre, fechaInicio: fechaInicio, fechaLiberacion: fechaLiberacion, responsableProyecto: responsableProyecto, 
+        tipoProyecto: tipoProyecto, sitio: sitio }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {

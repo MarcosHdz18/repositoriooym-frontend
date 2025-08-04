@@ -186,8 +186,8 @@ export class EditProyectoComponent implements OnInit {
 
   // Función para limpiar el nombre del archivo sin mostrar la carpeta o nombre del proyecto
   fileNameSinCarpeta(path: string): string {
-    if (!path || path === 'Pendiente') {
-      return 'Pendiente';
+    if (!path || path === 'NA') {
+      return 'NA';
     }
     const parts = path.split('/');
     return parts[parts.length - 1];
@@ -426,7 +426,7 @@ export class EditProyectoComponent implements OnInit {
         formData.append(campo, file, file.name);
       } else {
         // si no subió archivo nuevo, seguimos con el nombre que ya tenía en el back
-        formData.append(campo, nombreActual || 'Pendiente');
+        formData.append(campo, nombreActual || 'N/A');
       }
     };
 

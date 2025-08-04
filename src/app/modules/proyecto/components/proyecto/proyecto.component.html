@@ -141,13 +141,14 @@
                                 element.cartaResponsivaGsoc, element.layout, element.sla, element.reporteFotografico, element.asignacionFuerzaEspacio, element.inventarioHardware)">
                                     <mat-icon aria-label="Delete">remove_red_eye</mat-icon>
                                 </button>
-                                <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" matTooltip="Editar" mat-icon-button color="accent"
+                                <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" mat-icon-button color="accent"
                                     (click)="openEditProyectoDialog(element)">
                                     <mat-icon aria-label="Edit">edit</mat-icon>
                                 </button>
-                                <button *ngIf="isAdmin" matTooltip="Eliminar" mat-icon-button color="warn" 
+                                <button *ngIf="isAdmin" mat-icon-button color="warn" 
                                     (click)="deleteProyecto(element)" 
-                                    [disabled]="element.anio !== anioActual" [matTooltip]="element.anio === anioActual ? 'Eliminar' : 'No puedes eliminar proyectos a los del año actual'">
+                                    [disabled]="element.anio !== anioActual" 
+                                    [matTooltip]="element.anio === anioActual ? 'Eliminar' : 'No puedes eliminar proyectos a los del año actual'">
                                     <mat-icon aria-label="Delete">delete</mat-icon>
                                 </button>
                             </td>
