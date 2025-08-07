@@ -7,20 +7,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakAngularModule } from 'keycloak-angular';
 import { SharedModule } from "./modules/shared/shared.module";
+import { environment } from 'src/environments/environment';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8082/',
-        realm: 'repositorioapp',
-        clientId: 'repositorioapp-angular-client'
+        url: environment.keycloak.url,
+        realm: environment.keycloak.realm,
+        clientId: environment.keycloak.clientId
       },
       initOptions: {
         onLoad: 'login-required',
         flow: "standard",
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html'
+        checkLoginIframe: false
       },
       loadUserProfileAtStartUp: true
     });

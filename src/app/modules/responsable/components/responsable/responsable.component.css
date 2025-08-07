@@ -14,8 +14,14 @@
     margin-top: 100px;
 }
 
+@media (max-width: 1400px) {
+    .card {
+        max-width: 900px;
+    }    
+}
+
 mat-form-field {
-    width: 700px;
+    width: 450px;
 }
 
 ul li {

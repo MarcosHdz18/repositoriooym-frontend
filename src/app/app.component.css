@@ -1,0 +1,7 @@
+.app-container {
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 16px;
+  max-width: 100%; /*Que no exceda el viewport*/
+  width: 100vw;
+}

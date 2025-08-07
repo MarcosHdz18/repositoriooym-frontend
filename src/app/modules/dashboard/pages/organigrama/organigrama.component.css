@@ -1,4 +1,4 @@
-.mision {
+.organigrama {
     margin: 25px 0;
     text-align: center;
 }
@@ -11,4 +11,15 @@
 .avatar-image {
     background-image: url('../../../../../assets/img/repositorio_logo.png');
     background-size: cover;
+}
+
+@media (max-width: 1400px) {
+    .card {
+        max-width: 700px;
+    }
+
+    .organigrama {
+        margin: 30px 0;
+    }
+    
 }

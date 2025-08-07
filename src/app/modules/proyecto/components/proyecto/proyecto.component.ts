@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition, SimpleSnackBar } from '@angular/material/snack-bar';
@@ -17,7 +17,7 @@ import { ProyectoElement } from 'src/app/models/proyecto.model';
   templateUrl: './proyecto.component.html',
   styleUrls: ['./proyecto.component.css']
 })
-export class ProyectoComponent implements OnInit {
+export class ProyectoComponent implements OnInit, AfterViewInit {
 
   isAdmin: any;
   isUser: any;
@@ -26,6 +26,22 @@ export class ProyectoComponent implements OnInit {
   anioActual = new Date().getFullYear();
   proyectos: ProyectoElement[] = [];
   maxMostrar = 6; // Número máximo de nodos a mostrar antes de "ver más"
+
+  //DataSource de los datos a pintar
+  dataSource = new MatTableDataSource<ProyectoElement>([]);
+
+  // Sort del componente
+  @ViewChild(MatSort) proyectoSort!: MatSort;
+
+  // Columnas que se mostraran en la tabla
+  displayColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaInicio', 'fechaLiberacion', 'anio', 'responsableProyecto', 'tipoProyecto', 'region', 'sitio', 'acciones'];
+
+  // Paginador del componente
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  // Posicion en pantalla del snackbar
+  horizontalPositionSnackbar: MatSnackBarHorizontalPosition = 'center';
+  verticalPositionSnackbar: MatSnackBarVerticalPosition = 'bottom';
 
   // Constructor del componente
   // Inyectamos los servicios que se utilizaran en el componente
@@ -50,9 +66,28 @@ export class ProyectoComponent implements OnInit {
     this.isUser = this.util.isUser();
     this.isPefilApp = this.util.isPerfilApp();
     this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
+
+     this.dataSource.data = this.proyectos;
+
+    this.dataSource.filterPredicate = (data, filter) => {
+      const term = filter.trim().toLowerCase();
+      const str = [
+        data.nombre,
+        data.nodos,
+        data.fechaInicio || '',
+        data.fechaLiberacion || '',
+        data.anio?.toString() || '',
+        data.responsableProyecto.nombre,
+        data.tipoProyecto.nombre,
+        data.sitio.region.nombre,
+        data.sitio.nombre
+      ].join(' ').toLowerCase();
+      return str.includes(term);
+    };
   }
 
   ngAfterViewInit() {
+
     this.dataSource.sort = this.proyectoSort;
     // opcional: normalizar comparaciones (por ejemplo fecha como Date y responsable por nombre)
     this.dataSource.sortingDataAccessor = (item, prop) => {
@@ -67,22 +102,6 @@ export class ProyectoComponent implements OnInit {
     };
   }
 
-  //DataSource de los datos a pintar
-  dataSource = new MatTableDataSource<ProyectoElement>();
-
-  // Columnas que se mostraran en la tabla
-  displayColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaInicio','fechaLiberacion', 'anio', 'responsableProyecto', 'tipoProyecto', 'region', 'sitio', 'acciones'];
-
-  // Paginador del componente
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  // Sort del componente
-  @ViewChild(MatSort) proyectoSort!: MatSort;
-
-  // Posicion en pantalla del snackbar
-  horizontalPositionSnackbar: MatSnackBarHorizontalPosition = 'center';
-  verticalPositionSnackbar: MatSnackBarVerticalPosition = 'bottom';
-
   // Peticion al servicio REST del backend y que obtiene todos los proyectos
   getProyectos() {
     this.proyectoService.getProyectos().subscribe((data: any) => {
@@ -94,13 +113,15 @@ export class ProyectoComponent implements OnInit {
             trim: () => { (): any; new(): any; length: number; };
           }) => w.trim().length > 0) : [] // filtra palabras vacías
       }));
+      this.dataSource.paginator = this.paginator;
       this.dataSource.data = this.proyectos;
+
     }, (error: any) => {
       console.log('Error', error);
     });
   }
 
-  // Procesamiento del servicio REST y se recorre el json
+  /**Procesamiento del servicio REST y se recorre el json
   processProyectosResponse(resp: any) {
 
     const dataProyectos: ProyectoElement[] = [];
@@ -117,15 +138,17 @@ export class ProyectoComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.proyectoSort;
     }
-  }
+  }*/
 
   // Metodo que actualiza un registro de proyecto en la base de datos
   editProyecto(idProyecto: number, nombre: string, fechaInicio: string, fechaLiberacion: string, responsableProyecto: any, tipoProyecto: string, sitio: string) {
 
     const dialogRef = this.dialog.open(EditProyectoComponent, {
       width: '450px',
-      data: { idProyecto: idProyecto, nombre: nombre, fechaInicio: fechaInicio, fechaLiberacion: fechaLiberacion, responsableProyecto: responsableProyecto, 
-        tipoProyecto: tipoProyecto, sitio: sitio }
+      data: {
+        idProyecto: idProyecto, nombre: nombre, fechaInicio: fechaInicio, fechaLiberacion: fechaLiberacion, responsableProyecto: responsableProyecto,
+        tipoProyecto: tipoProyecto, sitio: sitio
+      }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -143,7 +166,7 @@ export class ProyectoComponent implements OnInit {
   deleteProyecto(proyecto: ProyectoElement) {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '450px',
-      data: { idProyecto: proyecto.idProyecto, nombreProyecto: proyecto.nombre ,module: "proyecto" }
+      data: { idProyecto: proyecto.idProyecto, nombreProyecto: proyecto.nombre, module: "proyecto" }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -221,7 +244,7 @@ export class ProyectoComponent implements OnInit {
   // Metodo que realiza la exportacion de los datos a un archivo de Excel
   exportDataFileExcel() {
     this.proyectoService.exportProyectosExcel().subscribe((data: any) => {
-      let file = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      let file = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       let fileURL = URL.createObjectURL(file);
       var anchor = document.createElement("a");
       anchor.download = "Reporte proyectos.xlsx";

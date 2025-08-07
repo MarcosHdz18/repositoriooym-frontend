@@ -15,6 +15,12 @@
     margin-bottom: 30px !important;
 }
 
+@media (max-width: 1400px) {
+    .card {
+        max-width: 900px;
+    }
+}
+
 mat-form-field {
     width: 450px;
 }
@@ -56,26 +62,34 @@ th.mat-sort-header-sorted {
 
 .mat-table .mat-header-cell,
 .mat-table .mat-cell {
-  padding: 0 15px;       /* 16px izquierda y derecha */
-  white-space: normal;   /* para que rompa líneas */
-  word-wrap: break-word; /* para poder envolver palabras largas */
+    padding: 0 15px;
+    /* 16px izquierda y derecha */
+    white-space: normal;
+    /* para que rompa líneas */
+    word-wrap: break-word;
+    /* para poder envolver palabras largas */
 }
 
 .table-scroll {
-  max-height: 400px;       /* o el px que necesites */
-  overflow-y: auto;        /* scroll vertical */
-  /* opcional: ancho completo */
-  width: 100%;
+    max-height: 400px;
+    /* o el px que necesites */
+    overflow-y: auto;
+    /* scroll vertical */
+    /* opcional: ancho completo */
+    width: 100%;
 }
 
 /* Ajustes finos: que la tabla ocupe todo el contenedor */
 .table-scroll table {
-  width: 100%;
-  table-layout: auto;
+    width: 100%;
+    table-layout: auto;
 }
 
 .table-wrapper {
-  border: 1px solid rgba(0,0,0,0.12);   /* gris muy suave */
-  border-radius: 8px;                   /* esquinas redondeadas */
-  overflow: hidden;                     /* recorta la sombra si la hay */
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    /* gris muy suave */
+    border-radius: 8px;
+    /* esquinas redondeadas */
+    overflow: hidden;
+    /* recorta la sombra si la hay */
 }

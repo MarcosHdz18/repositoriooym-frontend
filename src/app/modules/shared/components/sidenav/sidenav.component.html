@@ -7,9 +7,18 @@
         <!--Botones de ayuda y cierre de sesion-->
         <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
             <ul fxLayout="row" fxLayoutGap="20px">
+                
                 <li>
-                    <button id="help" mat-icon-button><mat-icon>help_outline</mat-icon></button>
-                    <label style="font-size: 14px;" for="help">Ayuda</label>
+                    <button mat-button mat-icon-button [matMenuTriggerFor]="menuAyuda">
+                        <mat-icon id="help">help_outline</mat-icon>
+                        <label for="help">Ayuda</label>
+                    </button>
+                    <mat-menu #menuAyuda="matMenu">
+                        <button mat-menu-item (click)="openHelp()">
+                            <mat-icon>help</mat-icon>
+                            <label>Acerca de</label>
+                        </button>
+                    </mat-menu>
                 </li>
                 <li>
                     <button mat-button [matMenuTriggerFor]="menu">
@@ -23,9 +32,10 @@
                         </button>
                     </mat-menu>
                 </li>
+                <!--
                 <li>
                     <app-theme-switcher></app-theme-switcher>
-                </li>
+                </li>-->
             </ul>
         </div>
     </mat-toolbar>

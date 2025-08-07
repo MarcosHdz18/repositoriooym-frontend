@@ -9,13 +9,16 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
 import { ThemeSwitcherComponent } from './components/theme-switcher/theme-switcher.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { HelpDialogComponent } from './components/help-dialog/help-dialog.component';
+
 
 @NgModule({
   declarations: [
     SidenavComponent,
     DialogConfirmComponent,
     ThemeSwitcherComponent,
-    FooterComponent
+    FooterComponent,
+    HelpDialogComponent
   ],
   exports: [
     SidenavComponent,

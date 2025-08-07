@@ -4,6 +4,11 @@
 
 export const environment = {
   production: false,
+  keycloak: {
+    url: 'http://localhost:8082',      // tu Keycloak en local
+    realm: 'repositorioapp',
+    clientId: 'repositorioapp-angular-client'
+  },
   endpoint_url: "http://localhost:8080/api/v1"
 };
 

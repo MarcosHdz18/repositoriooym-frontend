@@ -13,3 +13,10 @@
     background-size: cover;
 }
 
+@media (max-width: 1400px) {
+    .card {
+        max-width: 850px;
+    }
+    
+}
+

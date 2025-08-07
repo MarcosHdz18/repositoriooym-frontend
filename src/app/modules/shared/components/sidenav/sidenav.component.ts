@@ -2,6 +2,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { UtilsService } from '../../services/utils.service';
+import { HelpDialogComponent } from '../help-dialog/help-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-sidenav',
@@ -27,7 +29,7 @@ export class SidenavComponent implements OnInit {
     { name: "Regiones", route: "region", icon: "business", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
     { name: "Sitios", route: "sitio", icon: "home", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
     { name: "Tipos de Proyecto", route: "tipoProyecto", icon: "list_alt", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
-    { name: "Proyectos Septiembre 2025", route: "proyecto", icon: "important_devices" }
+    { name: "Proyectos", route: "proyecto", icon: "important_devices" }
   ];
 
   historyNav: MenuItem[] = [
@@ -45,7 +47,7 @@ export class SidenavComponent implements OnInit {
   sections: MenuSection[] = [
     { title: 'Inicio', items: this.inicioMenu, expanded: true },
     { title: 'Información', items: this.infoNav, expanded: false },
-    { title: 'Operaciones', items: this.systemNav, expanded: true },
+    { title: 'Operaciones', items: this.systemNav, expanded: false },
     { title: 'Histórico', items: this.historyNav, expanded: false }
   ];
 
@@ -53,7 +55,7 @@ export class SidenavComponent implements OnInit {
     sec.expanded = !sec.expanded;
   }
 
-  constructor(media: MediaMatcher, private keycloakService: KeycloakService, private utils: UtilsService) {
+  constructor(media: MediaMatcher, private keycloakService: KeycloakService, private utils: UtilsService, private dialog: MatDialog) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
   }
 
@@ -88,6 +90,13 @@ export class SidenavComponent implements OnInit {
         // si algún perfil del usuario coincide, entra
         return item.allowedProfiles.some(p => userProfiles.includes(p));
       });
+    });
+  }
+
+  openHelp() {
+    this.dialog.open(HelpDialogComponent, {
+      width: '400px',
+      autoFocus: false,
     });
   }
 

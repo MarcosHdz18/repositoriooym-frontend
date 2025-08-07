@@ -2,5 +2,43 @@
 
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; margin: 0;}
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@media (max-width: 1400px) {
+    .card {
+        max-width: 900px;
+        padding: 8px;
+    }
+
+    .table-wrapper {
+        padding: 0 8px;
+    }
+
+    .header-image {
+        width: 48px;
+        height: 48px;
+    }
+
+    /* Reducir tamaños de fuente en pantallas angostas */
+    .mat-card-title {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    /* Para tablets: oculta columnas menos críticas */
+    .mat-column-fechaInicio,
+    .mat-column-fechaLiberacion {
+        display: none;
+    }
+}

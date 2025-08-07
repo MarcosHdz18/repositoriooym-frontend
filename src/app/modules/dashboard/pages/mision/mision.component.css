@@ -12,3 +12,14 @@
     background-image: url('../../../../../assets/img/repositorio_logo.png');
     background-size: cover;
 }
+
+@media (max-width: 1400px) {
+    .card {
+        max-width: 700px;
+    }
+
+    .mision {
+        margin: 30px 0;
+    }
+    
+}
