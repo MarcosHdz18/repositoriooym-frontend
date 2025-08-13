@@ -40,6 +40,7 @@ export interface ProyectoElement {
   };
 
   // Campos de los nombres de archivo que guardas
+  presentacion:      string;
   f60:               string;
   lld:               string;
   hld:               string;
@@ -51,7 +52,6 @@ export interface ProyectoElement {
   atpFisico:               string;
   atpFisicoFirmado:        string;
   atpLogico:               string;
-  atpLogicoFirmado:        string;
   reporteTransferenciaOperativa: string;
   cartaResponsivaIaaS:    string;
   cartaResponsivaPlataforma: string;

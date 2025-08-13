@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProyectoService } from 'src/app/modules/shared/services/proyecto.service';
 import { ResponsableService } from 'src/app/modules/shared/services/responsable.service';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { ResponsableElement } from 'src/app/models/responsable.model';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 import { TipoProyectoService } from 'src/app/modules/shared/services/tipoProyectoService.service';
@@ -18,7 +17,6 @@ import { SitioService } from 'src/app/modules/shared/services/sitio.service';
 })
 export class NewProyectoComponent implements OnInit {
 
-  readonly separatorKeysCodes = [ENTER, COMMA] as const;
   nodosList: string[] = [];
   isPerfilApp: any;
   isPerfilInfraestructura: any;
@@ -33,6 +31,7 @@ export class NewProyectoComponent implements OnInit {
   selectedFileLld: any;
   selectedFileHld: any;
   selectedFileLayout: any;
+  selectedFilePresentacion: any;
   selectedFileSla: any;
   selectedFileReporteFotografico: any;
   selectedFileFuerzaEspacio: any;
@@ -46,14 +45,13 @@ export class NewProyectoComponent implements OnInit {
   selectedFileCartaGsoc: any;
   selectedFileCartaHa: any;
   selectedFileAtpFisicoFirmado: any;
-  selectedFileAtpLogicoFirmado: any;
   selectedFileOtros: any;
   nombreArchivoF60: string = '';
   nombreArchivoLld: string = '';
   nombreArchivoHld: string = '';
   nombreArchivoLayout: string = '';
+  nombreArchivoPresentacion: string = '';
   nombreArchivoSla: string = '';
-  nombreArchivoFormatoFiltrado: string = '';
   nombreArchivoReporteFotografico: string = '';
   nombreArchivoAsignacionFuerzaEspacio: string = '';
   nombreArchivoInventarioHardware: string = '';
@@ -66,7 +64,6 @@ export class NewProyectoComponent implements OnInit {
   nombreArchivoCartaResponsivaGsoc: string = '';
   nombreArchivoCartaResponsivaHa: string = '';
   nombreArchivoAtpFisicoFirmado: string = '';
-  nombreArchivoAtpLogicoFirmado: string = '';
   nombreArchivoOtros: string = '';
 
   constructor(private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService, private sitioService: SitioService,
@@ -89,6 +86,7 @@ export class NewProyectoComponent implements OnInit {
         fileF60: [''],
         fileHld: [''],
         fileLayout: [''],
+        filePresentacion: [''],
         fileSla: [''],
         fileReporteFotografico: [''],
         fileAsignacionFuerzaEspacio: [''],
@@ -102,7 +100,6 @@ export class NewProyectoComponent implements OnInit {
         fileCartaResponsivaGsoc: [''],
         fileCartaResponsivaHa: [''],
         fileAtpFisicoFirmado: [''],
-        fileAtpLogicoFirmado: [''],
         fileOtros: [''],
       });
   }
@@ -196,6 +193,15 @@ export class NewProyectoComponent implements OnInit {
   onFileChangedLayout(event: any) {
     this.selectedFileLayout = event.target.files[0];
     this.nombreArchivoLayout = event.target.files[0].name;
+  }
+  
+  /**
+  * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+  * @param event evento que propicia la carga del archivo
+  */
+  onFileChangedPresentacion(event: any) {
+    this.selectedFilePresentacion = event.target.files[0];
+    this.nombreArchivoPresentacion = event.target.files[0].name;
   }
 
   /**
@@ -319,15 +325,6 @@ export class NewProyectoComponent implements OnInit {
   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
   * @param event evento que propicia la carga del archivo
   */
-  onFileChangedAtpLogicoFirmado(event: any) {
-    this.selectedFileAtpLogicoFirmado = event.target.files[0];
-    this.nombreArchivoAtpLogicoFirmado = event.target.files[0].name;
-  }
-
-  /**
-  * Metodo que obtiene el nombre del archivo y se muestra en el formulario
-  * @param event evento que propicia la carga del archivo
-  */
   onFileChangedOtros(event: any) {
     this.selectedFileOtros = event.target.files[0];
     this.nombreArchivoOtros = event.target.files[0].name;
@@ -382,6 +379,7 @@ export class NewProyectoComponent implements OnInit {
     pendingFiles('fileF60', this.selectedFileF60);
     pendingFiles('fileHld', this.selectedFileHld);
     pendingFiles('fileLayout', this.selectedFileLayout);
+    pendingFiles('filePresentacion', this.selectedFilePresentacion);
     pendingFiles('fileSla', this.selectedFileSla);
     pendingFiles('fileReporteFotografico', this.selectedFileReporteFotografico);
     pendingFiles('fileAsignacionFuerzaEspacio', this.selectedFileFuerzaEspacio);
@@ -395,7 +393,6 @@ export class NewProyectoComponent implements OnInit {
     pendingFiles('fileCartaResponsivaGsoc', this.selectedFileCartaGsoc);
     pendingFiles('fileCartaResponsivaHa', this.selectedFileCartaHa);
     pendingFiles('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado);
-    pendingFiles('fileAtpLogicoFirmado', this.selectedFileAtpLogicoFirmado);
     pendingFiles('fileOtros', this.selectedFileOtros);
 
     // Llamada al servicio para guardar el proyecto
@@ -415,7 +412,7 @@ export class NewProyectoComponent implements OnInit {
   /**
    * Metodo que actualiza el formulario con los datos del registro seleccionado
    * @param data valor de la data ya llenado
-   */
+   
   updateForm(data: any) {
     this.proyectoForm = this.fb.group({
       nombre: [data.nombre, Validators.required],
@@ -438,10 +435,9 @@ export class NewProyectoComponent implements OnInit {
       fileCartaResponsivaGsoc: ['', Validators.required],
       fileCartaResponsivaHa: ['', Validators.required],
       fileAtpFisicoFirmado: ['', Validators.required],
-      fileAtpLogicoFirmado: ['', Validators.required],
       fileOtros: ['', Validators.required]
     });
-  }
+  }*/
 
   /**
    * Metodo para cerrar el dialog

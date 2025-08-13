@@ -60,10 +60,6 @@
         <mat-list>
             <mat-list-item>Selecciona los archivos del proyecto</mat-list-item>
             <mat-divider style="margin-bottom: 20px;"></mat-divider>
-            <!--<p class="requeridos">
-                Los siguientes archivos son <span style="color: red;">requeridos</span> como parte de la documentación
-                inicial del proyecto : <strong>F60, LLD y HLD.</strong>
-            </p>-->
             <p class="requeridos">
                 Si no cuentas con alguno de los archivos, puedes dejarlo en blanco y subirlo más tarde.
             </p>
@@ -113,6 +109,14 @@
                 <input class="input-file" id="file-layout" type="file" (change)="onFileChangedLayout($event)"
                     formControlName="fileLayout" /><br>
             </div>
+            
+            <!--File Presentacion-->
+            <div class="position-presentacion">
+                <mat-label>Presentación: <span class="color-archivo">{{ nombreArchivoPresentacion }}</span></mat-label>
+                <label *ngIf="selectedFilePresentacion==null" for="file-presentacion" class="upload">Seleccionar archivo</label>
+                <input class="input-file" id="file-presentacion" type="file" (change)="onFileChangedPresentacion($event)"
+                    formControlName="filePresentacion" /><br>
+            </div>
 
             <!--File SLA-->
             <div class="position-sla">
@@ -148,16 +152,6 @@
                     archivo</label>
                 <input class="input-file" id="file-atpFisicoFirmado" type="file"
                     (change)="onFileChangedAtpFisicoFirmado($event)" formControlName="fileAtpFisicoFirmado" /><br>
-            </div>
-
-            <!--File ATP Logico Firmado-->
-            <div class="position-atp-logico-firmado">
-                <mat-label>ATP Lógico Firmado: <span class="color-archivo">{{ nombreArchivoAtpLogicoFirmado
-                        }}</span></mat-label>
-                <label *ngIf="selectedFileAtpLogicoFirmado==null" for="file-atpLogicoFirmado" class="upload">Seleccionar
-                    archivo</label>
-                <input class="input-file" id="file-atpLogicoFirmado" type="file"
-                    (change)="onFileChangedAtpLogicoFirmado($event)" formControlName="fileAtpLogicoFirmado" /><br>
             </div>
 
             <!--File Responsiva Plataforma-->

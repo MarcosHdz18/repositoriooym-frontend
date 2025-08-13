@@ -14,9 +14,9 @@
     margin-top: 50px;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1300px) {
     .card {
-        max-width: 980px;
+        max-width: 95%;
     }    
 }
 
@@ -95,11 +95,28 @@ th.mat-sort-header-sorted {
   word-wrap: break-word; /* para poder envolver palabras largas */
 }
 
+@media (max-width: 1300px) {
+    .mat-table .mat-header-cell,
+    .mat-table .mat-cell {
+        padding: 0 5px;
+        white-space: pre-line;
+        word-wrap: break-word;
+    }    
+}
+
 .table-scroll {
   max-height: 400px;       /* o el px que necesites */
   overflow-y: auto;        /* scroll vertical */
   /* opcional: ancho completo */
   width: 100%;
+}
+
+@media (max-width: 1300px) {
+    .table-scroll {
+        max-height: 380px;
+        overflow-y: auto;
+        width: 100%;
+    }    
 }
 
 /* Ajustes finos: que la tabla ocupe todo el contenedor */

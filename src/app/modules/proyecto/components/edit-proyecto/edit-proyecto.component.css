@@ -27,6 +27,7 @@
 .position-manuales,
 .position-matriz,
 .position-layout,
+.position-presentacion,
 .position-sla,
 .position-reporte,
 .position-fuerza-espacio,
@@ -40,7 +41,6 @@
 .position-responsiva-ha,
 .position-responsiva-gsoc,
 .position-atp-fisico-firmado,
-.position-atp-logico-firmado,
 .position-otros {
     display: flex;
     width: 100%;

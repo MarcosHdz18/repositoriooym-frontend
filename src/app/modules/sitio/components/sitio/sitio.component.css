@@ -14,9 +14,10 @@
     margin-top: 100px;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1300px) {
     .card {
-        max-width: 900px;
+        max-width: 95%;
+        margin-top: 30px;
     }
     
 }
@@ -65,6 +66,14 @@ th.mat-sort-header-sorted {
   padding: 0 12px;       /* 15px izquierda y derecha */
   white-space: normal;   /* para que rompa líneas */
   word-wrap: break-word; /* para poder envolver palabras largas */
+}
+
+@media (max-width: 1300px) {
+    .mat-table .mat-cell {
+        padding: 0 5px;
+        white-space: pre-line;
+        word-wrap: break-word;
+    }    
 }
 
 .table-scroll {

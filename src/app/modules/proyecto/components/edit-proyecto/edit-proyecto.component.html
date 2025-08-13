@@ -76,7 +76,7 @@
             </div>
 
             <!--File LLD-->
-            <div *ngIf="isPerfilInfraestructura" class="position-lld">
+            <div class="position-lld">
                 <mat-label>LLD: <span [ngClass]="{'color-archivo-rojo': nombreArchivoLld == 'NA', 
                 'color-archivo-verde': nombreArchivoLld != 'NA'}" >{{ nombreArchivoLld }}</span></mat-label>
                 <label *ngIf="selectedFileLld==null" for="file-lld" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
@@ -105,6 +105,14 @@
                 'color-archivo-verde': nombreArchivoLayout != 'NA'}">{{ nombreArchivoLayout }}</span></mat-label>
                 <label *ngIf="selectedFileLayout==null" for="file-layout" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-layout" type="file" (change)="onFileChangedLayout($event)" formControlName="fileLayout"/><br>
+            </div>
+
+            <!--File Presentacion-->
+            <div class="position-presentacion">
+                <mat-label>Presentacion: <span [ngClass]="{'color-archivo-rojo': nombreArchivoPresentacion == 'NA', 
+                'color-archivo-verde': nombreArchivoPresentacion != 'NA'}">{{ nombreArchivoPresentacion }}</span></mat-label>
+                <label *ngIf="selectedFilePresentacion==null" for="file-presentacion" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
+                <input class="input-file" id="file-presentacion" type="file" (change)="onFileChangedPresentacion($event)" formControlName="filePresentacion"/><br>
             </div>
 
             <!--File SLA-->
@@ -138,15 +146,6 @@
                 <label *ngIf="selectedFileAtpFisicoFirmado==null" for="file-atpFisicoFirmado" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-atpFisicoFirmado" type="file"
                     (change)="onFileChangedAtpFisicoFirmado($event)" formControlName="fileAtpFisicoFirmado"/><br>
-            </div>
-
-            <!--File ATP Logico Firmado-->
-            <div class="position-atp-logico-firmado">
-                <mat-label>ATP Lógico Firmado: <span [ngClass]="{'color-archivo-rojo': nombreArchivoAtpLogicoFirmado == 'NA', 
-                'color-archivo-verde': nombreArchivoAtpLogicoFirmado != 'NA'}" >{{ nombreArchivoAtpLogicoFirmado }}</span></mat-label>
-                <label *ngIf="selectedFileAtpLogicoFirmado==null" for="file-atpLogicoFirmado" class="upload"><mat-icon matSuffix>upload</mat-icon></label>
-                <input class="input-file" id="file-atpLogicoFirmado" type="file"
-                    (change)="onFileChangedAtpLogicoFirmado($event)" formControlName="fileAtpLogicoFirmado"/><br>
             </div>
 
             <!--File Responsiva Plataforma-->

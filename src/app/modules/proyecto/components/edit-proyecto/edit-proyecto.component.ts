@@ -34,8 +34,8 @@ export class EditProyectoComponent implements OnInit {
   nombreArchivoLld: string = '';
   nombreArchivoHld: string = '';
   nombreArchivoLayout: string = '';
+  nombreArchivoPresentacion: string = '';
   nombreArchivoSla: string = '';
-  nombreArchivoFormatoFiltrado: string = '';
   nombreArchivoReporteFotografico: string = '';
   nombreArchivoAsignacionFuerzaEspacio: string = '';
   nombreArchivoInventarioHardware: string = '';
@@ -48,7 +48,6 @@ export class EditProyectoComponent implements OnInit {
   nombreArchivoCartaResponsivaGsoc: string = '';
   nombreArchivoCartaResponsivaHa: string = '';
   nombreArchivoAtpFisicoFirmado: string = '';
-  nombreArchivoAtpLogicoFirmado: string = '';
   nombreArchivoOtros: string = '';
 
   // Variables para almacenar los archivos seleccionados
@@ -56,6 +55,7 @@ export class EditProyectoComponent implements OnInit {
   selectedFileLld: File | null = null;
   selectedFileHld: File | null = null;
   selectedFileLayout: File | null = null;
+  selectedFilePresentacion: File | null = null;
   selectedFileSla: File | null = null;
   selectedFileReporteFotografico: File | null = null;
   selectedFileFuerzaEspacio: File | null = null;
@@ -69,7 +69,6 @@ export class EditProyectoComponent implements OnInit {
   selectedFileCartaGsoc: File | null = null;
   selectedFileCartaHa: File | null = null;
   selectedFileAtpFisicoFirmado: File | null = null;
-  selectedFileAtpLogicoFirmado: File | null = null;
   selectedFileOtros: File | null = null;
 
 
@@ -93,6 +92,7 @@ export class EditProyectoComponent implements OnInit {
       fileF60: ['',],
       fileHld: ['',],
       fileLayout: [''],
+      filePresentacion: [''],
       fileSla: [''],
       fileReporteFotografico: [''],
       fileAsignacionFuerzaEspacio: [''],
@@ -106,7 +106,6 @@ export class EditProyectoComponent implements OnInit {
       fileCartaResponsivaGsoc: [''],
       fileCartaResponsivaHa: [''],
       fileAtpFisicoFirmado: [''],
-      fileAtpLogicoFirmado: [''],
       fileOtros: ['']
     });
   }
@@ -157,6 +156,7 @@ export class EditProyectoComponent implements OnInit {
     this.nombreArchivoLld = this.fileNameSinCarpeta(this.data.lld);
     this.nombreArchivoHld = this.fileNameSinCarpeta(this.data.hld);
     this.nombreArchivoLayout = this.fileNameSinCarpeta(this.data.layout);
+    this.nombreArchivoPresentacion = this.fileNameSinCarpeta(this.data.presentacion);
     this.nombreArchivoSla = this.fileNameSinCarpeta(this.data.sla);
     this.nombreArchivoReporteFotografico = this.fileNameSinCarpeta(this.data.reporteFotografico);
     this.nombreArchivoAsignacionFuerzaEspacio = this.fileNameSinCarpeta(this.data.asignacionFuerzaEspacio);
@@ -170,7 +170,6 @@ export class EditProyectoComponent implements OnInit {
     this.nombreArchivoCartaResponsivaGsoc = this.fileNameSinCarpeta(this.data.cartaResponsivaGsoc);
     this.nombreArchivoCartaResponsivaHa = this.fileNameSinCarpeta(this.data.cartaResponsivaHA);
     this.nombreArchivoAtpFisicoFirmado = this.fileNameSinCarpeta(this.data.atpFisicoFirmado);
-    this.nombreArchivoAtpLogicoFirmado = this.fileNameSinCarpeta(this.data.atpLogicoFirmado);
     this.nombreArchivoOtros = this.fileNameSinCarpeta(this.data.otros);
 
     this.getResponsables();
@@ -263,6 +262,15 @@ export class EditProyectoComponent implements OnInit {
   onFileChangedLayout(event: any) {
     this.selectedFileLayout = event.target.files[0];
     this.nombreArchivoLayout = event.target.files[0].name;
+  }
+
+  /**
+  * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+  * @param event evento que propicia la carga del archivo
+  */
+  onFileChangedPresentacion(event: any) {
+    this.selectedFilePresentacion = event.target.files[0];
+    this.nombreArchivoPresentacion = event.target.files[0].name;
   }
 
   /**
@@ -386,15 +394,6 @@ export class EditProyectoComponent implements OnInit {
   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
   * @param event evento que propicia la carga del archivo
   */
-  onFileChangedAtpLogicoFirmado(event: any) {
-    this.selectedFileAtpLogicoFirmado = event.target.files[0];
-    this.nombreArchivoAtpLogicoFirmado = event.target.files[0].name;
-  }
-
-  /**
-  * Metodo que obtiene el nombre del archivo y se muestra en el formulario
-  * @param event evento que propicia la carga del archivo
-  */
   onFileChangedOtros(event: any) {
     this.selectedFileOtros = event.target.files[0];
     this.nombreArchivoOtros = event.target.files[0].name;
@@ -433,7 +432,8 @@ export class EditProyectoComponent implements OnInit {
     appendFileOrPendiente('fileF60', this.selectedFileF60, this.nombreArchivoF60);
     appendFileOrPendiente('fileLld', this.selectedFileLld, this.nombreArchivoLld);
     appendFileOrPendiente('fileHld', this.selectedFileHld, this.nombreArchivoHld);
-    appendFileOrPendiente('fileLayout', this.selectedFileLayout, this.nombreArchivoLayout);
+    appendFileOrPendiente('fileLayout', this.selectedFileLayout, this.nombreArchivoLayout); 
+    appendFileOrPendiente('filePresentacion', this.selectedFilePresentacion, this.nombreArchivoPresentacion); 
     appendFileOrPendiente('fileSla', this.selectedFileSla, this.nombreArchivoSla);
     appendFileOrPendiente('fileReporteFotografico', this.selectedFileReporteFotografico, this.nombreArchivoReporteFotografico);
     appendFileOrPendiente('fileAsignacionFuerzaEspacio', this.selectedFileFuerzaEspacio, this.nombreArchivoAsignacionFuerzaEspacio);
@@ -447,7 +447,6 @@ export class EditProyectoComponent implements OnInit {
     appendFileOrPendiente('fileCartaResponsivaGsoc', this.selectedFileCartaGsoc, this.nombreArchivoCartaResponsivaGsoc);
     appendFileOrPendiente('fileCartaResponsivaHa', this.selectedFileCartaHa, this.nombreArchivoCartaResponsivaHa);
     appendFileOrPendiente('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado, this.nombreArchivoAtpFisicoFirmado);
-    appendFileOrPendiente('fileAtpLogicoFirmado', this.selectedFileAtpLogicoFirmado, this.nombreArchivoAtpLogicoFirmado);
     appendFileOrPendiente('fileOtros', this.selectedFileOtros, this.nombreArchivoOtros);
 
     // Llamada al servicio para actualizar el proyecto
