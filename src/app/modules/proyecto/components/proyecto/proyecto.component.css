@@ -9,9 +9,9 @@
 }
 
 .card {
-    max-width: 1200px;
+    max-width: 95%;
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 @media (max-width: 1300px) {
@@ -105,7 +105,7 @@ th.mat-sort-header-sorted {
 }
 
 .table-scroll {
-  max-height: 400px;       /* o el px que necesites */
+  max-height: 510px;       /* o el px que necesites */
   overflow-y: auto;        /* scroll vertical */
   /* opcional: ancho completo */
   width: 100%;

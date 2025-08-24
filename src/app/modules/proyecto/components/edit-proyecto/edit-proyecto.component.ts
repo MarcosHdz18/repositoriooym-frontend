@@ -420,34 +420,34 @@ export class EditProyectoComponent implements OnInit {
     formData.append('sitioId', this.proyectoForm.value.sitio);
 
     // helper para los archivos opcionales / existentes
-    const appendFileOrPendiente = (campo: string, file: File | null, nombreActual: string) => {
+    const appendFileOrPendiente = (campo: string, file: File | null) => {
       if (file) {
         formData.append(campo, file, file.name);
-      } else {
+      } /**  else {
         // si no subió archivo nuevo, seguimos con el nombre que ya tenía en el back
-        formData.append(campo, nombreActual || 'N/A');
-      }
+        formData.append(campo, nombreActual || 'NA');
+      }*/
     };
 
-    appendFileOrPendiente('fileF60', this.selectedFileF60, this.nombreArchivoF60);
-    appendFileOrPendiente('fileLld', this.selectedFileLld, this.nombreArchivoLld);
-    appendFileOrPendiente('fileHld', this.selectedFileHld, this.nombreArchivoHld);
-    appendFileOrPendiente('fileLayout', this.selectedFileLayout, this.nombreArchivoLayout); 
-    appendFileOrPendiente('filePresentacion', this.selectedFilePresentacion, this.nombreArchivoPresentacion); 
-    appendFileOrPendiente('fileSla', this.selectedFileSla, this.nombreArchivoSla);
-    appendFileOrPendiente('fileReporteFotografico', this.selectedFileReporteFotografico, this.nombreArchivoReporteFotografico);
-    appendFileOrPendiente('fileAsignacionFuerzaEspacio', this.selectedFileFuerzaEspacio, this.nombreArchivoAsignacionFuerzaEspacio);
-    appendFileOrPendiente('fileInventarioHardware', this.selectedFileInventario, this.nombreArchivoInventarioHardware);
-    appendFileOrPendiente('fileAtpFisico', this.selectedFileAtpFisico, this.nombreArchivoAtpFisico);
-    appendFileOrPendiente('fileAtpLogico', this.selectedFileAtpLogico, this.nombreArchivoAtpLogico);
-    appendFileOrPendiente('fileReporteTransferenciaOperativa', this.selectedFileRto, this.nombreArchivoRto);
-    appendFileOrPendiente('fileCartaResponsivaPlataforma', this.selectedFileCartaPlataforma, this.nombreArchivoCartaResponsivaPlataforma);
-    appendFileOrPendiente('fileCartaResponsivaIaaS', this.selectedFileCartaIaaS, this.nombreArchivoCartaResponsivaIaaS);
-    appendFileOrPendiente('fileCartaResponsivaStorage', this.selectedFileCartaStorage, this.nombreArchivoCartaResponsivaStorage);
-    appendFileOrPendiente('fileCartaResponsivaGsoc', this.selectedFileCartaGsoc, this.nombreArchivoCartaResponsivaGsoc);
-    appendFileOrPendiente('fileCartaResponsivaHa', this.selectedFileCartaHa, this.nombreArchivoCartaResponsivaHa);
-    appendFileOrPendiente('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado, this.nombreArchivoAtpFisicoFirmado);
-    appendFileOrPendiente('fileOtros', this.selectedFileOtros, this.nombreArchivoOtros);
+    appendFileOrPendiente('fileF60', this.selectedFileF60);
+    appendFileOrPendiente('fileLld', this.selectedFileLld);
+    appendFileOrPendiente('fileHld', this.selectedFileHld);
+    appendFileOrPendiente('fileLayout', this.selectedFileLayout); 
+    appendFileOrPendiente('filePresentacion', this.selectedFilePresentacion);
+    appendFileOrPendiente('fileSla', this.selectedFileSla);
+    appendFileOrPendiente('fileReporteFotografico', this.selectedFileReporteFotografico);
+    appendFileOrPendiente('fileAsignacionFuerzaEspacio', this.selectedFileFuerzaEspacio);
+    appendFileOrPendiente('fileInventarioHardware', this.selectedFileInventario);
+    appendFileOrPendiente('fileAtpFisico', this.selectedFileAtpFisico);
+    appendFileOrPendiente('fileAtpLogico', this.selectedFileAtpLogico);
+    appendFileOrPendiente('fileReporteTransferenciaOperativa', this.selectedFileRto);
+    appendFileOrPendiente('fileCartaResponsivaPlataforma', this.selectedFileCartaPlataforma);
+    appendFileOrPendiente('fileCartaResponsivaIaaS', this.selectedFileCartaIaaS);
+    appendFileOrPendiente('fileCartaResponsivaStorage', this.selectedFileCartaStorage);
+    appendFileOrPendiente('fileCartaResponsivaGsoc', this.selectedFileCartaGsoc);
+    appendFileOrPendiente('fileCartaResponsivaHa', this.selectedFileCartaHa);
+    appendFileOrPendiente('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado);
+    appendFileOrPendiente('fileOtros', this.selectedFileOtros);
 
     // Llamada al servicio para actualizar el proyecto
     this.proyectoService.updateProyecto(this.data.idProyecto, formData).subscribe({

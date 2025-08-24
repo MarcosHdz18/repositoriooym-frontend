@@ -93,6 +93,11 @@ mat-dialog-actions {
     color: #d32f2f;
 }
 
+.color-archivo-nuevo {
+    margin: 5px 0 5px 0;
+    color: #0288d1;
+}
+
 .requeridos {
     margin: 16px 0;
     font-style: italic;
@@ -107,4 +112,52 @@ mat-dialog-actions {
     max-height: 120px;
     overflow: auto;
     margin-top: 8px;
+}
+
+/**Estilos nuevos*/
+.doc-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+}
+
+.doc-names {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.doc-name {
+    font-weight: 600;
+}
+
+.doc-ok {
+    color: #2e7d32;
+}
+
+/* verde */
+.doc-na {
+    color: #e53935;
+}
+
+/* rojo  */
+.doc-new {
+    color: #fb8c00;
+}
+
+/* ámbar (o usa #0288d1 para azul) */
+
+.doc-arrow {
+    margin: 0 .5rem;
+    color: #9e9e9e;
+}
+
+.upload-icon {
+    cursor: pointer;
+}
+
+.btn-cancel {
+    margin-left: .25rem;
 }

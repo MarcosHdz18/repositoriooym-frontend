@@ -84,7 +84,7 @@
                     </ng-container>
                     
                     <!--Mostrar registro de las filas desplegadas-->
-                    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayColumns; sticky: true"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayColumns;" class="element-row"></tr>
                     <!--Registro no encontrado-->
                     <tr class="mat-row" *matNoDataRow>

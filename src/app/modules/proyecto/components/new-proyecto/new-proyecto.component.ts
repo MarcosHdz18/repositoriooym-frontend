@@ -366,7 +366,7 @@ export class NewProyectoComponent implements OnInit {
     subirDatos.append('sitioId', this.proyectoForm.get('sitio')?.value as string);
     //subirDatos.append('regionId', this.proyectoForm.get('region')?.value as string);
 
-    // Archivos opcionales del formulario: si existen, los agregamos al FormData; si no, enviamos "N/A"
+    // Archivos opcionales del formulario: si existen, los agregamos al FormData; si no, enviamos "NA"
     const pendingFiles = (fieldName: string, file: File | null) => {
       if (file) {
         subirDatos.append(fieldName, file, file.name);

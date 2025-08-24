@@ -65,7 +65,7 @@
                                 </ng-template>
                             </td>
                         </ng-container>
-                        <!--fechaLiberacion column-->
+                        <!--fechaInicio column-->
                         <ng-container matColumnDef="fechaInicio">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header><span *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura">Fecha Inicio</span></th>
                             <td mat-cell *matCellDef="let element">
@@ -146,15 +146,16 @@
                                 <button matTooltip="Detalle" mat-icon-button color="primary"
                                     (click)="detalleProyecto(element.idProyecto, element.nombre, element.fechaLiberacion,
                                 element.f60, element.nodos, element.lld, element.hld, element.reporteTransferenciaOperativa, element.atpFisico, element.atpLogico, element.atpFisicoFirmado,
-                                element.atpLogicoFirmado, element.cartaResponsivaPlataforma, element.cartaResponsivaIaaS, element.cartaResponsivaStorage, element.cartaResponsivaHa, 
-                                element.cartaResponsivaGsoc, element.layout, element.sla, element.reporteFotografico, element.asignacionFuerzaEspacio, element.inventarioHardware)">
+                                element.cartaResponsivaPlataforma, element.cartaResponsivaIaaS, element.cartaResponsivaStorage, element.cartaResponsivaHa, 
+                                element.cartaResponsivaGsoc, element.layout, element.presentacion, element.sla, element.reporteFotografico, element.asignacionFuerzaEspacio, element.inventarioHardware,
+                                element.otros)">
                                     <mat-icon aria-label="Delete">remove_red_eye</mat-icon>
                                 </button>
-                                <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" mat-icon-button
+                                <button matTooltip="Actualizar" *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" mat-icon-button
                                     color="accent" (click)="openEditProyectoDialog(element)">
                                     <mat-icon aria-label="Edit">edit</mat-icon>
                                 </button>
-                                <button *ngIf="isAdmin" mat-icon-button color="warn" (click)="deleteProyecto(element)"
+                                <button matTooltip="Eliminar" *ngIf="isAdmin" mat-icon-button color="warn" (click)="deleteProyecto(element)"
                                     [disabled]="element.anio !== anioActual"
                                     [matTooltip]="element.anio === anioActual ? 'Eliminar' : 'No puedes eliminar proyectos a los del año actual'">
                                     <mat-icon aria-label="Delete">delete</mat-icon>
@@ -163,7 +164,7 @@
                         </ng-container>
 
                         <!--Mostrar registro de las filas desplegadas-->
-                        <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+                        <tr mat-header-row *matHeaderRowDef="displayColumns; sticky: true"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayColumns;" class="element-row"></tr>
                         <!--Registro no encontrado-->
                         <tr class="mat-row" *matNoDataRow>

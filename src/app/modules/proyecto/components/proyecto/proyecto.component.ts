@@ -181,15 +181,16 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
 
   // Detalle del proyecto
   detalleProyecto(idProyecto: any, nombre: any, fechaLiberacion: any, f60: any, nodos: any, lld: any, hld: any, rto: any, atpFisico: any, atpLogico: any, atpFisicoFirmado: any,
-    atpLogicoFirmado: any, cartaResponsivaPlataforma: any, cartaResponsivaIaaS: any, cartaResponsivaStorage: any, cartaResponsivaHa: any,
-    cartaResponsivaGsoc: any, layout: any, sla: any, reporteFotografico: any, asignacionFuerzaEspacio: any, inventarioHardware: any) {
+    cartaResponsivaPlataforma: any, cartaResponsivaIaaS: any, cartaResponsivaStorage: any, cartaResponsivaHa: any,
+    cartaResponsivaGsoc: any, layout: any, presentacion:any, sla: any, reporteFotografico: any, asignacionFuerzaEspacio: any, inventarioHardware: any,
+    otros: any) {
     const dialogRef = this.dialog.open(DetalleProyectoComponent, {
       width: '1000px',
       data: {
         idProyecto: idProyecto, nombre: nombre, fechaLiberacion: fechaLiberacion, f60: f60, lld: lld, nodos: nodos, hld: hld, reporteTransferenciaOperativa: rto, atpFisico: atpFisico, atpLogico: atpLogico, atpFisicoFirmado: atpFisicoFirmado,
-        atpLogicoFirmado: atpLogicoFirmado, cartaResponsivaPlataforma: cartaResponsivaPlataforma, cartaResponsivaIaaS: cartaResponsivaIaaS, cartaResponsivaStorage: cartaResponsivaStorage,
-        cartaResponsivaHa: cartaResponsivaHa, cartaResponsivaGsoc: cartaResponsivaGsoc, layout: layout, sla: sla, reporteFotografico: reporteFotografico,
-        asignacionFuerzaEspacio: asignacionFuerzaEspacio, inventarioHardware: inventarioHardware
+        cartaResponsivaPlataforma: cartaResponsivaPlataforma, cartaResponsivaIaaS: cartaResponsivaIaaS, cartaResponsivaStorage: cartaResponsivaStorage,
+        cartaResponsivaHa: cartaResponsivaHa, cartaResponsivaGsoc: cartaResponsivaGsoc, layout: layout, presentacion: presentacion,sla: sla, reporteFotografico: reporteFotografico,
+        asignacionFuerzaEspacio: asignacionFuerzaEspacio, inventarioHardware: inventarioHardware, otros: otros
       }
     });
   }
@@ -213,7 +214,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   // Dialog para editar un registro en la base
   openEditProyectoDialog(proyecto: ProyectoElement) {
     const dialogRef = this.dialog.open(EditProyectoComponent, {
-      width: '1000px',
+      width: '1200px',
       data: proyecto
     });
     dialogRef.afterClosed().subscribe((result: any) => {

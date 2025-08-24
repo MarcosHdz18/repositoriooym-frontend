@@ -20,7 +20,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
       initOptions: {
         onLoad: 'login-required',
         flow: "standard",
-        checkLoginIframe: false
+        checkLoginIframe: false,
+        redirectUri: window.location.origin + '/dashboard'
       },
       loadUserProfileAtStartUp: true
     });
