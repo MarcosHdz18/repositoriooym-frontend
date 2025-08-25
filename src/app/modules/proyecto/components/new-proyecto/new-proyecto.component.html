@@ -6,7 +6,8 @@
             <mat-form-field>
                 <input formControlName="nombre" matInput placeholder="Nombre" required />
                 <mat-icon matSuffix>assignment</mat-icon>
-            </mat-form-field>
+            </mat-form-field>            
+            <!--Propiedad responsable del formulario-->
             <mat-form-field>
                 <mat-label>Responsable</mat-label>
                 <mat-select formControlName="responsable">
@@ -33,6 +34,15 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+             <!--Propiedad cliente del formulario-->
+            <mat-form-field>
+                <mat-label>Cliente</mat-label>
+                <mat-select formControlName="cliente">
+                    <mat-option *ngFor="let cliente of clientes" [value]="cliente.idCliente">
+                       {{ cliente.nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>             
             <!--Propiedad fechaInicio del formulario-->
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Fecha de Inicio</mat-label>
@@ -40,21 +50,19 @@
                 <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
                 <mat-datepicker #pickerInicio></mat-datepicker>
             </mat-form-field>
-            <!--Propiedad fechaLiberacion del formulario-->
-            <mat-form-field appearance="outline" class="w-full">
-                <mat-label>Fecha de liberación</mat-label>
-                <input matInput [matDatepicker]="pickerLiberacion" formControlName="fechaLiberacion" (focus)="pickerLiberacion.open()" (click)="pickerLiberacion.open()" readonly/>
-                <mat-datepicker-toggle matSuffix [for]="pickerLiberacion"></mat-datepicker-toggle>
-                <mat-datepicker #pickerLiberacion></mat-datepicker>
-            </mat-form-field>
-            <!--Propiedad responsable del formulario-->
-            
             <!--Propiedad nodos del formulario-->
             <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Ingresa los nodos (separados por espacios, comas o saltos)</mat-label>
                 <textarea matInput formControlName="nodosTexto" rows="3" cdkTextareaAutosize cdkAutosizeMinRows="3"
                     cdkAutosizeMaxRows="10" (blur)="parseNodos()"></textarea>
                 <mat-hint>↵Pega aquí tu lista completa de nodos</mat-hint>
+            </mat-form-field>
+            <!--Propiedad fechaLiberacion del formulario-->
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Fecha de liberación</mat-label>
+                <input matInput [matDatepicker]="pickerLiberacion" formControlName="fechaLiberacion" (focus)="pickerLiberacion.open()" (click)="pickerLiberacion.open()" readonly/>
+                <mat-datepicker-toggle matSuffix [for]="pickerLiberacion"></mat-datepicker-toggle>
+                <mat-datepicker #pickerLiberacion></mat-datepicker>
             </mat-form-field>
         </div>
 

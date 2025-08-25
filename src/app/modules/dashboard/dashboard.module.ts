@@ -15,6 +15,7 @@ import { ProyectosLegacyComponent } from './pages/proyectos-legacy/proyectos-leg
 import { OrganigramaComponent } from './pages/organigrama/organigrama.component';
 import { RegionModule } from '../region/region.module';
 import { SitioModule } from '../sitio/sitio.module';
+import { ClienteModule } from '../cliente/cliente.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { SitioModule } from '../sitio/sitio.module';
     AreasModule,
     ResponsableModule,
     RegionModule,
+    ClienteModule,
     SitioModule,
     TipoProyectoModule,
     ProyectoModule

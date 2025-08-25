@@ -39,6 +39,12 @@ export interface ProyectoElement {
     }
   };
 
+  cliente: {
+    idCliente: number;
+    nombre: string;
+    descripcion: string;
+  }
+
   // Campos de los nombres de archivo que guardas
   presentacion:      string;
   f60:               string;

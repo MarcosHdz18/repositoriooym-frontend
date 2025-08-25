@@ -5,6 +5,8 @@ import { ResponsableService } from '../../services/responsable.service';
 import { ProyectoService } from '../../services/proyecto.service';
 import { TipoProyectoService } from '../../services/tipoProyectoService.service';
 import { RegionService } from '../../services/region.service';
+import { ClienteService } from '../../services/cliente.service';
+import { SitioService } from '../../services/sitio.service';
 
 @Component({
   selector: 'app-dialog-confirm',
@@ -18,16 +20,20 @@ export class DialogConfirmComponent implements OnInit {
   idProyectoDeleted = 0;
   idTipoProyectoDeleted = 0;
   idRegionDeleted = 0;
+  idSitioDeleted = 0;
+  idClienteDeleted = 0;
 
   nombreArea = '';
   nombreResponsable = '';
   nombreRegion = '';
+  nombreSitio = '';
   nombreProyecto = '';
   nombreTipoProyecto = '';
+  nombreCliente = '';
 
   constructor(public dialogRef: MatDialogRef<DialogConfirmComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     private areaService: AreaService, private responsableService: ResponsableService, private regionService: RegionService,
-    private tipoProyectoService: TipoProyectoService, private proyectoService: ProyectoService) { }
+    private tipoProyectoService: TipoProyectoService, private sitioService: SitioService, private clienteService: ClienteService, private proyectoService: ProyectoService) { }
 
   ngOnInit(): void {
     this.idAreaDeleted = this.data.idArea;
@@ -35,12 +41,16 @@ export class DialogConfirmComponent implements OnInit {
     this.idProyectoDeleted = this.data.idProyecto;
     this.idTipoProyectoDeleted = this.data.idTipoProyecto;
     this.idRegionDeleted = this.data.idRegion;
+    this.idSitioDeleted = this.data.idSitio;
+    this.idClienteDeleted = this.data.idCliente;
 
     this.nombreArea = this.data.nombreArea;
     this.nombreResponsable = this.data.nombreResponsable;
     this.nombreRegion = this.data.nombreRegion;
     this.nombreProyecto = this.data.nombreProyecto;
     this.nombreTipoProyecto = this.data.nombreTipoProyecto;
+    this.nombreCliente = this.data.nombreCliente;
+    this.nombreSitio = this.data.nombreSitio;
   }
 
   // Confirmacion para eliminar el registro seleccionado
@@ -68,6 +78,12 @@ export class DialogConfirmComponent implements OnInit {
         });
       } else if (this.data.module == "tipoProyecto") {
         this.tipoProyectoService.deleteTipoProyecto(this.data.idTipoProyecto).subscribe((data: any) => {
+          this.dialogRef.close(1);
+        }, (error: any) => {
+          this.dialogRef.close(2);
+        });
+      } else if (this.data.module == "sitio") {
+        this.sitioService.deleteSitio(this.data.idSitio).subscribe((data: any) => {
           this.dialogRef.close(1);
         }, (error: any) => {
           this.dialogRef.close(2);

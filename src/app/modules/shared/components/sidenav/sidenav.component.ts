@@ -26,6 +26,7 @@ export class SidenavComponent implements OnInit {
   systemNav: MenuItem[] = [
     { name: "Departamentos", route: "area", icon: "account_balance", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
     { name: "Responsables", route: "responsable", icon: "accessibility", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
+    { name: "Clientes", route: "cliente", icon: "supervised_user_circle", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
     { name: "Regiones", route: "region", icon: "business", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
     { name: "Sitios", route: "sitio", icon: "home", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
     { name: "Tipos de Proyecto", route: "tipoProyecto", icon: "list_alt", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },

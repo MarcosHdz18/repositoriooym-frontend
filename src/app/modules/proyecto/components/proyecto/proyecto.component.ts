@@ -34,7 +34,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) proyectoSort!: MatSort;
 
   // Columnas que se mostraran en la tabla
-  displayColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaInicio', 'fechaLiberacion', 'anio', 'responsableProyecto', 'tipoProyecto', 'region', 'sitio', 'acciones'];
+  displayColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaInicio', 'fechaLiberacion', 'anio', 'responsableProyecto', 'tipoProyecto', 'cliente', 'region', 'sitio', 'acciones'];
 
   // Paginador del componente
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -80,7 +80,8 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
         data.responsableProyecto.nombre,
         data.tipoProyecto.nombre,
         data.sitio.region.nombre,
-        data.sitio.nombre
+        data.sitio.nombre,
+        data.cliente.nombre
       ].join(' ').toLowerCase();
       return str.includes(term);
     };
@@ -141,13 +142,13 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   }*/
 
   // Metodo que actualiza un registro de proyecto en la base de datos
-  editProyecto(idProyecto: number, nombre: string, fechaInicio: string, fechaLiberacion: string, responsableProyecto: any, tipoProyecto: string, sitio: string) {
+  editProyecto(idProyecto: number, nombre: string, fechaInicio: string, fechaLiberacion: string, responsableProyecto: any, tipoProyecto: string, sitio: string, cliente: string) {
 
     const dialogRef = this.dialog.open(EditProyectoComponent, {
       width: '450px',
       data: {
         idProyecto: idProyecto, nombre: nombre, fechaInicio: fechaInicio, fechaLiberacion: fechaLiberacion, responsableProyecto: responsableProyecto,
-        tipoProyecto: tipoProyecto, sitio: sitio
+        tipoProyecto: tipoProyecto, sitio: sitio, cliente: cliente
       }
     });
 

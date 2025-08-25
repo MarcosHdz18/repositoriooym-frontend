@@ -12,6 +12,7 @@ import { ProyectosLegacyComponent } from './pages/proyectos-legacy/proyectos-leg
 import { OrganigramaComponent } from './pages/organigrama/organigrama.component';
 import { RegionComponent } from '../region/components/region/region.component';
 import { SitioComponent } from '../sitio/components/sitio/sitio.component';
+import { ClienteComponent } from '../cliente/components/cliente/cliente.component';
 
 const childRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -22,6 +23,7 @@ const childRoutes: Routes = [
   { path: 'organigrama', component: OrganigramaComponent },
   { path: 'area', component: AreaComponent },
   { path: 'responsable', component: ResponsableComponent },
+  { path: 'cliente', component: ClienteComponent },
   { path: 'region', component: RegionComponent },
   { path: 'sitio', component: SitioComponent },
   { path: 'tipoProyecto', component: TipoProyectoComponent },

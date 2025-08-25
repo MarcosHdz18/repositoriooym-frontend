@@ -1,10 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ClienteElement } from 'src/app/models/cliente.model';
 import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { ResponsableElement } from 'src/app/models/responsable.model';
 import { SitioElement } from 'src/app/models/sitio.model';
 import { TipoProyectoElement } from 'src/app/models/tipoProyectoElement';
+import { ClienteService } from 'src/app/modules/shared/services/cliente.service';
 import { ProyectoService } from 'src/app/modules/shared/services/proyecto.service';
 import { ResponsableService } from 'src/app/modules/shared/services/responsable.service';
 import { SitioService } from 'src/app/modules/shared/services/sitio.service';
@@ -28,6 +30,7 @@ export class EditProyectoComponent implements OnInit {
   responsables: ResponsableElement[] = [];
   tiposProyecto: TipoProyectoElement[] = [];
   sitios: SitioElement[] = [];
+  clientes: ClienteElement[] = [];
 
   // Variables para almacenar los nombres de los archivos
   nombreArchivoF60: string = '';
@@ -73,7 +76,7 @@ export class EditProyectoComponent implements OnInit {
 
 
   constructor( private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService, 
-    private sitioService: SitioService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<EditProyectoComponent>, 
+    private sitioService: SitioService, private clienteService: ClienteService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<EditProyectoComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: ProyectoElement, private util: UtilsService ) {
     // Configuración del título y botón del formulario
     this.tituloFormulario = 'Actualizar';
@@ -88,6 +91,7 @@ export class EditProyectoComponent implements OnInit {
       responsable: [this.data.responsableProyecto.idResponsable, Validators.required],
       tipoProyecto: [this.data.tipoProyecto.idTipoProyecto, Validators.required],
       sitio: [this.data.sitio.idSitio, Validators.required],
+      cliente: [this.data.cliente.idCliente, Validators.required],
       fileLld: ['',],
       fileF60: ['',],
       fileHld: ['',],
@@ -148,7 +152,8 @@ export class EditProyectoComponent implements OnInit {
       fechaLiberacion: fecha ? fecha : null,
       responsable: this.data.responsableProyecto.idResponsable,
       tipoProyecto: this.data.tipoProyecto.idTipoProyecto,
-      sitio: this.data.sitio.idSitio
+      sitio: this.data.sitio.idSitio,
+      cliente: this.data.cliente.idCliente
     });
 
     // 2) inicializar los nombres de archivo existentes
@@ -175,6 +180,7 @@ export class EditProyectoComponent implements OnInit {
     this.getResponsables();
     this.getTiposProyecto();
     this.getSitiosProyecto();
+    this.getClientesProyecto();
   }
 
   // Limpiar lista de nodos al iniciar el componente
@@ -223,6 +229,18 @@ export class EditProyectoComponent implements OnInit {
     this.sitioService.getSitios().subscribe((data: any) => {
       console.log("Respuesta del servicio sitios: ", data);
       this.sitios = data.sitioResponse.sitios;
+    }, (error: any) => {
+      console.log("Error: ", error);
+    });
+  }
+
+  /**
+   * Metodo que obtiene todos los clientes para pintarse en el select del formulario
+   */
+  getClientesProyecto() {
+    this.clienteService.getClientes().subscribe((data: any) => {
+      console.log("Respuesta del servicio clientes: ", data);
+      this.clientes = data.clienteResponse.clientes;
     }, (error: any) => {
       console.log("Error: ", error);
     });
@@ -418,6 +436,7 @@ export class EditProyectoComponent implements OnInit {
     formData.append('responsableId', this.proyectoForm.value.responsable);
     formData.append('tipoProyectoId', this.proyectoForm.value.tipoProyecto);
     formData.append('sitioId', this.proyectoForm.value.sitio);
+    formData.append('clienteId', this.proyectoForm.value.cliente);
 
     // helper para los archivos opcionales / existentes
     const appendFileOrPendiente = (campo: string, file: File | null) => {

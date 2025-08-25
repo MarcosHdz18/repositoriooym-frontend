@@ -1,0 +1,86 @@
+.centrar {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.header-image {
+    background-image: url('../../../../../assets/img/clientes.webp');
+    background-size: cover;
+}
+
+.card {
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+@media (max-width: 1400px) {
+    .card {
+        max-width: 900px;
+    }    
+}
+
+mat-form-field {
+    width: 450px;
+}
+
+ul li {
+    list-style: none;
+}
+
+table {
+    width: 100%;
+}
+
+tr.element-row:hover {
+    background: #E0E0E0;
+}
+
+td.cdk-cell:hover {
+    color: black;
+}
+
+.container-buscador {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: 50px;
+}
+
+.button-agregar {
+    max-height: 45px;
+}
+
+.button-excel {
+    margin-left: 8px;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}
+
+.mat-table .mat-header-cell,
+.mat-table .mat-cell {
+  padding: 0 15px;       /* 16px izquierda y derecha */
+  white-space: normal;   /* para que rompa líneas */
+  word-wrap: break-word; /* para poder envolver palabras largas */
+}
+
+.table-scroll {
+  max-height: 400px;       /* o el px que necesites */
+  overflow-y: auto;        /* scroll vertical */
+  /* opcional: ancho completo */
+  width: 100%;
+}
+
+/* Ajustes finos: que la tabla ocupe todo el contenedor */
+.table-scroll table {
+  width: 100%;
+  table-layout: auto;
+}
+
+.table-wrapper {
+  border: 1px solid rgba(0,0,0,0.12);   /* gris muy suave */
+  border-radius: 8px;                   /* esquinas redondeadas */
+  overflow: hidden;                     /* recorta la sombra si la hay */
+}

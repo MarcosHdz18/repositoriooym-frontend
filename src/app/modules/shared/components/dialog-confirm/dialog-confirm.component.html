@@ -6,6 +6,8 @@
     <p *ngIf="data.module === 'responsable'">¿Está seguro que desea eliminar el responsable con el ID: <strong>{{ idResponsableDeleted }} - {{ nombreResponsable }}</strong>?</p>
     <p *ngIf="data.module === 'region'">¿Está seguro que desea eliminar la región con el ID: <strong>{{ idRegionDeleted }} - {{ nombreRegion }}</strong>?</p>
     <p *ngIf="data.module === 'tipoProyecto'">¿Está seguro que desea eliminar el tipo de proyecto con el ID: <strong>{{ idTipoProyectoDeleted }} - {{ nombreTipoProyecto }}</strong>?</p>
+    <p *ngIf="data.module === 'sitio'">¿Está seguro que desea eliminar el sitio con el ID: <strong>{{ idSitioDeleted }} - {{ nombreSitio }}</strong>?</p>
+    <p *ngIf="data.module === 'cliente'">¿Está seguro que desea eliminar el cliente con el ID: <strong>{{ idClienteDeleted }} - {{ nombreCliente }}</strong>?</p>
     <p *ngIf="data.module === 'proyecto'">¿Está seguro que desea eliminar el proyecto y sus archivos asociados con el ID: <strong>{{ idProyectoDeleted }} - {{ nombreProyecto }}</strong>?</p>
     <p style="color: red;">Esta acción no se puede deshacer.</p>
 </div>

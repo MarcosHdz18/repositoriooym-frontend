@@ -118,6 +118,17 @@
                                 </span>
                             </td>
                         </ng-container>
+                        <!--tipoProyecto column-->
+                        <ng-container matColumnDef="cliente">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header><span
+                                    *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura||isUser">Cliente</span>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <span *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura||isUser">
+                                    {{ element.cliente.nombre }}
+                                </span>
+                            </td>
+                        </ng-container>
                         <!--sitio column-->
                         <ng-container matColumnDef="sitio">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header><span

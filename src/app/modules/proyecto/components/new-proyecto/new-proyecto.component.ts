@@ -8,6 +8,7 @@ import { ResponsableElement } from 'src/app/models/responsable.model';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 import { TipoProyectoService } from 'src/app/modules/shared/services/tipoProyectoService.service';
 import { SitioService } from 'src/app/modules/shared/services/sitio.service';
+import { ClienteService } from 'src/app/modules/shared/services/cliente.service';
 
 @Component({
   selector: 'app-new-proyecto',
@@ -27,6 +28,7 @@ export class NewProyectoComponent implements OnInit {
   responsables: ResponsableElement[] = [];
   tiposProyecto: any[] = [];
   sitios: any[] = [];
+  clientes: any[] = [];
   selectedFileF60: any;
   selectedFileLld: any;
   selectedFileHld: any;
@@ -67,7 +69,7 @@ export class NewProyectoComponent implements OnInit {
   nombreArchivoOtros: string = '';
 
   constructor(private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService, private sitioService: SitioService,
-    private proyectoService: ProyectoService, private dialogRef: MatDialogRef<NewProyectoComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
+    private clienteService: ClienteService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<NewProyectoComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     private util: UtilsService) {
 
       this.tituloFormulario = 'Agregar nuevo';
@@ -81,6 +83,7 @@ export class NewProyectoComponent implements OnInit {
         responsable: ['', Validators.required],
         tipoProyecto: ['', Validators.required],
         sitio: ['', Validators.required],
+        cliente: ['', Validators.required],
         // Archivos opcionales del formulario
         fileLld: [''],
         fileF60: [''],
@@ -115,6 +118,8 @@ export class NewProyectoComponent implements OnInit {
     this.getTiposProyecto();
     // Lista de sitios
     this.getSitios();
+    // Lista de clientes
+    this.getClientes();
   }
 
   // Limpiar lista de nodos al iniciar el componente
@@ -158,6 +163,19 @@ export class NewProyectoComponent implements OnInit {
       console.log("Error: ", error);
     });
   }
+
+  /**
+   * Metodo que obtiene todos los clientes para pintarse en el select del formulario
+   */
+  getClientes() {
+    this.clienteService.getClientes().subscribe((data: any) => {
+      console.log("Respuesta del servicio clientes: ", data);
+      this.clientes = data.clienteResponse.clientes;
+    }, (error: any) => {
+      console.log("Error: ", error);
+    });
+  }
+
 
   /**
    * Metodo que obtiene el nombre del archivo y se muestra en el formulario
@@ -364,7 +382,7 @@ export class NewProyectoComponent implements OnInit {
     subirDatos.append('responsableId', this.proyectoForm.get('responsable')?.value as string);
     subirDatos.append('tipoProyectoId', this.proyectoForm.get('tipoProyecto')?.value as string);
     subirDatos.append('sitioId', this.proyectoForm.get('sitio')?.value as string);
-    //subirDatos.append('regionId', this.proyectoForm.get('region')?.value as string);
+    subirDatos.append('clienteId', this.proyectoForm.get('cliente')?.value as string);
 
     // Archivos opcionales del formulario: si existen, los agregamos al FormData; si no, enviamos "NA"
     const pendingFiles = (fieldName: string, file: File | null) => {
@@ -408,36 +426,6 @@ export class NewProyectoComponent implements OnInit {
       }
     });
   }
-
-  /**
-   * Metodo que actualiza el formulario con los datos del registro seleccionado
-   * @param data valor de la data ya llenado
-   
-  updateForm(data: any) {
-    this.proyectoForm = this.fb.group({
-      nombre: [data.nombre, Validators.required],
-      fechaLiberacion: [data.fechaLiberacion ? new Date(data.fechaLiberacion) : null, Validators.required],
-      responsable: [data.responsable.idResponsable, Validators.required],
-      fileLld: ['', Validators.required],
-      fileF60: ['', Validators.required],
-      fileHld: ['', Validators.required],
-      fileLayout: ['', Validators.required],
-      fileSla: ['', Validators.required],
-      fileReporteFotografico: ['', Validators.required],
-      fileAsignacionFuerzaEspacio: ['', Validators.required],
-      fileInventarioHardware: ['', Validators.required],
-      fileAtpFisico: ['', Validators.required],
-      fileAtpLogico: ['', Validators.required],
-      fileReporteTransferenciaOperativa: ['', Validators.required],
-      fileCartaResponsivaPlataforma: ['', Validators.required],
-      fileCartaResponsivaIaaS: ['', Validators.required],
-      fileCartaResponsivaStorage: ['', Validators.required],
-      fileCartaResponsivaGsoc: ['', Validators.required],
-      fileCartaResponsivaHa: ['', Validators.required],
-      fileAtpFisicoFirmado: ['', Validators.required],
-      fileOtros: ['', Validators.required]
-    });
-  }*/
 
   /**
    * Metodo para cerrar el dialog

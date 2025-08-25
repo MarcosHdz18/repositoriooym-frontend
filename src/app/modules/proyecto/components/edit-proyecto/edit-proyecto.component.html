@@ -41,6 +41,15 @@
                 <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
                 <mat-datepicker #pickerInicio></mat-datepicker>
             </mat-form-field>
+             <!--Propiedad cliente del formulario-->
+            <mat-form-field>
+                <mat-label>Cliente</mat-label>
+                <mat-select formControlName="cliente">
+                    <mat-option *ngFor="let cliente of clientes" [value]="cliente.idCliente">
+                        {{ cliente.nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
             <!--Propiedad fechaLiberacion del formulario-->
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Fecha de liberación</mat-label>
