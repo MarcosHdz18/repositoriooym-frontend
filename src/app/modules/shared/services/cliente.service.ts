@@ -54,7 +54,7 @@ export class ClienteService {
      * @param idCliente identificador unico del registro a eliminar
      * @returns servicio para eliminar un registro en la base de datos
      */
-    deleteArea(idCliente: any) {
+    deleteCliente(idCliente: any) {
         const endpoint = `${endpoint_url}/clientes/${idCliente}`;
 
         return this.http.delete(endpoint);

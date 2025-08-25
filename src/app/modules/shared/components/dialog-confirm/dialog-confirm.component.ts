@@ -94,6 +94,12 @@ export class DialogConfirmComponent implements OnInit {
         }, (error: any) => {
           this.dialogRef.close(2);
         });
+      } else if (this.data.module == "cliente") {
+        this.clienteService.deleteCliente(this.data.idCliente).subscribe((data: any) => {
+          this.dialogRef.close(1);
+        }, (error: any) => {
+          this.dialogRef.close(2);
+        });
       }
 
     } else {
