@@ -113,7 +113,7 @@ th.mat-sort-header-sorted {
 
 @media (max-width: 1300px) {
     .table-scroll {
-        max-height: 380px;
+        max-height: 450px;
         overflow-y: auto;
         width: 100%;
     }    

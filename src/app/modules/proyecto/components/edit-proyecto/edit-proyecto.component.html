@@ -291,9 +291,9 @@
                 <mat-label>Reporte fotográfico: <span [ngClass]="{'color-archivo-rojo': nombreArchivoReporteFotografico == 'NA', 
                 'color-archivo-verde': nombreArchivoReporteFotografico != 'NA'}">{{ nombreArchivoReporteFotografico
                         }}</span></mat-label>
-                <mat-label for="file-lld" *ngIf="selectedFileLld!==null" class="color-archivo-nuevo"
-                    [matTooltip]="'Se actualizará el archivo a ' + selectedFileLld.name"><span>
-                        &nbsp;{{ selectedFileLld.name }}</span> <span> ✔️</span></mat-label>
+                <mat-label for="file-reporteFotografico" *ngIf="selectedFileReporteFotografico!==null" class="color-archivo-nuevo"
+                    [matTooltip]="'Se actualizará el archivo a ' + selectedFileReporteFotografico.name"><span>
+                        &nbsp;{{ selectedFileReporteFotografico.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileReporteFotografico==null" for="file-reporteFotografico"
                     class="upload"><mat-icon matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
                 <input class="input-file" id="file-reporteFotografico" type="file"
