@@ -8,6 +8,8 @@ import { KeycloakService } from 'keycloak-angular';
 import { KeycloakAngularModule } from 'keycloak-angular';
 import { SharedModule } from "./modules/shared/shared.module";
 import { environment } from 'src/environments/environment';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MaterialModule } from "./modules/shared/material.module";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -36,8 +38,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
     AppRoutingModule,
     DashboardModule,
     BrowserAnimationsModule,
+    MatProgressSpinnerModule,
     KeycloakAngularModule,
-    SharedModule
+    SharedModule,
+    MaterialModule
 ],
   providers: [
     {

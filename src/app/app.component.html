@@ -1,3 +1,10 @@
-<div class="app-container">
-    <router-outlet></router-outlet>
+<!-- Spinner mientras se carga la navegación -->
+<div *ngIf="isLoading" class="loading-container">
+  <mat-spinner diameter="50"></mat-spinner>
+  <br><p>Por favor espera...</p>
+</div>
+
+<!--Contenedor principal con animación fade-->
+<div [@fadeAnimation]="o.isActivated ? o.activatedRoute.routeConfig?.path : ''" class="app-container">
+    <router-outlet #o="outlet"></router-outlet>
 </div>
