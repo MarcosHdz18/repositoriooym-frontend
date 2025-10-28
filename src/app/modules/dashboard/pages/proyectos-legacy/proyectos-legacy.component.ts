@@ -14,7 +14,7 @@ export class ProyectosLegacyComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
-    const legacyUrl = 'http://10.119.79.133:8081/code/html_2007/Web-imp_07.htm';
+    const legacyUrl = 'http://10.119.79.133:8081/code/html_2025/index.html';
     // Sanitizar la URL para que Angular la considere segura
     this.urlPortalLegacy = this.sanitizer.bypassSecurityTrustResourceUrl(legacyUrl);
   }
