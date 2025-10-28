@@ -117,6 +117,11 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.data = this.proyectos;
 
+      this.proyectoSort.active = "idProyecto";
+      this.proyectoSort.direction = "desc";
+      this.dataSource.sort = this.proyectoSort;
+      this.proyectoSort.sortChange.emit(this.proyectoSort);
+
     }, (error: any) => {
       console.log('Error', error);
     });
