@@ -8,7 +8,7 @@ import { NavigationEnd, NavigationStart, Router, Event} from '@angular/router';
   styleUrls: ['./app.component.css'],
   animations: [
     trigger('fadeAnimation', [
-      transition('* <=> *', [
+      transition(':enter', [
         style({ opacity: 0 }),
         animate('500ms ease-in', style({ opacity: 2 }))
       ])
@@ -19,17 +19,10 @@ import { NavigationEnd, NavigationStart, Router, Event} from '@angular/router';
 export class AppComponent {
   title = 'repositoriooym-frontend';
   
-  isLoading = false;
+  isLoading = true;
 
-  constructor(private router: Router) {
-    this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationStart) {
-        this.isLoading = true;
-      }
-      if (event instanceof NavigationEnd) {
-        setTimeout(() => this.isLoading = false, 1200); // pequeño delay para suavidad
-      }
-    });
+  ngOnInit() {
+    setTimeout(() => this.isLoading = false, 1500); // spinner solo al inicio
   }
 
 }
