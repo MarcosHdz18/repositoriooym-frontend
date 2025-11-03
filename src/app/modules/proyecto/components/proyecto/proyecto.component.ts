@@ -11,11 +11,20 @@ import { DialogConfirmComponent } from 'src/app/modules/shared/components/dialog
 import { DetalleProyectoComponent } from '../detalle-proyecto/detalle-proyecto.component';
 import { EditProyectoComponent } from '../edit-proyecto/edit-proyecto.component';
 import { ProyectoElement } from 'src/app/models/proyecto.model';
+import { trigger as animationTrigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-proyecto',
   templateUrl: './proyecto.component.html',
-  styleUrls: ['./proyecto.component.css']
+  styleUrls: ['./proyecto.component.css'],
+  animations: [
+    animationTrigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class ProyectoComponent implements OnInit, AfterViewInit {
 
@@ -67,7 +76,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
     this.isPefilApp = this.util.isPerfilApp();
     this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
 
-     this.dataSource.data = this.proyectos;
+    this.dataSource.data = this.proyectos;
 
     this.dataSource.filterPredicate = (data, filter) => {
       const term = filter.trim().toLowerCase();
@@ -188,14 +197,14 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   // Detalle del proyecto
   detalleProyecto(idProyecto: any, nombre: any, fechaLiberacion: any, f60: any, nodos: any, lld: any, hld: any, rto: any, atpFisico: any, atpLogico: any, atpFisicoFirmado: any,
     cartaResponsivaPlataforma: any, cartaResponsivaIaaS: any, cartaResponsivaStorage: any, cartaResponsivaHa: any,
-    cartaResponsivaGsoc: any, layout: any, presentacion:any, sla: any, reporteFotografico: any, asignacionFuerzaEspacio: any, inventarioHardware: any,
+    cartaResponsivaGsoc: any, layout: any, presentacion: any, sla: any, reporteFotografico: any, asignacionFuerzaEspacio: any, inventarioHardware: any,
     otros: any) {
     const dialogRef = this.dialog.open(DetalleProyectoComponent, {
       width: '1000px',
       data: {
         idProyecto: idProyecto, nombre: nombre, fechaLiberacion: fechaLiberacion, f60: f60, lld: lld, nodos: nodos, hld: hld, reporteTransferenciaOperativa: rto, atpFisico: atpFisico, atpLogico: atpLogico, atpFisicoFirmado: atpFisicoFirmado,
         cartaResponsivaPlataforma: cartaResponsivaPlataforma, cartaResponsivaIaaS: cartaResponsivaIaaS, cartaResponsivaStorage: cartaResponsivaStorage,
-        cartaResponsivaHa: cartaResponsivaHa, cartaResponsivaGsoc: cartaResponsivaGsoc, layout: layout, presentacion: presentacion,sla: sla, reporteFotografico: reporteFotografico,
+        cartaResponsivaHa: cartaResponsivaHa, cartaResponsivaGsoc: cartaResponsivaGsoc, layout: layout, presentacion: presentacion, sla: sla, reporteFotografico: reporteFotografico,
         asignacionFuerzaEspacio: asignacionFuerzaEspacio, inventarioHardware: inventarioHardware, otros: otros
       }
     });

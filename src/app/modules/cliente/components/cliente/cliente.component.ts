@@ -9,11 +9,20 @@ import { ClienteService } from 'src/app/modules/shared/services/cliente.service'
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 import { NewClienteComponent } from '../new-cliente/new-cliente.component';
 import { DialogConfirmComponent } from 'src/app/modules/shared/components/dialog-confirm/dialog-confirm.component';
+import { trigger as animationTrigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-cliente',
   templateUrl: './cliente.component.html',
-  styleUrls: ['./cliente.component.css']
+  styleUrls: ['./cliente.component.css'],
+  animations: [
+    animationTrigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class ClienteComponent implements OnInit {
 

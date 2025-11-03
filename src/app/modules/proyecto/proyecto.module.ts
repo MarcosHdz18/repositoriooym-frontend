@@ -22,7 +22,7 @@ import { SharedModule } from "src/app/modules/shared/shared.module";
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
 ]
 })
 export class ProyectoModule { }

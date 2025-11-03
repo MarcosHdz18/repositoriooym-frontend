@@ -10,6 +10,8 @@ import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confi
 import { ThemeSwitcherComponent } from './components/theme-switcher/theme-switcher.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HelpDialogComponent } from './components/help-dialog/help-dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { HelpDialogComponent } from './components/help-dialog/help-dialog.compon
     FlexLayoutModule,
     MaterialModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserModule,
+    BrowserAnimationsModule,
   ]
 })
 export class SharedModule { }

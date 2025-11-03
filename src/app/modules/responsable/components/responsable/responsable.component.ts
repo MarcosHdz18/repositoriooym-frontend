@@ -9,11 +9,20 @@ import { ResponsableService } from 'src/app/modules/shared/services/responsable.
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 import { NewResponsableComponent } from '../new-responsable/new-responsable.component';
 import { ResponsableElement } from 'src/app/models/responsable.model';
+import { trigger as animationTrigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-responsable',
   templateUrl: './responsable.component.html',
-  styleUrls: ['./responsable.component.css']
+  styleUrls: ['./responsable.component.css'],
+  animations: [
+    animationTrigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class ResponsableComponent implements OnInit {
 
@@ -65,7 +74,7 @@ export class ResponsableComponent implements OnInit {
 
     if (resp.metadata[0].code == "00") {
       let listResponsables = resp.responsableResponse.responsables;
-      listResponsables.forEach((element: ResponsableElement ) => {
+      listResponsables.forEach((element: ResponsableElement) => {
         dataResponsables.push(element);
       });
       this.dataSource = new MatTableDataSource<ResponsableElement>(dataResponsables);
@@ -84,7 +93,7 @@ export class ResponsableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
 
-      if(result == 1) {
+      if (result == 1) {
         this.openSnackbar("Responsable actualizado con éxito", "Operación exitosa");
         this.getResponsables();
       } else if (result == 2) {
@@ -97,9 +106,11 @@ export class ResponsableComponent implements OnInit {
   delete(responsable: ResponsableElement) {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '450px',
-      data: { idResponsable: responsable.idResponsable, 
-        nombreResponsable: `${responsable.nombre} ${responsable.apellidoPaterno} ${responsable.apellidoMaterno}`, 
-        module: "responsable" }
+      data: {
+        idResponsable: responsable.idResponsable,
+        nombreResponsable: `${responsable.nombre} ${responsable.apellidoPaterno} ${responsable.apellidoMaterno}`,
+        module: "responsable"
+      }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -132,7 +143,7 @@ export class ResponsableComponent implements OnInit {
   }
 
   // Dialogo de operacion
-  openSnackbar(message: string, action: string) : MatSnackBarRef<SimpleSnackBar> {
+  openSnackbar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
     return this.snackbar.open(message, action, {
       duration: 5000,
       horizontalPosition: this.horizontalPositionSnackbar,
@@ -149,7 +160,7 @@ export class ResponsableComponent implements OnInit {
   // Metodo que realiza la exportacion de los datos a un archivo de excel
   exportDataFileExcel() {
     this.responsableService.exportResponsablesExcel().subscribe((data: any) => {
-      let file = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      let file = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       let fileURL = URL.createObjectURL(file);
       var anchor = document.createElement("a");
       anchor.download = "Reporte responsables.xlsx";

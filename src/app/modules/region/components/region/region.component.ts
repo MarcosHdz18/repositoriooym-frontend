@@ -9,11 +9,20 @@ import { MatTableDataSource } from '@angular/material/table';
 import { RegionElement } from 'src/app/models/region.model';
 import { NewRegionComponent } from '../new-region/new-region.component';
 import { DialogConfirmComponent } from 'src/app/modules/shared/components/dialog-confirm/dialog-confirm.component';
+import { trigger as animationTrigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-region',
   templateUrl: './region.component.html',
-  styleUrls: ['./region.component.css']
+  styleUrls: ['./region.component.css'],
+  animations: [
+    animationTrigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class RegionComponent implements OnInit {
 

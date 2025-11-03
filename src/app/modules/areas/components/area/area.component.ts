@@ -9,11 +9,20 @@ import { AreaService } from 'src/app/modules/shared/services/area.service';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 import { NewAreaComponent } from '../new-area/new-area.component';
 import { AreaElement } from 'src/app/models/area.model';
+import { trigger as animationTrigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-area',
   templateUrl: './area.component.html',
-  styleUrls: ['./area.component.css']
+  styleUrls: ['./area.component.css'],
+  animations: [
+    animationTrigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class AreaComponent implements OnInit {
 
@@ -65,7 +74,7 @@ export class AreaComponent implements OnInit {
 
     if (resp.metadata[0].code == "00") {
       let listAreas = resp.areaResponse.areas;
-      listAreas.forEach((element: AreaElement ) => {
+      listAreas.forEach((element: AreaElement) => {
         dataArea.push(element);
       });
       this.dataSource = new MatTableDataSource<AreaElement>(dataArea);
@@ -83,7 +92,7 @@ export class AreaComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
 
-      if(result == 1) {
+      if (result == 1) {
         this.openSnackbar("Departamento actualizado con éxito", "Operación exitosa");
         this.getAreas();
       } else if (result == 2) {
@@ -104,7 +113,7 @@ export class AreaComponent implements OnInit {
       if (result == 1) {
         this.openSnackbar("Departamento eliminado con éxito", "Operación Exitosa");
         this.getAreas();
-      } else if (result == 2) {        
+      } else if (result == 2) {
         this.openSnackbar("Se produjo un error al eliminar el departamento", "Operación fallida");
       }
 
@@ -113,7 +122,7 @@ export class AreaComponent implements OnInit {
 
   // Metodo para guardar un area
   saveAreaDialog() {
-    const dialogRef = this.dialog.open(NewAreaComponent , {
+    const dialogRef = this.dialog.open(NewAreaComponent, {
       width: '450px'
     });
 
@@ -129,7 +138,7 @@ export class AreaComponent implements OnInit {
   }
 
   // Dialogo de operacion
-  openSnackbar(message: string, action: string) : MatSnackBarRef<SimpleSnackBar> {
+  openSnackbar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
     return this.snackbar.open(message, action, {
       duration: 10000,
       horizontalPosition: this.horizontalPositionSnackbar,
@@ -146,7 +155,7 @@ export class AreaComponent implements OnInit {
   // Metodo que realiza la exportacion de los datos a un archivo de excel
   exportDataFileExcel() {
     this.areaService.exportAreasExcel().subscribe((data: any) => {
-      let file = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      let file = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       let fileURL = URL.createObjectURL(file);
       var anchor = document.createElement("a");
       anchor.download = "Reporte departamentos.xlsx";

@@ -9,11 +9,20 @@ import { SitioService } from 'src/app/modules/shared/services/sitio.service';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 import { NewSitioComponent } from '../new-sitio/new-sitio.component';
 import { DialogConfirmComponent } from 'src/app/modules/shared/components/dialog-confirm/dialog-confirm.component';
+import { trigger as animationTrigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-sitio',
   templateUrl: './sitio.component.html',
-  styleUrls: ['./sitio.component.css']
+  styleUrls: ['./sitio.component.css'],
+  animations: [
+    animationTrigger('fadeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class SitioComponent implements OnInit {
 
