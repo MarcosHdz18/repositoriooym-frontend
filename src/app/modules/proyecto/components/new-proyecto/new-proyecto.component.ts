@@ -72,39 +72,39 @@ export class NewProyectoComponent implements OnInit {
     private clienteService: ClienteService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<NewProyectoComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     private util: UtilsService) {
 
-      this.tituloFormulario = 'Agregar nuevo';
-      this.botonLabel = 'Guardar';
+    this.tituloFormulario = 'Agregar nuevo';
+    this.botonLabel = 'Guardar';
 
-      this.proyectoForm = this.fb.group({
-        nombre: ['', Validators.required],
-        nodosTexto: ['', Validators.required],
-        fechaInicio: [null],
-        fechaLiberacion: [null],
-        responsable: ['', Validators.required],
-        tipoProyecto: ['', Validators.required],
-        sitio: ['', Validators.required],
-        cliente: ['', Validators.required],
-        // Archivos opcionales del formulario
-        fileLld: [''],
-        fileF60: [''],
-        fileHld: [''],
-        fileLayout: [''],
-        filePresentacion: [''],
-        fileSla: [''],
-        fileReporteFotografico: [''],
-        fileAsignacionFuerzaEspacio: [''],
-        fileInventarioHardware: [''],
-        fileAtpFisico: [''],
-        fileAtpLogico: [''],
-        fileReporteTransferenciaOperativa: [''],
-        fileCartaResponsivaPlataforma: [''],
-        fileCartaResponsivaIaaS: [''],
-        fileCartaResponsivaStorage: [''],
-        fileCartaResponsivaGsoc: [''],
-        fileCartaResponsivaHa: [''],
-        fileAtpFisicoFirmado: [''],
-        fileOtros: [''],
-      });
+    this.proyectoForm = this.fb.group({
+      nombre: ['', Validators.required],
+      nodosTexto: ['', Validators.required],
+      fechaInicio: [null],
+      fechaLiberacion: [null],
+      responsable: ['', Validators.required],
+      tipoProyecto: ['', Validators.required],
+      sitio: ['', Validators.required],
+      cliente: ['', Validators.required],
+      // Archivos opcionales del formulario
+      fileLld: [''],
+      fileF60: [''],
+      fileHld: [''],
+      fileLayout: [''],
+      filePresentacion: [''],
+      fileSla: [''],
+      fileReporteFotografico: [''],
+      fileAsignacionFuerzaEspacio: [''],
+      fileInventarioHardware: [''],
+      fileAtpFisico: [''],
+      fileAtpLogico: [''],
+      fileReporteTransferenciaOperativa: [''],
+      fileCartaResponsivaPlataforma: [''],
+      fileCartaResponsivaIaaS: [''],
+      fileCartaResponsivaStorage: [''],
+      fileCartaResponsivaGsoc: [''],
+      fileCartaResponsivaHa: [''],
+      fileAtpFisicoFirmado: [''],
+      fileOtros: [''],
+    });
   }
 
   ngOnInit(): void {
@@ -125,7 +125,7 @@ export class NewProyectoComponent implements OnInit {
   // Limpiar lista de nodos al iniciar el componente
   parseNodos() {
     const txt = this.proyectoForm.get('nodosTexto')!.value as string;
-    this.nodosList = txt.split(/[\s,]+/).map(w => w.trim()).filter(w => w.length>0);  // descartando cadenas vacías  
+    this.nodosList = txt.split(/[\s,]+/).map(w => w.trim()).filter(w => w.length > 0);  // descartando cadenas vacías  
   }
 
   /**
@@ -212,7 +212,7 @@ export class NewProyectoComponent implements OnInit {
     this.selectedFileLayout = event.target.files[0];
     this.nombreArchivoLayout = event.target.files[0].name;
   }
-  
+
   /**
   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
   * @param event evento que propicia la carga del archivo
@@ -425,6 +425,218 @@ export class NewProyectoComponent implements OnInit {
         this.dialogRef.close(2);
       }
     });
+  }
+
+  /**
+   * Metodos para remover el archivo
+   */
+  removeFileF60() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileF60: '' });
+    this.selectedFileF60 = null;
+    this.nombreArchivoF60 = '';
+    const inputEl = document.getElementById('file-f60') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileLld() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileLld: '' });
+    this.selectedFileLld = null;
+    this.nombreArchivoLld = '';
+    const inputEl = document.getElementById('file-lld') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileHld() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileHld: '' });
+    this.selectedFileHld = null;
+    this.nombreArchivoHld = '';
+    const inputEl = document.getElementById('file-hld') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileRto() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileReporteTransferenciaOperativa: '' });
+    this.selectedFileRto = null;
+    this.nombreArchivoRto = '';
+    const inputEl = document.getElementById('file-rto') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileLayout() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileLayout: '' });
+    this.selectedFileLayout = null;
+    this.nombreArchivoLayout = '';
+    const inputEl = document.getElementById('file-layout') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFilePresentacion() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ filePresentacion: '' });
+    this.selectedFilePresentacion = null;
+    this.nombreArchivoPresentacion = '';
+    const inputEl = document.getElementById('file-presentacion') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileSla() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileSla: '' });
+    this.selectedFileSla = null;
+    this.nombreArchivoSla = '';
+    const inputEl = document.getElementById('file-sla') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileAtpFisico() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileAtpFisico: '' });
+    this.selectedFileAtpFisico = null;
+    this.nombreArchivoAtpFisico = '';
+    const inputEl = document.getElementById('file-atpFisico') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileAtpLogico() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileAtpLogico: '' });
+    this.selectedFileAtpLogico = null;
+    this.nombreArchivoAtpLogico = '';
+    const inputEl = document.getElementById('file-atpLogico') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileAtpFisicoFirmado() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileAtpFisicoFirmado: '' });
+    this.selectedFileAtpFisicoFirmado = null;
+    this.nombreArchivoAtpFisicoFirmado = '';
+    const inputEl = document.getElementById('file-atpFisicoFirmado') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileResponsivaPlataforma() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileCartaResponsivaPlataforma: '' });
+    this.selectedFileCartaPlataforma = null;
+    this.nombreArchivoCartaResponsivaPlataforma = '';
+    const inputEl = document.getElementById('file-cartaResponsivaPlataforma') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+  
+  removeFileResponsivaIaaS() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileCartaResponsivaIaaS: '' });
+    this.selectedFileCartaIaaS = null;
+    this.nombreArchivoCartaResponsivaIaaS = '';
+    const inputEl = document.getElementById('file-cartaResponsivaIaaS') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileResponsivaStorage() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileCartaResponsivaStorage: '' });
+    this.selectedFileCartaStorage = null;
+    this.nombreArchivoCartaResponsivaStorage = '';
+    const inputEl = document.getElementById('file-cartaResponsivaStorage') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileResponsivaHa() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileCartaResponsivaHa: '' });
+    this.selectedFileCartaHa = null;
+    this.nombreArchivoCartaResponsivaHa = '';
+    const inputEl = document.getElementById('file-cartaResponsivaHa') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileResponsivaGsoc() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileCartaResponsivaGsoc: '' });
+    this.selectedFileCartaGsoc = null;
+    this.nombreArchivoCartaResponsivaGsoc = '';
+    const inputEl = document.getElementById('file-cartaResponsivaGsoc') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileReporteFotografico() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileReporteFotografico: '' });
+    this.selectedFileReporteFotografico = null;
+    this.nombreArchivoReporteFotografico = '';
+    const inputEl = document.getElementById('file-reporteFotografico') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileFuerzaEspacio() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileAsignacionFuerzaEspacio: '' });
+    this.selectedFileFuerzaEspacio = null;
+    this.nombreArchivoAsignacionFuerzaEspacio = '';
+    const inputEl = document.getElementById('file-asignacionFuerzaEspacio') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileInventario() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileInventarioHardware: '' });
+    this.selectedFileInventario = null;
+    this.nombreArchivoInventarioHardware = '';
+    const inputEl = document.getElementById('file-inventarioHardware') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileOtros() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileOtros: '' });
+    this.selectedFileOtros = null;
+    this.nombreArchivoOtros = '';
+    const inputEl = document.getElementById('file-otros') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
   }
 
   /**
