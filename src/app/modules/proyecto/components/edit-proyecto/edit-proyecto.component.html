@@ -34,13 +34,6 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <!--Propiedad fechaInicio del formulario-->
-            <mat-form-field appearance="outline" class="w-full">
-                <mat-label>Fecha de inicio</mat-label>
-                <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio" (focus)="pickerInicio.open()" (click)="pickerInicio.open()" readonly/>
-                <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
-                <mat-datepicker #pickerInicio></mat-datepicker>
-            </mat-form-field>
              <!--Propiedad cliente del formulario-->
             <mat-form-field>
                 <mat-label>Cliente</mat-label>
@@ -50,12 +43,12 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <!--Propiedad fechaLiberacion del formulario-->
+            <!--Propiedad fechaInicio del formulario-->
             <mat-form-field appearance="outline" class="w-full">
-                <mat-label>Fecha de liberación</mat-label>
-                <input matInput [matDatepicker]="pickerLiberacion" formControlName="fechaLiberacion" (focus)="pickerLiberacion.open()" (click)="pickerLiberacion.open()" readonly/>
-                <mat-datepicker-toggle matSuffix [for]="pickerLiberacion"></mat-datepicker-toggle>
-                <mat-datepicker #pickerLiberacion></mat-datepicker>
+                <mat-label>Fecha de inicio</mat-label>
+                <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio" (focus)="pickerInicio.open()" (click)="pickerInicio.open()" readonly/>
+                <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+                <mat-datepicker #pickerInicio></mat-datepicker>
             </mat-form-field>
             <!--Propiedad nodos del formulario-->
             <mat-form-field appearance="outline" class="full-width">
@@ -63,6 +56,13 @@
                 <textarea matInput formControlName="nodosTexto" rows="3" cdkTextareaAutosize cdkAutosizeMinRows="3"
                     cdkAutosizeMaxRows="10" (blur)="parseNodos()"></textarea>
                 <mat-hint>↵Pega aquí tu lista completa de nodos</mat-hint>
+            </mat-form-field>
+            <!--Propiedad fechaLiberacion del formulario-->
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Fecha de liberación</mat-label>
+                <input matInput [matDatepicker]="pickerLiberacion" formControlName="fechaLiberacion" (focus)="pickerLiberacion.open()" (click)="pickerLiberacion.open()" readonly/>
+                <mat-datepicker-toggle matSuffix [for]="pickerLiberacion"></mat-datepicker-toggle>
+                <mat-datepicker #pickerLiberacion></mat-datepicker>
             </mat-form-field>
         </div>
 
@@ -85,7 +85,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileF60.name"><span>
                         &nbsp;{{ selectedFileF60.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileF60==null" for="file-f60" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-f60" type="file" (change)="onFileChangedF60($event)"
                     formControlName="fileF60" /><br>
             </div>
@@ -98,7 +98,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileLld.name"><span>
                         &nbsp;{{ selectedFileLld.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileLld==null" for="file-lld" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-lld" type="file" (change)="onFileChangedLld($event)"
                     formControlName="fileLld" /><br>
             </div>
@@ -111,7 +111,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileHld.name"><span>
                         &nbsp;{{ selectedFileHld.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileHld==null" for="file-hld" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-hld" type="file" (change)="onFileChangedHld($event)"
                     formControlName="fileHld" /><br>
             </div>
@@ -124,7 +124,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileRto.name"><span>
                         &nbsp;{{ selectedFileRto.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileRto==null" for="file-rto" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-rto" type="file" (change)="onFileChangedRto($event)"
                     formControlName="fileReporteTransferenciaOperativa" /><br>
             </div>
@@ -137,7 +137,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileLayout.name"><span>
                         &nbsp;{{ selectedFileLayout.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileLayout==null" for="file-layout" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-layout" type="file" (change)="onFileChangedLayout($event)"
                     formControlName="fileLayout" /><br>
             </div>
@@ -151,7 +151,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFilePresentacion.name"><span>
                         &nbsp;{{ selectedFilePresentacion.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFilePresentacion==null" for="file-presentacion" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-presentacion" type="file"
                     (change)="onFileChangedPresentacion($event)" formControlName="filePresentacion" /><br>
             </div>
@@ -164,7 +164,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileSla.name"><span>
                         &nbsp;{{ selectedFileSla.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileSla==null" for="file-sla" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-sla" type="file" (change)="onFileChangedSla($event)"
                     formControlName="fileSla" /><br>
             </div>
@@ -177,7 +177,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileAtpFisico.name"><span>
                         &nbsp;{{ selectedFileAtpFisico.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileAtpFisico==null" for="file-atpFisico" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-atpFisico" type="file" (change)="onFileChangedAtpFisico($event)"
                     formControlName="fileAtpFisico" /><br>
             </div>
@@ -190,7 +190,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileAtpLogico.name"><span>
                         &nbsp;{{ selectedFileAtpLogico.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileAtpLogico==null" for="file-atpLogico" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-atpLogico" type="file" (change)="onFileChangedAtpLogico($event)"
                     formControlName="fileAtpLogico" /><br>
             </div>
@@ -205,14 +205,14 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileAtpFisicoFirmado.name"><span>
                         &nbsp;{{ selectedFileAtpFisicoFirmado.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileAtpFisicoFirmado==null" for="file-atpFisicoFirmado" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-atpFisicoFirmado" type="file"
                     (change)="onFileChangedAtpFisicoFirmado($event)" formControlName="fileAtpFisicoFirmado" /><br>
             </div>
 
             <!--File Responsiva Plataforma-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-plataforma">
-                <mat-label>Carta responsiva Plataforma: <span *ngIf="selectedFileCartaPlataforma===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaPlataforma == 'NA', 
+                <mat-label>Responsiva Plataforma: <span *ngIf="selectedFileCartaPlataforma===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaPlataforma == 'NA', 
                 'color-archivo-verde': nombreArchivoCartaResponsivaPlataforma != 'NA'}">{{
                         nombreArchivoCartaResponsivaPlataforma }}</span></mat-label>
                 <mat-label for="file-cartaResponsivaPlataforma" *ngIf="selectedFileCartaPlataforma!==null"
@@ -220,7 +220,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileCartaPlataforma.name"><span>
                         &nbsp;{{ selectedFileCartaPlataforma.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileCartaPlataforma==null" for="file-cartaResponsivaPlataforma"
-                    class="upload"><mat-icon matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                    class="upload"><mat-icon matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-cartaResponsivaPlataforma" type="file"
                     (change)="onFileChangedCartaResponsivaPlataforma($event)"
                     formControlName="fileCartaResponsivaPlataforma" /><br>
@@ -228,7 +228,7 @@
 
             <!--File Responsiva IaaS-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-iaas">
-                <mat-label>Carta responsiva IaaS: <span *ngIf="selectedFileCartaIaaS===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaIaaS == 'NA', 
+                <mat-label>Responsiva IaaS: <span *ngIf="selectedFileCartaIaaS===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaIaaS == 'NA', 
                 'color-archivo-verde': nombreArchivoCartaResponsivaIaaS != 'NA'}">{{ nombreArchivoCartaResponsivaIaaS
                         }}</span></mat-label>
                 <mat-label for="file-cartaResponsivaIaaS" *ngIf="selectedFileCartaIaaS!==null"
@@ -236,14 +236,14 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileCartaIaaS.name"><span>
                         &nbsp;{{ selectedFileCartaIaaS.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileCartaIaaS==null" for="file-cartaResponsivaIaaS" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-cartaResponsivaIaaS" type="file"
                     (change)="onFileChangedCartaResponsivaIaaS($event)" formControlName="fileCartaResponsivaIaaS" /><br>
             </div>
 
             <!--File Responsiva Storage-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-storage">
-                <mat-label>Carta responsiva Storage: <span *ngIf="selectedFileCartaStorage===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaStorage == 'NA', 
+                <mat-label>Responsiva Storage: <span *ngIf="selectedFileCartaStorage===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaStorage == 'NA', 
                 'color-archivo-verde': nombreArchivoCartaResponsivaStorage != 'NA'}">{{
                         nombreArchivoCartaResponsivaStorage }}</span></mat-label>
                 <mat-label for="file-cartaResponsivaStorage" *ngIf="selectedFileCartaStorage!==null"
@@ -251,7 +251,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileCartaStorage.name"><span>
                         &nbsp;{{ selectedFileCartaStorage.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileCartaStorage==null" for="file-cartaResponsivaStorage" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-cartaResponsivaStorage" type="file"
                     (change)="onFileChangedCartaResponsivaStorage($event)"
                     formControlName="fileCartaResponsivaStorage" /><br>
@@ -259,21 +259,21 @@
 
             <!--File Responsiva HA-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-ha">
-                <mat-label>Carta responsiva HA: <span *ngIf="selectedFileCartaHa===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaHa == 'NA', 
+                <mat-label>Responsiva HA: <span *ngIf="selectedFileCartaHa===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaHa == 'NA', 
                 'color-archivo-verde': nombreArchivoCartaResponsivaHa != 'NA'}">{{ nombreArchivoCartaResponsivaHa
                         }}</span></mat-label>
                 <mat-label for="file-cartaResponsivaHa" *ngIf="selectedFileCartaHa!==null" class="color-archivo-nuevo"
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileCartaHa.name"><span>
                         &nbsp;{{ selectedFileCartaHa.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileCartaHa==null" for="file-cartaResponsivaHa" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-cartaResponsivaHa" type="file"
                     (change)="onFileChangedCartaResponsivaHa($event)" formControlName="fileCartaResponsivaHa" /><br>
             </div>
 
             <!--File Responsiva GSOC-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-gsoc">
-                <mat-label>Carta responsiva GSOC: <span *ngIf="selectedFileCartaGsoc===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaGsoc == 'NA', 
+                <mat-label>Responsiva GSOC: <span *ngIf="selectedFileCartaGsoc===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaGsoc == 'NA', 
                 'color-archivo-verde': nombreArchivoCartaResponsivaGsoc != 'NA'}">{{ nombreArchivoCartaResponsivaGsoc
                         }}</span></mat-label>
                 <mat-label for="file-cartaResponsivaGsoc" *ngIf="selectedFileCartaGsoc!==null"
@@ -281,7 +281,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileCartaGsoc.name"><span>
                         &nbsp;{{ selectedFileCartaGsoc.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileCartaGsoc==null" for="file-cartaResponsivaGsoc" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-cartaResponsivaGsoc" type="file"
                     (change)="onFileChangedCartaResponsivaGsoc($event)" formControlName="fileCartaResponsivaGsoc" /><br>
             </div>
@@ -295,14 +295,14 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileReporteFotografico.name"><span>
                         &nbsp;{{ selectedFileReporteFotografico.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileReporteFotografico==null" for="file-reporteFotografico"
-                    class="upload"><mat-icon matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                    class="upload"><mat-icon matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-reporteFotografico" type="file"
                     (change)="onFileChangedReporteFotografico($event)" formControlName="fileReporteFotografico" /><br>
             </div>
 
             <!--File Fuerza Espacio-->
             <div *ngIf="isPerfilInfraestructura" class="position-fuerza-espacio">
-                <mat-label>Fuerza y espacio: <span *ngIf="selectedFileFuerzaEspacio===null" [ngClass]="{'color-archivo-rojo': nombreArchivoAsignacionFuerzaEspacio == 'NA', 
+                <mat-label>Fuerza-Espacio: <span *ngIf="selectedFileFuerzaEspacio===null" [ngClass]="{'color-archivo-rojo': nombreArchivoAsignacionFuerzaEspacio == 'NA', 
                 'color-archivo-verde': nombreArchivoAsignacionFuerzaEspacio != 'NA'}">{{
                         nombreArchivoAsignacionFuerzaEspacio }}</span></mat-label>
                 <mat-label for="file-asignacionFuerzaEspacio" *ngIf="selectedFileFuerzaEspacio!==null"
@@ -310,7 +310,7 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileFuerzaEspacio.name"><span>
                         &nbsp;{{ selectedFileFuerzaEspacio.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileFuerzaEspacio==null" for="file-asignacionFuerzaEspacio"
-                    class="upload"><mat-icon matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                    class="upload"><mat-icon matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-asignacionFuerzaEspacio" type="file"
                     (change)="onFileChangedFuerzaEspacio($event)" formControlName="fileAsignacionFuerzaEspacio" /><br>
             </div>
@@ -325,20 +325,20 @@
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileInventario.name"><span>
                         &nbsp;{{ selectedFileInventario.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileInventario==null" for="file-inventarioHardware" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-inventarioHardware" type="file"
                     (change)="onFileChangedInventarioHardware($event)" formControlName="fileInventarioHardware" /><br>
             </div>
 
             <!--File Otros-->
             <div class="position-otros">
-                <mat-label>Otros: <span *ngIf="selectedFileOtros===null" [ngClass]="{'color-archivo-rojo': nombreArchivoOtros == 'NA', 
+                <mat-label>Otros archivos: <span *ngIf="selectedFileOtros===null" [ngClass]="{'color-archivo-rojo': nombreArchivoOtros == 'NA', 
                 'color-archivo-verde': nombreArchivoOtros != 'NA'}">{{ nombreArchivoOtros }}</span></mat-label>
                 <mat-label for="file-otros" *ngIf="selectedFileOtros!==null" class="color-archivo-nuevo"
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileOtros.name"><span>
                         &nbsp;{{ selectedFileOtros.name }}</span> <span> ✔️</span></mat-label>
                 <label *ngIf="selectedFileOtros==null" for="file-otros" class="upload"><mat-icon
-                        matTooltip="Actualizar archivo" matSuffix>upload</mat-icon></label>
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-otros" type="file" (change)="onFileChangedOtros($event)"
                     formControlName="fileOtros" /><br>
             </div>
