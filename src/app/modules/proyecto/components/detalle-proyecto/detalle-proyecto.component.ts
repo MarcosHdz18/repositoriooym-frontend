@@ -56,12 +56,12 @@ export class DetalleProyectoComponent implements OnInit {
       { label: 'ATP Físico', key: 'atpfisico', filename: this.data.atpFisico, icon: 'integration_instructions' },
       { label: 'ATP Físico Firmado', key: 'atpfisicofirmado', filename: this.data.atpFisicoFirmado, icon: 'integration_instructions' },
       { label: 'ATP Lógico', key: 'atplogico', filename: this.data.atpLogico, icon: 'integration_instructions' },
-      { label: 'Carta Responsiva IaaS', key: 'cartaresponsivaiaas', filename: this.data.cartaResponsivaIaaS, icon: 'integration_instructions' },
-      { label: 'Carta Responsiva Plataforma', key: 'cartaresponsivaplataforma', filename: this.data.cartaResponsivaPlataforma, icon: 'integration_instructions' },
-      { label: 'Carta Responsiva Storage', key: 'cartaresponsivastorage', filename: this.data.cartaResponsivaStorage, icon: 'integration_instructions' },
-      { label: 'Carta Responsiva HA', key: 'cartaresponsivaha', filename: this.data.cartaResponsivaHa, icon: 'integration_instructions' },
-      { label: 'Carta Responsiva GSOC', key: 'cartaresponsivagsoc', filename: this.data.cartaResponsivaGsoc, icon: 'integration_instructions' },
-      { label: 'Otros', key: 'otros', filename: this.data.otros, icon: 'integration_instructions' }
+      { label: 'Responsiva IaaS', key: 'cartaresponsivaiaas', filename: this.data.cartaResponsivaIaaS, icon: 'integration_instructions' },
+      { label: 'Responsiva Plataforma', key: 'cartaresponsivaplataforma', filename: this.data.cartaResponsivaPlataforma, icon: 'integration_instructions' },
+      { label: 'Responsiva Storage', key: 'cartaresponsivastorage', filename: this.data.cartaResponsivaStorage, icon: 'integration_instructions' },
+      { label: 'Responsiva HA', key: 'cartaresponsivaha', filename: this.data.cartaResponsivaHa, icon: 'integration_instructions' },
+      { label: 'Responsiva GSOC', key: 'cartaresponsivagsoc', filename: this.data.cartaResponsivaGsoc, icon: 'integration_instructions' },
+      { label: 'Otros archivos', key: 'otros', filename: this.data.otros, icon: 'integration_instructions' }
     ];
 
     // 2) Filtramos todo aquello que NO sea "Pendiente"
@@ -176,12 +176,12 @@ export class DetalleProyectoComponent implements OnInit {
       { key: 'atpFisico', label: 'ATP Físico', filename: this.data.atpFisico, icon: 'integration_instructions' },
       { key: 'atpFisicoFirmado', label: 'ATP Físico Firmado', filename: this.data.atpFisicoFirmado, icon: 'integration_instructions' },
       { key: 'atpLogico', label: 'ATP Lógico', filename: this.data.atpLogico, icon: 'integration_instructions' },
-      { key: 'cartaResponsivaPlataforma', label: 'Carta Responsiva Plataforma', filename: this.data.cartaResponsivaPlataforma, icon: 'integration_instructions' },
-      { key: 'cartaResponsivaIaaS', label: 'Carta Responsiva IaaS', filename: this.data.cartaResponsivaIaaS, icon: 'integration_instructions' },
-      { key: 'cartaResponsivaStorage', label: 'Carta Responsiva Storage', filename: this.data.cartaResponsivaStorage, icon: 'integration_instructions' },
-      { key: 'cartaResponsivaHa', label: 'Carta Responsiva HA', filename: this.data.cartaResponsivaHa, icon: 'integration_instructions' },
-      { key: 'cartaResponsivaGsoc', label: 'Carta Responsiva GSOC', filename: this.data.cartaResponsivaGsoc, icon: 'integration_instructions' },
-      { key: 'otros', label: 'Otros', filename: this.data.otros, icon: 'integration_instructions' }
+      { key: 'cartaResponsivaPlataforma', label: 'Responsiva Plataforma', filename: this.data.cartaResponsivaPlataforma, icon: 'integration_instructions' },
+      { key: 'cartaResponsivaIaaS', label: 'Responsiva IaaS', filename: this.data.cartaResponsivaIaaS, icon: 'integration_instructions' },
+      { key: 'cartaResponsivaStorage', label: 'Responsiva Storage', filename: this.data.cartaResponsivaStorage, icon: 'integration_instructions' },
+      { key: 'cartaResponsivaHa', label: 'Responsiva HA', filename: this.data.cartaResponsivaHa, icon: 'integration_instructions' },
+      { key: 'cartaResponsivaGsoc', label: 'Responsiva GSOC', filename: this.data.cartaResponsivaGsoc, icon: 'integration_instructions' },
+      { key: 'otros', label: 'Otros archivos', filename: this.data.otros, icon: 'integration_instructions' }
     ];
     console.log('Documentos cargados:', this.documentos);
   }
