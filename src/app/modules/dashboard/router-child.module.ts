@@ -17,8 +17,8 @@ import { ClienteComponent } from '../cliente/components/cliente/cliente.componen
 const childRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'mision', component: MisionComponent },
-  { path: 'vision', component: VisionComponent },
+  //{ path: 'mision', component: MisionComponent },
+  //{ path: 'vision', component: VisionComponent },
   { path: 'objetivos', component: ObjetivosComponent },
   { path: 'organigrama', component: OrganigramaComponent },
   { path: 'area', component: AreaComponent },

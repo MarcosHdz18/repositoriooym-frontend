@@ -34,13 +34,12 @@ export class SidenavComponent implements OnInit {
   ];
 
   historyNav: MenuItem[] = [
-    { name: "Proyectos 2007-Agosto 2025", route: "proyectosLegacy", icon: "history" }
+    { name: "Proyectos 2007-2025", route: "proyectosLegacy", icon: "history" }
   ];
 
   infoNav: MenuItem[] = [
-
-    { name: "Misión", route: "mision", icon: "flag" },
-    { name: "Visión", route: "vision", icon: "visibility" },
+    //{ name: "Misión", route: "mision", icon: "flag" },
+    //{ name: "Visión", route: "vision", icon: "visibility" },
     { name: "Objetivos", route: "objetivos", icon: "track_changes" },
     { name: "Organigrama", route: "organigrama", icon: "account_tree" }
   ];
