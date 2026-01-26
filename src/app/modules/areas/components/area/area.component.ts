@@ -152,6 +152,13 @@ export class AreaComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  // Meotodo para limpiar la busqueda
+  limpiarBusqueda(input: HTMLInputElement) {
+    input.value = '';
+    this.dataSource.filter = ''; // Reinicia el filtro
+    input.focus(); // Coloca el cursor para volver a escribir
+  }
+
   // Metodo que realiza la exportacion de los datos a un archivo de excel
   exportDataFileExcel() {
     this.areaService.exportAreasExcel().subscribe((data: any) => {

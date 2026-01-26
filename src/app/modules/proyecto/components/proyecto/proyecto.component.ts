@@ -43,7 +43,9 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) proyectoSort!: MatSort;
 
   // Columnas que se mostraran en la tabla
-  displayColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaInicio', 'fechaLiberacion', 'anio', 'responsableProyecto', 'tipoProyecto', 'cliente', 'region', 'sitio', 'acciones'];
+  allColumns: string[] = ['idProyecto', 'nombre', 'nodos', 'fechaInicio', 'fechaLiberacion', 'anio', 'responsableProyecto', 'tipoProyecto', 'cliente', 'region', 'sitio', 'acciones'];
+
+  displayColumns: string[] = [];
 
   // Paginador del componente
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -75,6 +77,8 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
     this.isUser = this.util.isUser();
     this.isPefilApp = this.util.isPerfilApp();
     this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
+
+    this.setDisplayedColumns();
 
     this.dataSource.data = this.proyectos;
 
@@ -110,6 +114,20 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
       // @ts-ignore
       return item[prop];
     };
+  }
+
+  // Filtrar columnas a mostrar en la tabla dependiendo del rol del usuario
+  setDisplayedColumns() {
+    const isRolPrivileged = this.isAdmin || this.isPefilApp || this.isPerfilInfraestructura;
+
+    this.displayColumns = this.allColumns.filter(column => {
+      // Regla para el idProyecto, fecha de inicio y responsable del proyecto
+      if (column === 'idProyecto' || column === 'fechaInicio' || column === 'responsableProyecto') {
+        return isRolPrivileged;
+      }
+
+      return true; // Las demás columnas siempre se muestran
+    });
   }
 
   // Peticion al servicio REST del backend y que obtiene todos los proyectos

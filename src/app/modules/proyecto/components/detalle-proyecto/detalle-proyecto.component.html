@@ -7,52 +7,79 @@
         <span class="pendiente">Pendiente</span>
     </ng-template>
 </h2>
-
-<h3 class="centrar-texto">Documentación técnica</h3>
-<mat-divider></mat-divider>
-<br>
-
 <mat-dialog-content>
+    <h3 class="centrar-texto">Documentación técnica</h3>
+    <mat-divider></mat-divider>
+    <br>
 
-    <mat-accordion>
-
-        <mat-expansion-panel [expanded]="true">
+    <mat-accordion multi="true"> <mat-expansion-panel *ngFor="let doc of documentosSubidos">
             <mat-expansion-panel-header>
-                <mat-panel-title>Nodos</mat-panel-title>
+                <mat-panel-title>
+                    <mat-icon>description</mat-icon>
+                    <span style="font-weight: bold; margin-left: 10px;">{{ doc.label }}</span>
+                </mat-panel-title>
+                <mat-panel-description>
+                    <span style="color: steelblue;">{{ doc.filename?.split('/')?.pop() }}</span>
+                </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <div class="nodos-list" (wheel)="onNodoListWheel($event)">
-                <strong>
-                    <p *ngIf="data.nodos; else sinNodos">{{ data.nodos | uppercase}}</p>
-                </strong>
-                <ng-template #sinNodos>
-                    <p class="no-nodos">No hay nodos registrados</p>
-                </ng-template>
+            <div align="center" style="padding: 10px;">
+                <button mat-raised-button color="primary" (click)="onDownloadFile(doc.key)">
+                    <mat-icon>cloud_download</mat-icon> Descargar
+                </button>
             </div>
         </mat-expansion-panel>
 
-        <mat-expansion-panel *ngFor="let doc of documentosSubidos">
+        <mat-expansion-panel [expanded]="true" class="panel-nodos-final">
             <mat-expansion-panel-header>
-                <mat-panel-title style="text-align: center;">
-                    <mat-icon>description</mat-icon>
+                <mat-panel-title>
+                    <mat-icon>lan</mat-icon>
+                    <strong style="margin-left: 10px;">Lista de Nodos ({{ data.nodosList?.length }})</strong>
                 </mat-panel-title>
                 <mat-panel-description>
-                    <span style="font-weight: bold;">{{ doc.label }}</span>: &nbsp; &nbsp; &nbsp;
-                    <span style="color: steelblue;">{{ doc.filename?.split('/')?.pop()}}</span>
+                    Total: {{ data.nodosList?.length }} | Filtrados: {{ nodosFiltrados.length }}
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <mat-dialog-actions class="dialog-actions" align="center">
-                <button mat-raised-button color="primary" (click)="onDownloadFile(doc.key)" [disabled]="!doc.filename">
-                    <mat-icon>cloud_download</mat-icon> Descargar
-                </button>
-            </mat-dialog-actions>
-        </mat-expansion-panel>
-        <ng-container *ngIf="!documentosSubidos.length">
-            <p class="centrar-texto" style="margin:20px 0;">No hay documentos disponibles por el momento para este
-                proyecto.</p>
-        </ng-container>
-    </mat-accordion>
 
+            <div style="padding: 0 15px;">
+                <div class="buscador-nodos-container">
+                    <mat-form-field appearance="outline" style="width: 100%; font-size: 12px;">
+                        <mat-label>Filtrar nodos...</mat-label>
+                        <input matInput [(ngModel)]="searchTerm" (input)="aplicarFiltro()"
+                            placeholder="Escribe el nombre del nodo">
+                        <div matSuffix style="display: flex; align-items: center;">
+                            <button *ngIf="searchTerm" mat-icon-button aria-label="Limpiar"
+                                (click)="searchTerm=''; aplicarFiltro()"
+                                style="width: 30px; height: 30px; line-height: 30px;">
+                                <mat-icon matTooltip="Limpiar búsqueda" style="font-size: 18px;">close</mat-icon>
+                            </button>
+                            <mat-icon *ngIf="!searchTerm" style="color: #777;">search</mat-icon>
+                        </div>
+                    </mat-form-field>
+
+                    <!--Boton para copiar los nodos-->
+                    <button mat-icon-button class="btn-copiar-custom" matTooltip="Copiar nodos" (click)="copiarNodos()"
+                        [disabled]="nodosFiltrados.length === 0" style="margin-bottom: 20px;">
+                        <mat-icon>content_copy</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="nodos-scroll-wrapper">
+                <div class="nodos-grid-container" *ngIf="nodosFiltrados.length > 0; else sinNodos">
+                    <div *ngFor="let nodo of nodosFiltrados" class="nodo-item-card">
+                        <mat-icon style="font-size: 14px; height: 14px; width: 14px; color: #777;">dns</mat-icon>
+                        {{ nodo | uppercase }}
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #sinNodos>
+                <p class="no-nodos">No hay nodos registrados.</p>
+            </ng-template>
+        </mat-expansion-panel>
+
+    </mat-accordion>
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">

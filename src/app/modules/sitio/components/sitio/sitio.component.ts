@@ -27,6 +27,7 @@ import { trigger as animationTrigger, transition, style, animate } from '@angula
 export class SitioComponent implements OnInit {
 
   isAdmin: any;
+  isPerfilInfraestructura: any;
 
   constructor(private sitioService: SitioService, private paginatorLabel: MatPaginatorIntl, public dialog: MatDialog,
     private snackbar: MatSnackBar, private utils: UtilsService) { }
@@ -57,6 +58,7 @@ export class SitioComponent implements OnInit {
     this.paginatorLabel.lastPageLabel = "Última Página";
     this.getSitios();
     this.isAdmin = this.utils.isAdmin();
+    this.isPerfilInfraestructura = this.utils.isPerfilInfraestructura();
   }
 
   // Metodo que obtiene todos los sitios del servicio REST programado en el backend
@@ -156,6 +158,13 @@ export class SitioComponent implements OnInit {
   filtrarSitios(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  // Meotodo para limpiar la busqueda
+  limpiarBusqueda(input: HTMLInputElement) {
+    input.value = '';
+    this.dataSource.filter = ''; // Reinicia el filtro
+    input.focus(); // Coloca el cursor para volver a escribir
   }
 
   // Metodo que realiza la exportacion de los datos a un archivo de excel

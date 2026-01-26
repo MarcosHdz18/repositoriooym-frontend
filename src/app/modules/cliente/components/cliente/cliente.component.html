@@ -17,11 +17,15 @@
                 <mat-form-field style="margin-top: 20px;" appearance="outline">
                     <mat-label>Buscar cliente</mat-label>
                     <input matInput (keyup)="filtrarClientes($event)" #input>
-                    <mat-icon matSuffix>search</mat-icon>
+                    <button *ngIf="input.value" mat-icon-button matSuffix (click)="limpiarBusqueda(input)"
+                        matTooltip="Limpiar búsqueda">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <mat-icon matSuffix *ngIf="!input.value" matTooltip="Buscar registros">search</mat-icon>
                 </mat-form-field>
                 <div fxLayoutAlign="flex-end">
-                    <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" class="button-agregar" mat-raised-button color="primary" (click)="saveClienteDialog()">Nuevo cliente</button>
-                    <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" class="button-excel" mat-raised-button color="accent" (click)="exportDataFileExcel()">Exportar a Excel</button>
+                    <button *ngIf="isAdmin||isPefilApp" class="button-agregar" mat-raised-button color="primary" (click)="saveClienteDialog()">Nuevo cliente</button>
+                    <button *ngIf="isAdmin||isPefilApp" class="button-excel" mat-raised-button color="accent" (click)="exportDataFileExcel()">Exportar a Excel</button>
                 </div>
             </div>
             
@@ -45,9 +49,9 @@
                         </ng-container>
                         <!--actions column-->
                         <ng-container matColumnDef="acciones">
-                            <th mat-header-cell *matHeaderCellDef><span *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura">Acciones</span></th>
+                            <th mat-header-cell *matHeaderCellDef><span *ngIf="isAdmin||isPefilApp">Acciones</span></th>
                             <td mat-cell *matCellDef="let element; let i=index;">
-                                <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" matTooltip="Editar" (click)="update(element.idCliente, element.nombre, element.descripcion)" mat-icon-button color="accent">
+                                <button *ngIf="isAdmin||isPefilApp" matTooltip="Editar" (click)="update(element.idCliente, element.nombre, element.descripcion)" mat-icon-button color="accent">
                                     <mat-icon aria-label="Edit">edit</mat-icon>
                                 </button>
                                 <button *ngIf="isAdmin" matTooltip="Eliminar" (click)="delete(element)" mat-icon-button color="warn">

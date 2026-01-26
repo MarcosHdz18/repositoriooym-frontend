@@ -26,27 +26,93 @@ textarea {
     max-width: 40%;
 }
 
-.nodos-list {
-    /* Fuerza siempre 4 columnas */
-    margin-top: 20px;
-    column-count: 4;
-    column-gap: 1rem;
-
-    /* Altura fija y scroll vertical */
-    max-height: 320px;
-    overflow-y: auto;
+.buscador-nodos-container {
+    display: flex;
+    align-items: center;
+    /* Centra verticalmente el botón con el input */
+    gap: 15px;
+    padding: 0 15px;
+    margin-bottom: 10px;
+    /* Espacio con la lista de abajo */
 }
 
-/* Evita que un nodo se corte a mitad de bloque */
-.nodos-list p {
-    margin: 0 0 0.5rem;
-    break-inside: avoid;
-    padding: 2px;
-    background-color: #f9f9f9;
-    border: 2px solid #ddd;
+.buscador-input {
+    flex-grow: 1;
+    /* El buscador ocupa todo el espacio sobrante */
+}
+
+/* Quitamos el espacio inferior que reserva Material para errores 
+   para que el centrado sea real */
+::ng-deep .buscador-input .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+}
+
+::ng-deep .buscador-input .mat-form-field-underline {
+    bottom: 0 !important;
+}
+
+.btn-copiar-custom {
+    background-color: #000 !important;
+    color: white !important;
+    border-radius: 4px !important;
+
+    /* TAMAÑO PEQUEÑO */
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+
+    /* Alineación del icono */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Compensación para el margen del buscador */
+    margin-bottom: 22px;
+}
+
+/* Icono más pequeño dentro del botón */
+.btn-copiar-custom mat-icon {
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.btn-copiar-custom:disabled {
+    background-color: #e0e0e0 !important;
+    color: #a0a0a0 !important;
+}
+
+/* Este contenedor es el secreto para el orden */
+.nodos-scroll-wrapper {
+    max-height: 400px;
+    /* Suficiente para ver muchos, pero no infinito */
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #fafafa;
     border-radius: 4px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.nodos-grid-container {
+    column-count: 3;
+    /* Tus 3 columnas que se ven ordenadas */
+    column-gap: 20px;
+}
+
+.nodo-item-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    break-inside: avoid;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    background: #fff;
+    border-left: 3px solid #3f51b5;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    font-family: 'Courier New', Courier, monospace;
     font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* opcional: estilo para cuando no haya nodos */

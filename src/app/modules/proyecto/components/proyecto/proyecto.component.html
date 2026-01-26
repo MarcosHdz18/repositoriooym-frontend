@@ -19,7 +19,8 @@
                 <mat-form-field style="margin-top: 20px;" appearance="outline">
                     <mat-label>Buscar proyecto por sus valores</mat-label>
                     <input matInput (keyup)="filtrarProyectos($event)" #input>
-                    <button *ngIf="input.value" mat-icon-button matSuffix (click)="limpiarBusqueda(input)" matTooltip="Limpiar búsqueda">
+                    <button *ngIf="input.value" mat-icon-button matSuffix (click)="limpiarBusqueda(input)"
+                        matTooltip="Limpiar búsqueda">
                         <mat-icon>close</mat-icon>
                     </button>
                     <mat-icon matSuffix *ngIf="!input.value" matTooltip="Buscar registros">search</mat-icon>
@@ -70,12 +71,10 @@
                         </ng-container>
                         <!--fechaInicio column-->
                         <ng-container matColumnDef="fechaInicio">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header><span *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura">Fecha Inicio</span></th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Inicio</th>
                             <td mat-cell *matCellDef="let element">
                                 <ng-container *ngIf="element.fechaInicio !== 'Pendiente' ; else pendienteTpl">
-                                    <span *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura">
-                                        {{ element.fechaInicio | date: 'dd/MM/yyyy' }}                                        
-                                    </span>
+                                    {{ element.fechaInicio | date: 'dd/MM/yyyy' }}
                                 </ng-container>
                                 <ng-template #pendienteTpl>
                                     <span class="pendiente">Pendiente</span>
@@ -101,55 +100,38 @@
                         </ng-container>
                         <!--responsableProyecto column-->
                         <ng-container matColumnDef="responsableProyecto">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header><span
-                                    *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura">Responsable</span></th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Responsable</th>
                             <td mat-cell *matCellDef="let element">
-                                <span *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura">
-                                    {{ element.responsableProyecto.nombre }}
-                                    {{ element.responsableProyecto.apellidoPaterno }}
-                                </span>
+                                {{ element.responsableProyecto.nombre }}
+                                {{ element.responsableProyecto.apellidoPaterno }}
                             </td>
                         </ng-container>
                         <!--tipoProyecto column-->
                         <ng-container matColumnDef="tipoProyecto">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header><span
-                                    *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura||isUser">Tipo de Proyecto</span>
-                            </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de Proyecto</th>
                             <td mat-cell *matCellDef="let element">
-                                <span *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura||isUser">
-                                    {{ element.tipoProyecto.nombre }}
-                                </span>
+                                {{ element.tipoProyecto.nombre }}
                             </td>
                         </ng-container>
                         <!--tipoProyecto column-->
                         <ng-container matColumnDef="cliente">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header><span
-                                    *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura||isUser">Cliente</span>
-                            </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
                             <td mat-cell *matCellDef="let element">
-                                <span *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura||isUser">
-                                    {{ element.cliente.nombre }}
-                                </span>
+                                {{ element.cliente.nombre }}
                             </td>
                         </ng-container>
                         <!--sitio column-->
                         <ng-container matColumnDef="sitio">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header><span
-                                    *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura||isUser">Sitio</span></th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sitio</th>
                             <td mat-cell *matCellDef="let element">
-                                <span *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura||isUser">
-                                    {{ element.sitio.nombre }}
-                                </span>
+                                {{ element.sitio.nombre }}
                             </td>
                         </ng-container>
                         <!--sitio column-->
                         <ng-container matColumnDef="region">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header><span
-                                    *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura||isUser">Región</span></th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Región</th>
                             <td mat-cell *matCellDef="let element">
-                                <span *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura||isUser">
-                                    {{ element.sitio.region.nombre }}
-                                </span>
+                                {{ element.sitio.region.nombre }}
                             </td>
                         </ng-container>
                         <!--actions column-->
@@ -157,20 +139,19 @@
                             <th mat-header-cell *matHeaderCellDef>Acciones</th>
                             <td mat-cell *matCellDef="let element; let i=index;">
                                 <!--<mat-label *ngIf="isAdmin">Editar</mat-label>-->
-                                <button matTooltip="Detalle" mat-icon-button color="primary"
-                                    (click)="detalleProyecto(element.idProyecto, element.nombre, element.fechaLiberacion,
+                                <button matTooltip="Detalle" mat-icon-button color="primary" (click)="detalleProyecto(element.idProyecto, element.nombre, element.fechaLiberacion,
                                 element.f60, element.nodos, element.lld, element.hld, element.reporteTransferenciaOperativa, element.atpFisico, element.atpLogico, element.atpFisicoFirmado,
                                 element.cartaResponsivaPlataforma, element.cartaResponsivaIaaS, element.cartaResponsivaStorage, element.cartaResponsivaHa, 
                                 element.cartaResponsivaGsoc, element.layout, element.presentacion, element.sla, element.reporteFotografico, element.asignacionFuerzaEspacio, element.inventarioHardware,
                                 element.otros)">
                                     <mat-icon aria-label="Delete">remove_red_eye</mat-icon>
                                 </button>
-                                <button matTooltip="Actualizar" *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" mat-icon-button
-                                    color="accent" (click)="openEditProyectoDialog(element)">
+                                <button matTooltip="Actualizar" *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura"
+                                    mat-icon-button color="accent" (click)="openEditProyectoDialog(element)">
                                     <mat-icon aria-label="Edit">edit</mat-icon>
                                 </button>
-                                <button matTooltip="Eliminar" *ngIf="isAdmin" mat-icon-button color="warn" (click)="deleteProyecto(element)"
-                                    [disabled]="element.anio !== anioActual"
+                                <button matTooltip="Eliminar" *ngIf="isAdmin" mat-icon-button color="warn"
+                                    (click)="deleteProyecto(element)" [disabled]="element.anio !== anioActual"
                                     [matTooltip]="element.anio === anioActual ? 'Eliminar' : 'No puedes eliminar proyectos a los del año actual'">
                                     <mat-icon aria-label="Delete">delete</mat-icon>
                                 </button>

@@ -377,7 +377,7 @@ export class NewProyectoComponent implements OnInit {
     subirDatos.append('fechaLiberacion', fechaLiberacionVal);
 
     // Campos obligatorios del formulario
-    subirDatos.append('nombre', this.proyectoForm.get('nombre')?.value as string);
+    subirDatos.append('nombre', this.proyectoForm.get('nombre')?.value.toUpperCase() as string);
     subirDatos.append('nodos', this.proyectoForm.get('nodosTexto')?.value as string);
     subirDatos.append('responsableId', this.proyectoForm.get('responsable')?.value as string);
     subirDatos.append('tipoProyectoId', this.proyectoForm.get('tipoProyecto')?.value as string);

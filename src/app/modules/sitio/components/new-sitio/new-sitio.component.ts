@@ -63,10 +63,10 @@ export class NewSitioComponent implements OnInit {
    */
   onSave() {
     let data = {
-      nombre: this.sitioForm.get('nombre')?.value,
+      nombre: this.sitioForm.get('nombre')?.value.toUpperCase(),
       treeChar: this.sitioForm.get('treeChar')?.value,
       direccion: this.sitioForm.get('direccion')?.value,
-      nombreContacto: this.sitioForm.get('nombreContacto')?.value,
+      nombreContacto: this.sitioForm.get('nombreContacto')?.value.toUpperCase(),
       telefonoContacto: this.sitioForm.get('telefonoContacto')?.value,
       correoContacto: this.sitioForm.get('correoContacto')?.value,
       region: this.sitioForm.get('region')?.value

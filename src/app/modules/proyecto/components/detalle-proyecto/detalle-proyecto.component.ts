@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition, SimpleSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { ProyectoService } from 'src/app/modules/shared/services/proyecto.service';
@@ -26,6 +26,10 @@ export class DetalleProyectoComponent implements OnInit {
   proyectos: ProyectoElement[] = [];
   isAdmin: any;
 
+  // Declaramos las variables
+  searchTerm: string = '';
+  nodosFiltrados: string[] = [];
+
   //DataSource de los datos a pintar
   dataSource = new MatTableDataSource<ProyectoElement>();
 
@@ -34,10 +38,20 @@ export class DetalleProyectoComponent implements OnInit {
   verticalPositionSnackbar: MatSnackBarVerticalPosition = 'bottom';
 
   constructor(private proyectoService: ProyectoService, public dialog: MatDialog, private util: UtilsService, private dialogRef: MatDialogRef<DetalleProyectoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    private snackbar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit(): void {
+
+    // Procesamos los nodos directamente del objeto inyectado
+    if (this.data.nodos) {
+      this.data.nodosList = this.data.nodos
+        .split(/\s+/)
+        .filter((w: string) => w.trim().length > 0);
+    }
+
+    // Inicializamos la lista filtrada con todos los nodos al principio
+    this.nodosFiltrados = this.data.nodosList ? [...this.data.nodosList] : [];
 
     this.buildDocumentList();
 
@@ -71,9 +85,44 @@ export class DetalleProyectoComponent implements OnInit {
       && doc.filename.toLowerCase() !== 'na'
     );
 
-    this.getProyectos();
+    //this.getProyectos();
     this.isAdmin = this.util.isAdmin();
   }
+
+  // Filtra los nodos según el término de búsqueda
+  // Función que se ejecuta cada que el usuario escribe
+  aplicarFiltro() {
+    if (!this.searchTerm) {
+      this.nodosFiltrados = [...this.data.nodosList];
+    } else {
+      this.nodosFiltrados = this.data.nodosList.filter((n: string) =>
+        n.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+  }
+
+  copiarNodos() {
+    if (this.nodosFiltrados.length === 0) return;
+
+    // Unimos los nodos filtrados con un salto de línea
+    const textoACopiar = this.nodosFiltrados.join('\n');
+
+    navigator.clipboard.writeText(textoACopiar).then(() => {
+      // Usamos el snackbar para notificar al usuario
+      this.openSnackbar("Nodos copiados al portapapeles", "Éxito");
+    }).catch(err => {
+      console.error('Error al copiar: ', err);
+    });
+  }
+
+  // Dialogo de operacion
+    openSnackbar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
+      return this.snackbar.open(message, action, {
+        duration: 5000,
+        horizontalPosition: this.horizontalPositionSnackbar,
+        verticalPosition: this.verticalPositionSnackbar
+      });
+    }
 
   // Peticion al servicio REST del backend y que obtiene todos los proyectos
   getProyectos() {

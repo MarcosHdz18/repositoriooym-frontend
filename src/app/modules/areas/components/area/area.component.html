@@ -17,7 +17,11 @@
                 <mat-form-field style="margin-top: 20px;" appearance="outline">
                     <mat-label>Buscar departamento</mat-label>
                     <input matInput (keyup)="filtrarAreas($event)" #input>
-                    <mat-icon matSuffix>search</mat-icon>
+                    <button *ngIf="input.value" mat-icon-button matSuffix (click)="limpiarBusqueda(input)"
+                        matTooltip="Limpiar búsqueda">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <mat-icon matSuffix *ngIf="!input.value" matTooltip="Buscar registros">search</mat-icon>
                 </mat-form-field>
                 <div fxLayoutAlign="flex-end">
                     <button *ngIf="isAdmin" class="button-agregar" mat-raised-button color="primary" (click)="saveAreaDialog()">Nuevo departamento</button>
