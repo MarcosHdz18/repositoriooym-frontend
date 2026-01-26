@@ -102,27 +102,61 @@ export class DetalleProyectoComponent implements OnInit {
   }
 
   copiarNodos() {
-    if (this.nodosFiltrados.length === 0) return;
+    const cantidad = this.nodosFiltrados.length;
+    if (cantidad === 0) return;
 
     // Unimos los nodos filtrados con un salto de línea
     const textoACopiar = this.nodosFiltrados.join('\n');
 
-    navigator.clipboard.writeText(textoACopiar).then(() => {
-      // Usamos el snackbar para notificar al usuario
-      this.openSnackbar("Nodos copiados al portapapeles", "Éxito");
-    }).catch(err => {
-      console.error('Error al copiar: ', err);
+    // 1. Intentar con la API moderna (solo funciona en HTTPS o Localhost)
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(textoACopiar).then(() => {
+        this.openSnackbar(`${cantidad} nodos copiados exitosamente`, "Operación exitosa");
+      }).catch(err => {
+        // Si falla la API moderna por alguna razón, intentamos el fallback
+        this.copiarFallback(textoACopiar, cantidad);
+      });
+    } else {
+      // 2. Si no hay contexto seguro (HTTP), usamos el método antiguo de respaldo
+      this.copiarFallback(textoACopiar, cantidad);
+    }
+  }
+  // Dialogo de operacion
+  openSnackbar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
+    return this.snackbar.open(message, action, {
+      duration: 5000,
+      horizontalPosition: this.horizontalPositionSnackbar,
+      verticalPosition: this.verticalPositionSnackbar
     });
   }
 
-  // Dialogo de operacion
-    openSnackbar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
-      return this.snackbar.open(message, action, {
-        duration: 5000,
-        horizontalPosition: this.horizontalPositionSnackbar,
-        verticalPosition: this.verticalPositionSnackbar
-      });
-    }
+  // Función de respaldo para entornos HTTP (Producción sin SSL)
+  private copiarFallback(texto: string, cantidad: number) {
+    const textArea = document.createElement("textarea");
+    textArea.value = texto;
+
+    // Lo hacemos invisible pero presente en el DOM
+    textArea.style.position = "fixed";
+    textArea.style.left = "-9999px";
+    textArea.style.top = "0";
+    document.body.appendChild(textArea);
+
+    textArea.focus();
+    textArea.select();
+
+    try {
+      const exitoso = document.execCommand('copy');
+      if (exitoso) {
+        this.openSnackbar(`${cantidad} nodos copiados exitosamente`, "Operación exitosa");        
+      } else {
+        this.openSnackbar("No se pudieron copiar los nodos", "Error");
+      }
+    } catch (err) {
+      console.error('Error en fallback de copia:', err);
+      this.openSnackbar("Error al acceder al portapapeles", "Error");
+    }    
+    document.body.removeChild(textArea);
+  }
 
   // Peticion al servicio REST del backend y que obtiene todos los proyectos
   getProyectos() {
