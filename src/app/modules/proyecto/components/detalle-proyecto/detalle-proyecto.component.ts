@@ -1,4 +1,4 @@
-import { HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition, SimpleSnackBar } from '@angular/material/snack-bar';
@@ -25,6 +25,9 @@ export class DetalleProyectoComponent implements OnInit {
   documentosSubidos: DocItem[] = []; // Mostrar solo los documentos subidos
   proyectos: ProyectoElement[] = [];
   isAdmin: any;
+
+  isDownloading: boolean = false;
+  downloadProgress: number = 0;
 
   // Declaramos las variables
   searchTerm: string = '';
@@ -147,14 +150,14 @@ export class DetalleProyectoComponent implements OnInit {
     try {
       const exitoso = document.execCommand('copy');
       if (exitoso) {
-        this.openSnackbar(`${cantidad} nodos copiados exitosamente`, "Operación exitosa");        
+        this.openSnackbar(`${cantidad} nodos copiados exitosamente`, "Operación exitosa");
       } else {
         this.openSnackbar("No se pudieron copiar los nodos", "Error");
       }
     } catch (err) {
       console.error('Error en fallback de copia:', err);
       this.openSnackbar("Error al acceder al portapapeles", "Error");
-    }    
+    }
     document.body.removeChild(textArea);
   }
 
@@ -218,26 +221,54 @@ export class DetalleProyectoComponent implements OnInit {
    */
   onDownloadFile(documento: string) {
 
+    let downloadTimer: any;
+    this.downloadProgress = 0;
+
+    // Iniciamos un temporizador para mostrar el overlay de descarga si tarda más de 400ms
+    downloadTimer = setTimeout(() => {
+      this.isDownloading = true;
+    }, 400); // Si la descarga tarda más de 400ms, mostramos el overlay
+
     console.log('Descargando archivo:', documento);
 
     const id = this.data.idProyecto;
 
-    this.proyectoService.downloadFile(id, documento)
-      .subscribe((resp: HttpResponse<Blob>) => {
-        const blob = resp.body!;
-        // Extrae el filename real
-        const contentDisp = resp.headers.get('content-disposition') || '';
-        const match = /filename="(.+)"/.exec(contentDisp);
-        const filename = match ? match[1] : `${documento}_${id}`;
+    this.proyectoService.downloadFile(id, documento).subscribe({
+      next: (event: HttpEvent<Blob>) => {
 
-        // Crea enlace y dispara descarga
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        link.click();
-        URL.revokeObjectURL(link.href);
-      }, err => console.error('Error descargando', err));
+        // Manejo de eventos de progreso
+        if (event.type === HttpEventType.DownloadProgress) {
+          if (event.total) {
+            this.downloadProgress = Math.round((100 * event.loaded) / event.total);
+          }
+        }
+
+        // Cuando la descarga se completa
+        if (event.type === HttpEventType.Response) {
+          clearTimeout(downloadTimer);
+          this.isDownloading = false;
+
+          const blob = event.body!;
+          // Extrae el filename real
+          const contentDisp = event.headers.get('content-disposition') || '';
+          const match = /filename="(.+)"/.exec(contentDisp);
+          const filename = match ? match[1] : `${documento}_${id}`;
+
+          // Crea enlace y dispara descarga
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = filename;
+          link.click();
+          URL.revokeObjectURL(link.href);
+        }
+
+      },
+      error: (err) => {
+        if (downloadTimer) clearTimeout(downloadTimer);
+        this.isDownloading = false;
+        this.openSnackbar('Error al descargar el archivo', 'Cerrar');
+      }
+    });
   }
 
   /**

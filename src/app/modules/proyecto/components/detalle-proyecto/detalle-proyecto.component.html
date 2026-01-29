@@ -1,3 +1,19 @@
+<div class="overlay-loading" *ngIf="isDownloading">
+    <div class="loading-card">
+        <mat-icon color="primary" class="download-icon-animation">cloud_download</mat-icon>
+        <h3>Descargando archivo pesado...</h3>
+
+        <div class="percentage" *ngIf="downloadProgress > 0">
+            {{ downloadProgress }}%
+        </div>
+
+        <mat-progress-bar [mode]="downloadProgress > 0 ? 'determinate' : 'indeterminate'" [value]="downloadProgress" color="primary">
+        </mat-progress-bar>
+
+        <p class="warning-text">No refresques, ni cierres la página para completar la descarga</p>
+    </div>
+</div>
+
 <h2 mat-dialog-title class="centrar-texto">Proyecto: {{ data.nombre }}</h2>
 <h2 mat-dialog-title class="centrar-texto">Fecha de liberación: &nbsp;
     <ng-container *ngIf="data.fechaLiberacion !== 'Pendiente' ; else pendienteTpl">

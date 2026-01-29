@@ -9,6 +9,9 @@ import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 import { TipoProyectoService } from 'src/app/modules/shared/services/tipoProyectoService.service';
 import { SitioService } from 'src/app/modules/shared/services/sitio.service';
 import { ClienteService } from 'src/app/modules/shared/services/cliente.service';
+import { HttpEventType } from '@angular/common/http';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition, SimpleSnackBar } from '@angular/material/snack-bar';
+import { timer, zip } from 'rxjs';
 
 @Component({
   selector: 'app-new-proyecto',
@@ -21,6 +24,14 @@ export class NewProyectoComponent implements OnInit {
   nodosList: string[] = [];
   isPerfilApp: any;
   isPerfilInfraestructura: any;
+
+  // Posicion en pantalla del snackbar
+  horizontalPositionSnackbar: MatSnackBarHorizontalPosition = 'center';
+  verticalPositionSnackbar: MatSnackBarVerticalPosition = 'bottom';
+
+  isLoading: boolean = false;
+  progress: number = 0;
+  tamanioTotalMB: string = '0';
 
   public proyectoForm: FormGroup;
   tituloFormulario: string;
@@ -70,7 +81,7 @@ export class NewProyectoComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService, private sitioService: SitioService,
     private clienteService: ClienteService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<NewProyectoComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
-    private util: UtilsService) {
+    private util: UtilsService, private snackbar: MatSnackBar) {
 
     this.tituloFormulario = 'Agregar nuevo';
     this.botonLabel = 'Guardar';
@@ -353,6 +364,43 @@ export class NewProyectoComponent implements OnInit {
    */
   onSave() {
 
+    this.isLoading = true;
+    this.progress = 0;
+    let totalBytes = 0;
+
+    // 1. Calcular el tamaño total de los archivos seleccionados
+    const filesArray = [
+      this.selectedFileF60,
+      this.selectedFileLld,
+      this.selectedFileHld,
+      this.selectedFileLayout,
+      this.selectedFilePresentacion,
+      this.selectedFileSla,
+      this.selectedFileReporteFotografico,
+      this.selectedFileFuerzaEspacio,
+      this.selectedFileInventario,
+      this.selectedFileAtpFisico,
+      this.selectedFileAtpLogico,
+      this.selectedFileRto,
+      this.selectedFileCartaPlataforma,
+      this.selectedFileCartaIaaS,
+      this.selectedFileCartaStorage,
+      this.selectedFileCartaGsoc,
+      this.selectedFileCartaHa,
+      this.selectedFileAtpFisicoFirmado,
+      this.selectedFileOtros
+    ];
+
+    filesArray.forEach(f => { if (f) totalBytes += f.size; });
+    this.tamanioTotalMB = (totalBytes / (1024 * 1024)).toFixed(2) + ' MB';
+
+    // 2. Mostrar snackbar informando al usuario sobre la carga de archivos
+    this.openSnackbar(
+      'Creando proyecto, por favor espere... (Tamaño total de archivos: ' + this.tamanioTotalMB + '). Por favor, no cierres el navegador ni la ventana hasta que se complete el proceso.',
+      'Cerrar'
+    );
+
+    // 3. Enviar los archivos al backend
     // Construimos el formData para enviar los archivos y otros datos del formulario
     const subirDatos = new FormData();
 
@@ -413,14 +461,38 @@ export class NewProyectoComponent implements OnInit {
     pendingFiles('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado);
     pendingFiles('fileOtros', this.selectedFileOtros);
 
-    // Llamada al servicio para guardar el proyecto
-    this.proyectoService.saveProyecto(subirDatos).subscribe({
-      next: () => {
-        // 1 = éxito
-        this.dialogRef.close(1);
+    //3. Lógica de retraso para asegurar que el snackbar se muestre antes de iniciar la carga
+    const minWaitTime = timer(1250); // Tiempo mínimo de espera en milisegundos
+    const peticion$ = this.proyectoService.saveProyecto(subirDatos);
+
+    // 4. Llamada al servicio para guardar el proyecto
+    peticion$.subscribe({
+      next: (event: any) => {
+        // Si el evento es del tipo progreso de carga
+        if (event.type === HttpEventType.UploadProgress) {
+          // Actualizar el progreso de carga
+          if (event.total) {
+            this.progress = Math.round((100 * event.loaded) / event.total);
+          } else {
+            this.progress = 0;
+          }
+        }
+        // Si el evento es la respuesta final del servidor
+        else if (event.type === HttpEventType.Response) {
+          zip(minWaitTime).subscribe(() => {
+            // Aquí se asegura que haya pasado el tiempo mínimo antes de continuar
+            this.isLoading = false;
+            this.snackbar.dismiss(); // Cerrar el snackbar de progreso
+            this.openSnackbar('Proyecto guardado exitosamente.', 'Cerrar');
+            // 1 = éxito
+            this.dialogRef.close(1);
+          });
+        }
       },
       error: err => {
+        this.isLoading = false;
         console.error('error guardando proyecto', err);
+        this.openSnackbar('Error al guardar el proyecto. Por favor, intenta de nuevo.', 'Cerrar');
         // 2 = fracaso
         this.dialogRef.close(2);
       }
@@ -550,7 +622,7 @@ export class NewProyectoComponent implements OnInit {
       inputEl.value = ''; // reset visual del <input type="file">
     }
   }
-  
+
   removeFileResponsivaIaaS() {
     // Limpia selección y fuerza ""
     this.proyectoForm.patchValue({ fileCartaResponsivaIaaS: '' });
@@ -637,6 +709,14 @@ export class NewProyectoComponent implements OnInit {
     if (inputEl) {
       inputEl.value = ''; // reset visual del <input type="file">
     }
+  }
+
+  // Dialogo de operacion
+  openSnackbar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
+    return this.snackbar.open(message, action, {
+      horizontalPosition: this.horizontalPositionSnackbar,
+      verticalPosition: this.verticalPositionSnackbar
+    });
   }
 
   /**

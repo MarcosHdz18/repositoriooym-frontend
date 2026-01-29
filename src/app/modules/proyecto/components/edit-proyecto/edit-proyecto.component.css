@@ -42,10 +42,14 @@
 .position-responsiva-gsoc,
 .position-atp-fisico-firmado,
 .position-otros {
-    display: flex;
-    width: 100%;
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
     font-size: 13px;
     text-transform: uppercase;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 5px;
+    width: 100%;
 }
 
 mat-dialog-actions {
@@ -59,30 +63,55 @@ mat-dialog-actions {
 }
 
 .upload {
-    margin: 0 auto;
+   margin: 0 auto;
     text-align: center;
-    width: 15px;
+    width: 30px;
     height: 22px;
-    padding: 8px 20px;
+    padding: 8px 8px;
     background: #3f51b5;
     color: #fff;
     border: 0px solid #fff;
     border-radius: 10px;
     margin-right: 50px;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .upload:hover {
-    cursor: pointer;
     background: #000;
+    transform: translateY(-2px);
+}
+
+.upload mat-icon {
+    font-size: 20px;
+    text-align: center;
 }
 
 .container-files {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    row-gap: 20px;
+    row-gap: 30px;
     margin-bottom: 20px;
     align-items: start;
+}
+
+/* Efecto para resaltar la fila donde está el mouse */
+.container-files>div:hover {
+    background-color: rgba(63, 81, 181, 0.04);
+    /* En lugar de cambiar el border-bottom, usamos un box-shadow interno sutil */
+    box-shadow: inset 0 -2px 0 0 #3f51b5;
+    transition: all 0.2s ease;
+}
+
+.container-files mat-label {
+    max-width: 350px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: help;
 }
 
 .color-archivo-verde {
@@ -162,4 +191,65 @@ mat-dialog-actions {
 
 .btn-cancel {
     margin-left: .25rem;
+}
+
+/******Estilos para la carga del proyecto***********/
+/* Contenedor principal del bloqueo */
+.overlay-loading {
+    position: absolute;
+    /* Usamos absolute para que bloquee solo el mat-dialog */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    /* Blanco semitransparente para un look limpio */
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+    /* Efecto de desenfoque moderno */
+}
+
+/* Caja de contenido */
+.loading-card {
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.loading-card h3 {
+    margin: 10px 0;
+    color: #3f51b5;
+    font-weight: 500;
+}
+
+/* Estilo para el porcentaje */
+.percentage {
+    display: block;
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #3f51b5;
+}
+
+.tamanio-info {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* Advertencia en rojo */
+.warning-text {
+    font-size: 11px;
+    color: #f44336;
+    margin-top: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }

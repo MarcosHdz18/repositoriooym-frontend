@@ -1,6 +1,9 @@
+import { HttpEventType } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition, SimpleSnackBar } from '@angular/material/snack-bar';
+import { timer, zip } from 'rxjs';
 import { ClienteElement } from 'src/app/models/cliente.model';
 import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { ResponsableElement } from 'src/app/models/responsable.model';
@@ -20,9 +23,18 @@ import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 })
 export class EditProyectoComponent implements OnInit {
 
+
   nodosList: string[] = [];
   isPerfilApp: any;
   isPerfilInfraestructura: any;
+
+  // Posicion en pantalla del snackbar
+  horizontalPositionSnackbar: MatSnackBarHorizontalPosition = 'center';
+  verticalPositionSnackbar: MatSnackBarVerticalPosition = 'bottom';
+
+  isLoading: boolean = false;
+  progress: number = 0;
+  tamanioTotalMB: string = '0';
 
   public proyectoForm!: FormGroup;
   tituloFormulario!: string;
@@ -75,9 +87,9 @@ export class EditProyectoComponent implements OnInit {
   selectedFileOtros: File | null = null;
 
 
-  constructor( private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService, 
-    private sitioService: SitioService, private clienteService: ClienteService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<EditProyectoComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data: ProyectoElement, private util: UtilsService ) {
+  constructor(private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService,
+    private sitioService: SitioService, private clienteService: ClienteService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<EditProyectoComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: ProyectoElement, private util: UtilsService, private snackbar: MatSnackBar) {
     // Configuración del título y botón del formulario
     this.tituloFormulario = 'Actualizar';
     this.botonLabel = 'Actualizar';
@@ -422,6 +434,42 @@ export class EditProyectoComponent implements OnInit {
    */
   onSave() {
 
+    this.isLoading = true;
+    this.progress = 0;
+    let totalBytes = 0;
+
+    // 1. Calcular el tamaño total de los archivos seleccionados
+    const filesArray = [
+      this.selectedFileF60,
+      this.selectedFileLld,
+      this.selectedFileHld,
+      this.selectedFileLayout,
+      this.selectedFilePresentacion,
+      this.selectedFileSla,
+      this.selectedFileReporteFotografico,
+      this.selectedFileFuerzaEspacio,
+      this.selectedFileInventario,
+      this.selectedFileAtpFisico,
+      this.selectedFileAtpLogico,
+      this.selectedFileRto,
+      this.selectedFileCartaPlataforma,
+      this.selectedFileCartaIaaS,
+      this.selectedFileCartaStorage,
+      this.selectedFileCartaGsoc,
+      this.selectedFileCartaHa,
+      this.selectedFileAtpFisicoFirmado,
+      this.selectedFileOtros
+    ];
+
+    filesArray.forEach(f => { if (f) totalBytes += f.size; });
+    this.tamanioTotalMB = (totalBytes / (1024 * 1024)).toFixed(2) + ' MB';
+
+    // 2. Mostrar snackbar informando al usuario sobre la carga de archivos
+    this.openSnackbar(
+      'Actualizando proyecto, por favor espere... (Cargando nuevos datos: ' + this.tamanioTotalMB + '). Por favor, no cierres el navegador ni la ventana hasta que se complete el proceso.',
+      'Cerrar'
+    );
+
     const formData = new FormData();
     // campos de texto
     formData.append('nombre', this.proyectoForm.value.nombre);
@@ -451,7 +499,7 @@ export class EditProyectoComponent implements OnInit {
     appendFileOrPendiente('fileF60', this.selectedFileF60);
     appendFileOrPendiente('fileLld', this.selectedFileLld);
     appendFileOrPendiente('fileHld', this.selectedFileHld);
-    appendFileOrPendiente('fileLayout', this.selectedFileLayout); 
+    appendFileOrPendiente('fileLayout', this.selectedFileLayout);
     appendFileOrPendiente('filePresentacion', this.selectedFilePresentacion);
     appendFileOrPendiente('fileSla', this.selectedFileSla);
     appendFileOrPendiente('fileReporteFotografico', this.selectedFileReporteFotografico);
@@ -468,14 +516,38 @@ export class EditProyectoComponent implements OnInit {
     appendFileOrPendiente('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado);
     appendFileOrPendiente('fileOtros', this.selectedFileOtros);
 
-    // Llamada al servicio para actualizar el proyecto
-    this.proyectoService.updateProyecto(this.data.idProyecto, formData).subscribe({
-      next: () => {
-        // 1 = éxito
-        this.dialogRef.close(1);
+    //3. Lógica de retraso para asegurar que el snackbar se muestre antes de iniciar la carga
+    const minWaitTime = timer(1250); // Tiempo mínimo de espera en milisegundos
+    const peticion$ = this.proyectoService.updateProyecto(this.data.idProyecto, formData);
+
+    // 4. Llamada al servicio para actualizar el proyecto
+    peticion$.subscribe({
+      next: (event: any) => {
+        // Si el evento es del tipo progreso de carga
+        if (event.type === HttpEventType.UploadProgress) {
+          // Actualizar el progreso de carga
+          if (event.total) {
+            this.progress = Math.round((100 * event.loaded) / event.total);
+          } else {
+            this.progress = 0;
+          }
+        }
+        // Si el evento es la respuesta final del servidor
+        else if (event.type === HttpEventType.Response) {
+          zip(minWaitTime).subscribe(() => {
+            // Aquí se asegura que haya pasado el tiempo mínimo antes de continuar
+            this.isLoading = false;
+            this.snackbar.dismiss(); // Cerrar el snackbar de progreso
+            this.openSnackbar('Proyecto actualizado exitosamente.', 'Cerrar');
+            // 1 = éxito
+            this.dialogRef.close(1);
+          });
+        }
       },
       error: err => {
-        console.error('error actualizando proyecto', err);
+        this.isLoading = false;
+        console.error('error guardando proyecto', err);
+        this.openSnackbar('Error al actualizar el proyecto. Por favor, intenta de nuevo.', 'Cerrar');
         // 2 = fracaso
         this.dialogRef.close(2);
       }
@@ -605,7 +677,7 @@ export class EditProyectoComponent implements OnInit {
       inputEl.value = ''; // reset visual del <input type="file">
     }
   }
-  
+
   removeFileResponsivaIaaS() {
     // Limpia selección y fuerza ""
     this.proyectoForm.patchValue({ fileCartaResponsivaIaaS: '' });
@@ -694,6 +766,13 @@ export class EditProyectoComponent implements OnInit {
     }
   }
 
+  // Dialogo de operacion
+  openSnackbar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
+    return this.snackbar.open(message, action, {
+      horizontalPosition: this.horizontalPositionSnackbar,
+      verticalPosition: this.verticalPositionSnackbar
+    });
+  }
   /**
    * Metodo para cerrar el dialog
    */

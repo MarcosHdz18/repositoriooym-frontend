@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProyectoElement } from 'src/app/models/proyecto.model';
@@ -33,10 +33,12 @@ export class ProyectoService {
    * @param body cuerpo con los datos que se guardaran en la base de datos
    * @returns servicio con el guardado de los proyectos
    */
-  saveProyecto(body: any) {
+  saveProyecto(body: any): Observable<any> {
     const endpoint = `${base_url}/proyectos`;
 
-    return this.http.post(endpoint, body);
+    return this.http.post(endpoint, body, {
+      reportProgress: true, // Esto permite rastrear el progreso de la solicitud 
+      observe: 'events' }); // Esto permite observar la respuesta completa, incluyendo encabezados y estado
   }
 
   /**
@@ -45,10 +47,13 @@ export class ProyectoService {
    * @param idProyecto identificador unico que se utilizara para la actualizacion
    * @returns json con la data actualizada
    */
-  updateProyecto(idProyecto: number, formData: FormData): Observable<ProyectoElement> {
+  updateProyecto(idProyecto: number, formData: FormData): Observable<any> {
     const endpoint = `${base_url}/proyectos/${idProyecto}`;
 
-    return this.http.put<ProyectoElement>(endpoint, formData);
+    return this.http.put(endpoint, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 
   /**
@@ -90,10 +95,11 @@ export class ProyectoService {
    * @param documento nombre del documento a descargar (f60, lld, hld, layout, sla, reporteFotografico, asignacionFuerzaEspacio, inventarioHardware, atpFisico, atpFisicoFirmado)
    * @returns servicio que devuelve el archivo como blob
    */
-  downloadFile(id: number, documento: string) {
+  downloadFile(id: number, documento: string): Observable<HttpEvent<Blob>> {
     const endpoint = `${base_url}/proyectos/${id}/archivo/${documento}`;
     return this.http.get(endpoint, {
-      observe: 'response',
+      reportProgress: true,
+      observe: 'events',
       responseType: 'blob',
       headers: new HttpHeaders({ 'Accept': 'application/octet-stream' })
     });
