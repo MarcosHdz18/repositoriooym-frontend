@@ -60,9 +60,9 @@ export class DetalleProyectoComponent implements OnInit {
 
     // Montamos la lista de documentos subidos
     const todos: DocItem[] = [
-      { label: 'F60', key: 'f60', filename: this.data.f60, icon: 'description' },
-      { label: 'LLD', key: 'lld', filename: this.data.lld, icon: 'table_chart' },
-      { label: 'HLD', key: 'hld', filename: this.data.hld, icon: 'table_chart' },
+      { label: 'F60', key: 'f60', filename: this.data.f60, icon: 'integration_instructions' },
+      { label: 'LLD', key: 'lld', filename: this.data.lld, icon: 'integration_instructions' },
+      { label: 'HLD', key: 'hld', filename: this.data.hld, icon: 'integration_instructions' },
       { label: 'Layout', key: 'layout', filename: this.data.layout, icon: 'integration_instructions' },
       { label: 'Presentacion', key: 'presentacion', filename: this.data.presentacion, icon: 'integration_instructions' },
       { label: 'SLA', key: 'sla', filename: this.data.sla, icon: 'integration_instructions' },

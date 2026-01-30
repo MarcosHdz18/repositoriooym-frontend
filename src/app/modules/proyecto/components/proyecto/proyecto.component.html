@@ -85,12 +85,17 @@
                         <ng-container matColumnDef="fechaLiberacion">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Liberaci&oacute;n</th>
                             <td mat-cell *matCellDef="let element">
-                                <ng-container *ngIf="element.fechaLiberacion !== 'Pendiente' ; else pendienteTpl">
-                                    {{ element.fechaLiberacion | date: 'dd/MM/yyyy' }}
-                                </ng-container>
-                                <ng-template #pendienteTpl>
-                                    <span class="pendiente">Pendiente</span>
-                                </ng-template>
+                                <span [ngClass]="{'badge-liberado': element.fechaLiberacion !== 'Pendiente',
+                                'badge-proceso': element.fechaLiberacion === 'Pendiente'}
+                                ">
+                                    <mat-icon class="icon-status">
+                                        {{ element.fechaLiberacion !== 'Pendiente' ? 'check_circle' : 'hourglass_empty'
+                                        }}
+                                    </mat-icon>
+                                    {{ element.fechaLiberacion !== 'Pendiente' ? (element.fechaLiberacion | date:
+                                    'dd/MM/yyyy') : 'Pendiente' }}
+
+                                </span>
                             </td>
                         </ng-container>
                         <!--anio column-->

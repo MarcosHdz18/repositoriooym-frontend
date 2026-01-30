@@ -8,6 +8,11 @@ body {
     margin: 0;
 }
 
+/* Esto afecta a todos los tooltips del sistema */
+.mat-tooltip {
+  max-width: none !important;
+}
+
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;

@@ -7,45 +7,62 @@
             {{ downloadProgress }}%
         </div>
 
-        <mat-progress-bar [mode]="downloadProgress > 0 ? 'determinate' : 'indeterminate'" [value]="downloadProgress" color="primary">
+        <mat-progress-bar [mode]="downloadProgress > 0 ? 'determinate' : 'indeterminate'" [value]="downloadProgress"
+            color="primary">
         </mat-progress-bar>
 
         <p class="warning-text">No refresques, ni cierres la página para completar la descarga</p>
     </div>
 </div>
 
-<h2 mat-dialog-title class="centrar-texto">Proyecto: {{ data.nombre }}</h2>
-<h2 mat-dialog-title class="centrar-texto">Fecha de liberación: &nbsp;
-    <ng-container *ngIf="data.fechaLiberacion !== 'Pendiente' ; else pendienteTpl">
-        {{ data.fechaLiberacion | date: 'dd/MM/yyyy' }}
-    </ng-container>
-    <ng-template #pendienteTpl>
-        <span class="pendiente">Pendiente</span>
-    </ng-template>
-</h2>
+<div class="header-proyecto">
+    <div class="header-main">
+        <mat-icon class="header-icon">folder_shared</mat-icon>
+        <div class="header-texts">
+            <span class="header-subtitle">DETALLE DEL PROYECTO</span>
+            <h2 class="header-title">{{ data.nombre }}</h2>
+        </div>
+    </div>
+
+    <div class="header-status">
+        <span class="status-label">Liberación:</span>
+        <span [class]="data.fechaLiberacion !== 'Pendiente' ? 'status-date' : 'status-pending'">
+            <mat-icon>{{ data.fechaLiberacion !== 'Pendiente' ? 'event_available' : 'event_busy' }}</mat-icon>
+            {{ (data.fechaLiberacion !== 'Pendiente' ? (data.fechaLiberacion | date: 'dd/MM/yyyy') : 'PENDIENTE') }}
+        </span>
+    </div>
+</div>
+
 <mat-dialog-content>
-    <h3 class="centrar-texto">Documentación técnica</h3>
+    <div class="seccion-container">
+        <div class="seccion-linea"></div>
+        <div class="seccion-contenido">
+            <mat-icon class="seccion-icon">description</mat-icon>
+            <span class="seccion-texto">Documentación Técnica</span>
+        </div>
+        <div class="seccion-linea"></div>
+    </div>
+
     <mat-divider></mat-divider>
-    <br>
 
-    <mat-accordion multi="true"> <mat-expansion-panel *ngFor="let doc of documentosSubidos">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    <mat-icon>description</mat-icon>
-                    <span style="font-weight: bold; margin-left: 10px;">{{ doc.label }}</span>
-                </mat-panel-title>
-                <mat-panel-description>
-                    <span style="color: steelblue;">{{ doc.filename?.split('/')?.pop() }}</span>
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <div align="center" style="padding: 10px;">
-                <button mat-raised-button color="primary" (click)="onDownloadFile(doc.key)">
-                    <mat-icon>cloud_download</mat-icon> Descargar
-                </button>
+    <div class="documentos-grid">
+        <div *ngFor="let doc of documentosSubidos" class="documento-card">
+            <div class="doc-info">
+                <mat-icon class="doc-icon">{{ doc.icon }}</mat-icon>
+                <div class="doc-texts">
+                    <span class="doc-label">{{ doc.label }}</span>
+                    <span class="doc-filename" matTooltip="{{ doc.filename?.split('/')?.pop() || 'Sin archivo' }}">
+                        {{ doc.filename?.split('/')?.pop() }}
+                    </span>
+                </div>
             </div>
-        </mat-expansion-panel>
+            <button mat-icon-button color="primary" (click)="onDownloadFile(doc.key)" matTooltip="Descargar">
+                <mat-icon>cloud_download</mat-icon>
+            </button>
+        </div>
+    </div>
 
+    <mat-accordion class="nodos-accordion">
         <mat-expansion-panel [expanded]="true" class="panel-nodos-final">
             <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -72,8 +89,6 @@
                             <mat-icon *ngIf="!searchTerm" style="color: #777;">search</mat-icon>
                         </div>
                     </mat-form-field>
-
-                    <!--Boton para copiar los nodos-->
                     <button mat-icon-button class="btn-copiar-custom" matTooltip="Copiar nodos" (click)="copiarNodos()"
                         [disabled]="nodosFiltrados.length === 0" style="margin-bottom: 20px;">
                         <mat-icon>content_copy</mat-icon>
@@ -94,7 +109,6 @@
                 <p class="no-nodos">No hay nodos registrados.</p>
             </ng-template>
         </mat-expansion-panel>
-
     </mat-accordion>
 </mat-dialog-content>
 
