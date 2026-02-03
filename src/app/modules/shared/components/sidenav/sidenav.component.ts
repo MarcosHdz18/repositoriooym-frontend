@@ -46,8 +46,8 @@ export class SidenavComponent implements OnInit {
 
   sections: MenuSection[] = [
     { title: 'Inicio', items: this.inicioMenu, expanded: true },
-    { title: 'Información', items: this.infoNav, expanded: false },
-    { title: 'Operaciones', items: this.systemNav, expanded: false },
+    { title: 'Información', items: this.infoNav, expanded: true },
+    { title: 'Operaciones', items: this.systemNav, expanded: true },
     { title: 'Histórico', items: this.historyNav, expanded: false }
   ];
 

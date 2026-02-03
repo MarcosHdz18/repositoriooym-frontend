@@ -1,3 +1,15 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: 85vh;
+}
+
+/* El div que envuelve tu mat-card o contenido principal */
+div[animationTrigger] {
+    flex: 1;
+    /* Esto empuja al footer hacia abajo */
+}
+
 .centrar {
     text-align: center;
     margin-top: 20px;
@@ -75,7 +87,7 @@ th.mat-sort-header-sorted {
     padding: 8px 0;
 }
 
-/* (Opcional) Estilos para el tooltip que aparece “above” */
+/* Estilos para el tooltip que aparece “above” */
 .mat-tooltip.above {
     background: rgba(0, 0, 0, 0.85);
     color: #fff;
@@ -86,17 +98,13 @@ th.mat-sort-header-sorted {
 
 .mat-content {
     padding-bottom: 60px;
-    /* Espacio para el footer */
 }
 
 .mat-table .mat-header-cell,
 .mat-table .mat-cell {
     padding: 0 25px;
-    /* 16px izquierda y derecha */
     white-space: normal;
-    /* para que rompa líneas */
     word-wrap: break-word;
-    /* para poder envolver palabras largas */
 }
 
 @media (max-width: 1300px) {
@@ -111,10 +119,8 @@ th.mat-sort-header-sorted {
 
 .table-scroll {
     max-height: 510px;
-    /* o el px que necesites */
     overflow-y: auto;
-    /* scroll vertical */
-    /* opcional: ancho completo */
+    border-bottom: 1px solid #e0e0e0;
     width: 100%;
 }
 
@@ -126,7 +132,6 @@ th.mat-sort-header-sorted {
     }
 }
 
-/* Ajustes finos: que la tabla ocupe todo el contenedor */
 .table-scroll table {
     width: 100%;
     table-layout: auto;
@@ -134,11 +139,9 @@ th.mat-sort-header-sorted {
 
 .table-wrapper {
     border: 1px solid rgba(0, 0, 0, 0.12);
-    /* gris muy suave */
     border-radius: 8px;
-    /* esquinas redondeadas */
     overflow: hidden;
-    /* recorta la sombra si la hay */
+    margin-bottom: 20px;
 }
 
 .mat-row:hover {
@@ -180,4 +183,184 @@ th.mat-sort-header-sorted {
     width: 16px;
     height: 16px;
     line-height: 16px;
+}
+
+/** Estilos para los botones de estado de los proyectos*/
+/* Contenedor principal para que ocupen todo el ancho o un ancho fijo igualitario */
+.contenedor-filtros {
+    margin-top: 10px;
+    display: flex;
+}
+
+.toggle-profesional {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    height: 45px;
+    background-color: #fafafa;
+}
+
+.toggle-profesional mat-button-toggle {
+    min-width: 120px;
+    border-right: 1px solid #e0e0e0;
+}
+
+/* Estilo del Badge */
+.badge-count {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    background-color: #eee;
+    color: #666;
+}
+
+/* Colores de Badges */
+.bg-liberado {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.bg-pendiente {
+    background-color: #fff3e0;
+    color: #e65100;
+}
+
+.mat-button-toggle-checked {
+    background-color: #e3f2fd !important;
+    color: #1976d2 !important;
+    border-bottom: 3px solid #1976d2 !important;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.mat-button-toggle-checked .bg-liberado {
+    background-color: #2e7d32;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mat-button-toggle-checked .bg-pendiente {
+    background-color: #e65100;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mat-button-toggle {
+    background-color: #fafafa;
+    color: #666;
+    border-bottom: 3px solid transparent;
+}
+
+.mat-button-toggle-button:hover {
+    background-color: #f0f0f0 !important;
+}
+
+
+/** Estilos para el gráfico donut de estado del proyecto */
+
+/* Contenedor Principal */
+.dashboard-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px 12px 0 0;
+    margin-bottom: 5px;
+}
+
+.header-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.chart-side {
+    justify-content: center;
+    gap: 20px;
+}
+
+.donut-chart-main {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: help;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.donut-chart-main:hover {
+    transform: scale(1.1);
+}
+
+.donut-hole-main {
+    width: 70px;
+    height: 70px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.count-number {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    line-height: 1;
+}
+
+.count-label {
+    font-size: 9px;
+    color: #999;
+    text-transform: uppercase;
+}
+
+.chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.legend-row {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.dot {
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.verde {
+    background-color: #2e7d32;
+}
+
+.ambar {
+    background-color: #e65100;
+}
+
+.search-side {
+    max-width: 1000px;
+}
+
+.buttons-side {
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: -1.25em;
 }

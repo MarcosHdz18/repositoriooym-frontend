@@ -34,6 +34,7 @@
 </div>
 
 <mat-dialog-content>
+    <!--Documentación Técnica-->
     <div class="seccion-container">
         <div class="seccion-linea"></div>
         <div class="seccion-contenido">
@@ -45,29 +46,113 @@
 
     <mat-divider></mat-divider>
 
-    <div class="documentos-grid">
-        <div *ngFor="let doc of documentosSubidos" class="documento-card">
-            <div class="doc-info">
-                <mat-icon class="doc-icon">{{ doc.icon }}</mat-icon>
-                <div class="doc-texts">
-                    <span class="doc-label">{{ doc.label }}</span>
-                    <span class="doc-filename" matTooltip="{{ doc.filename?.split('/')?.pop() || 'Sin archivo' }}">
-                        {{ doc.filename?.split('/')?.pop() }}
-                    </span>
+    <div *ngIf="tieneDocumentos('documentacion_tecnica') > 0; else sinDocumentos">
+        <div class="documentos-grid">
+            <ng-container *ngFor="let doc of documentosSubidos">
+                <div *ngIf="doc.category === 'documentacion_tecnica'" class="documento-card">
+                    <div class="doc-info">
+                        <mat-icon class="doc-icon">{{ doc.icon }}</mat-icon>
+                        <div class="doc-texts">
+                            <span class="doc-label">{{ doc.label }}</span>
+                            <span class="doc-filename"
+                                matTooltip="{{ doc.filename?.split('/')?.pop() || 'Sin archivo' }}">
+                                {{ doc.filename?.split('/')?.pop() }}
+                            </span>
+                        </div>
+                    </div>
+                    <button mat-icon-button color="primary" (click)="onDownloadFile(doc.key)" matTooltip="Descargar">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
                 </div>
-            </div>
-            <button mat-icon-button color="primary" (click)="onDownloadFile(doc.key)" matTooltip="Descargar">
-                <mat-icon>cloud_download</mat-icon>
-            </button>
+            </ng-container>
         </div>
     </div>
 
+    <!--Protocolos Aceptación-->
+    <div class="seccion-container">
+        <div class="seccion-linea"></div>
+        <div class="seccion-contenido">
+            <mat-icon class="seccion-icon">fact_check</mat-icon>
+            <span class="seccion-texto">Protocolos de Aceptación</span>
+        </div>
+        <div class="seccion-linea"></div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div *ngIf="tieneDocumentos('protocolos_aceptacion') > 0; else sinDocumentos">
+        <div class="documentos-grid">
+            <ng-container *ngFor="let doc of documentosSubidos">
+                <div *ngIf="doc.category === 'protocolos_aceptacion'" class="documento-card">
+                    <div class="doc-info">
+                        <mat-icon class="doc-icon">{{ doc.icon }}</mat-icon>
+                        <div class="doc-texts">
+                            <span class="doc-label">{{ doc.label }}</span>
+                            <span class="doc-filename"
+                                matTooltip="{{ doc.filename?.split('/')?.pop() || 'Sin archivo' }}">
+                                {{ doc.filename?.split('/')?.pop() }}
+                            </span>
+                        </div>
+                    </div>
+                    <button mat-icon-button color="primary" (click)="onDownloadFile(doc.key)" matTooltip="Descargar">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+
+    <!--Actas Aceptación-->
+    <div class="seccion-container">
+        <div class="seccion-linea"></div>
+        <div class="seccion-contenido">
+            <mat-icon class="seccion-icon">verified</mat-icon>
+            <span class="seccion-texto">Actas Aceptación</span>
+        </div>
+        <div class="seccion-linea"></div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div *ngIf="tieneDocumentos('actas_aceptacion') > 0; else sinDocumentos">
+        <div class="documentos-grid">
+            <ng-container *ngFor="let doc of documentosSubidos">
+                <div *ngIf="doc.category === 'actas_aceptacion'" class="documento-card">
+                    <div class="doc-info">
+                        <mat-icon class="doc-icon">{{ doc.icon }}</mat-icon>
+                        <div class="doc-texts">
+                            <span class="doc-label">{{ doc.label }}</span>
+                            <span class="doc-filename" matTooltip="{{ doc.filename?.split('/')?.pop() || 'Sin archivo' }}">
+                                {{ doc.filename?.split('/')?.pop() }}
+                            </span>
+                        </div>
+                    </div>
+                    <button mat-icon-button color="primary" (click)="onDownloadFile(doc.key)" matTooltip="Descargar">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+    <!--Sección de documentos vacíos-->
+    <ng-template #sinDocumentos>
+        <div class="empty-state-section">
+            <mat-icon class="icon-espera">history</mat-icon>
+            <div class="texto-espera">
+                <strong>Información en proceso</strong>
+                <span>Sin registros para mostrar en este momento. La información se actualizará durante la implementación.</span>
+            </div>
+        </div>
+    </ng-template>
+    <!--Lista de Nodos-->
     <mat-accordion class="nodos-accordion">
-        <mat-expansion-panel [expanded]="true" class="panel-nodos-final">
+        <mat-expansion-panel [expanded]="false" class="panel-nodos-final">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon>lan</mat-icon>
-                    <strong style="margin-left: 10px;">Lista de Nodos ({{ data.nodosList?.length }})</strong>
+                    <strong style="margin-left: 10px;">Nodos ({{ data.nodosList?.length }})</strong>
                 </mat-panel-title>
                 <mat-panel-description>
                     Total: {{ data.nodosList?.length }} | Filtrados: {{ nodosFiltrados.length }}

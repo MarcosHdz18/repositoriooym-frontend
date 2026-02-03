@@ -1,6 +1,6 @@
 <!--Componente card-->
-<div @fadeAnimation style="margin-top: 20px; margin-bottom: 20px;">
-    <mat-card class="card">
+<div @fadeAnimation>
+    <mat-card class="card" style="margin-top: 10px; margin-bottom: 20px;">
         <!--Encabezado del card-->
         <mat-card-header>
             <!--Boton para agregar un proyecto-->
@@ -15,22 +15,67 @@
 
         <!--Contenido de la tarjeta-->
         <mat-card-content>
-            <div class="container-buscador">
-                <mat-form-field style="margin-top: 20px;" appearance="outline">
-                    <mat-label>Buscar proyecto por sus valores</mat-label>
-                    <input matInput (keyup)="filtrarProyectos($event)" #input>
-                    <button *ngIf="input.value" mat-icon-button matSuffix (click)="limpiarBusqueda(input)"
-                        matTooltip="Limpiar búsqueda">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                    <mat-icon matSuffix *ngIf="!input.value" matTooltip="Buscar registros">search</mat-icon>
-                </mat-form-field>
-                <div fxLayoutAlign="flex-end" fxLayout="row wrap" fxLayoutGap="8px">
-                    <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" class="button-agregar"
-                        mat-raised-button color="primary" (click)="openNewProyectoDialog()">Nuevo proyecto</button>
-                    <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" class="button-excel" mat-raised-button
-                        color="accent" (click)="exportDataFileExcel()">Exportar a Excel</button>
+            <div class="dashboard-header-container">
+                <div class="header-section search-side">
+                    <mat-form-field style="margin-top: 20px;" appearance="outline" class="full-width">
+                        <mat-label>Buscar proyecto por sus valores</mat-label>
+                        <input matInput (keyup)="filtrarProyectos($event)" #input>
+                        <button *ngIf="input.value" mat-icon-button matSuffix (click)="limpiarBusqueda(input)"
+                            matTooltip="Limpiar búsqueda">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-icon matSuffix *ngIf="!input.value" matTooltip="Buscar registros">search</mat-icon>
+                    </mat-form-field>
                 </div>
+
+                <!--Gráfica dona-->
+                <div class="header-section chart-side" *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura">
+                    <div class="donut-chart-main" [style.background]="obtenerFondoGrafica()"
+                        [attr.title]="obtenerTextoPorcentaje()">
+                        <div class="donut-hole-main">
+                            <span class="count-number">{{ proyectos.length }}</span>
+                            <span class="count-label">Total</span>
+                        </div>
+                    </div>
+
+                    <div class="chart-legend">
+                        <div class="legend-row">
+                            <span class="dot verde"></span>
+                            <span>Liberados: <strong>{{ totalLiberados }}</strong></span>
+                        </div>
+                        <div class="legend-row">
+                            <span class="dot ambar"></span>
+                            <span>En Proceso: <strong>{{ totalPendientes }}</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-section buttons-side">
+                    <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" class="button-agregar"
+                        mat-raised-button color="primary" (click)="openNewProyectoDialog()"><mat-icon>add</mat-icon>
+                        Nuevo proyecto</button>
+                    <button *ngIf="isAdmin||isPefilApp||isPerfilInfraestructura" class="button-excel" mat-raised-button
+                        color="accent" (click)="exportDataFileExcel()"><mat-icon>download</mat-icon> Exportar
+                        datos</button>
+                </div>
+            </div>
+
+            <div class="contenedor-filtros" *ngIf="isAdmin || isPefilApp || isPerfilInfraestructura">
+                <!--Botones para filtrar por estado-->
+                <mat-button-toggle-group (change)="filtrarPorEstado($event.value)" value="TODOS"
+                    class="toggle-profesional">
+                    <mat-button-toggle value="TODOS">
+                        Todos<span class="badge-count"> {{ proyectos.length }}</span>
+                    </mat-button-toggle>
+
+                    <mat-button-toggle value="liberado">
+                        Liberados <span class="badge-count bg-liberado">{{ getTotalProyectosLiberados() }}</span>
+                    </mat-button-toggle>
+
+                    <mat-button-toggle value="pendiente">
+                        En Proceso <span class="badge-count bg-pendiente">{{ getTotalProyectosEnProceso() }}</span>
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
             </div>
 
             <div class="table-wrapper mat-elevation-z8">
@@ -186,4 +231,3 @@
         </mat-card-content>
     </mat-card>
 </div>
-<app-footer></app-footer>

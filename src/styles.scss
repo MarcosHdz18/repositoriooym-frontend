@@ -10,7 +10,26 @@ body {
 
 /* Esto afecta a todos los tooltips del sistema */
 .mat-tooltip {
-  max-width: none !important;
+    max-width: none !important;
+}
+
+/* El contenedor que envuelve TODA la app (normalmente en app.component.html) */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Ocupa el 100% de la altura de la vista */
+}
+
+/* El contenido que empuja al footer */
+.content-wrapper {
+    flex: 1 0 auto;
+    /* Crece para ocupar el espacio sobrante, empujando al footer */
+}
+
+/* El footer se queda al final del flujo */
+app-footer {
+    flex-shrink: 0;
 }
 
 body {

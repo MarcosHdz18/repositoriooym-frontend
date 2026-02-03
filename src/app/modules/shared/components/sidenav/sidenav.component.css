@@ -35,7 +35,7 @@ ul li {
 }
 
 .header {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .icono {
@@ -43,7 +43,7 @@ ul li {
 }
 
 mat-sidenav {
-    width: 320px;
+    width: 310px;
 }
 
 .avatar {
@@ -67,4 +67,22 @@ mat-sidenav {
 .sub-item {
     font-size: 16px !important;
     padding-left: 35px !important;
+    width: calc(100% - 35px) !important;
+    box-sizing: border-box !important;
+}
+
+mat-nav-list[dense] {
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.sidenav-footer {
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+    color: #888;
+    box-sizing: border-box;
+    margin-top: 15px;
 }

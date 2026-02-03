@@ -12,6 +12,7 @@ interface DocItem {
   label: string;
   filename: string | null;
   icon: string;
+  category?: string;
 }
 
 @Component({
@@ -60,28 +61,28 @@ export class DetalleProyectoComponent implements OnInit {
 
     // Montamos la lista de documentos subidos
     const todos: DocItem[] = [
-      { label: 'F60', key: 'f60', filename: this.data.f60, icon: 'integration_instructions' },
-      { label: 'LLD', key: 'lld', filename: this.data.lld, icon: 'integration_instructions' },
-      { label: 'HLD', key: 'hld', filename: this.data.hld, icon: 'integration_instructions' },
-      { label: 'Layout', key: 'layout', filename: this.data.layout, icon: 'integration_instructions' },
-      { label: 'Presentacion', key: 'presentacion', filename: this.data.presentacion, icon: 'integration_instructions' },
-      { label: 'SLA', key: 'sla', filename: this.data.sla, icon: 'integration_instructions' },
-      { label: 'RTO', key: 'reportetransferenciaoperativa', filename: this.data.reporteTransferenciaOperativa, icon: 'integration_instructions' },
-      { label: 'Asignación Fuerza Espacio', key: 'asignacionfuerzaespacio', filename: this.data.asignacionFuerzaEspacio, icon: 'integration_instructions' },
-      { label: 'Reporte fotográfico', key: 'reporteFotografico', filename: this.data.reporteFotografico, icon: 'integration_instructions' },
-      { label: 'Inventario Hardware', key: 'inventariohardware', filename: this.data.inventarioHardware, icon: 'integration_instructions' },
-      { label: 'ATP Físico', key: 'atpfisico', filename: this.data.atpFisico, icon: 'integration_instructions' },
-      { label: 'ATP Físico Firmado', key: 'atpfisicofirmado', filename: this.data.atpFisicoFirmado, icon: 'integration_instructions' },
-      { label: 'ATP Lógico', key: 'atplogico', filename: this.data.atpLogico, icon: 'integration_instructions' },
-      { label: 'Responsiva IaaS', key: 'cartaresponsivaiaas', filename: this.data.cartaResponsivaIaaS, icon: 'integration_instructions' },
-      { label: 'Responsiva Plataforma', key: 'cartaresponsivaplataforma', filename: this.data.cartaResponsivaPlataforma, icon: 'integration_instructions' },
-      { label: 'Responsiva Storage', key: 'cartaresponsivastorage', filename: this.data.cartaResponsivaStorage, icon: 'integration_instructions' },
-      { label: 'Responsiva HA', key: 'cartaresponsivaha', filename: this.data.cartaResponsivaHa, icon: 'integration_instructions' },
-      { label: 'Responsiva GSOC', key: 'cartaresponsivagsoc', filename: this.data.cartaResponsivaGsoc, icon: 'integration_instructions' },
-      { label: 'Otros archivos', key: 'otros', filename: this.data.otros, icon: 'integration_instructions' }
+      { label: 'F60', key: 'f60', filename: this.data.f60, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'LLD', key: 'lld', filename: this.data.lld, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'HLD', key: 'hld', filename: this.data.hld, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'Layout', key: 'layout', filename: this.data.layout, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'Presentacion', key: 'presentacion', filename: this.data.presentacion, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'SLA', key: 'sla', filename: this.data.sla, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'RTO', key: 'reportetransferenciaoperativa', filename: this.data.reporteTransferenciaOperativa, icon: 'integration_instructions', category: 'actas_aceptacion' },
+      { label: 'Asignación Fuerza Espacio', key: 'asignacionfuerzaespacio', filename: this.data.asignacionFuerzaEspacio, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'Reporte fotográfico', key: 'reporteFotografico', filename: this.data.reporteFotografico, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'Inventario Hardware', key: 'inventariohardware', filename: this.data.inventarioHardware, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'ATP Físico', key: 'atpfisico', filename: this.data.atpFisico, icon: 'integration_instructions', category: 'protocolos_aceptacion' },
+      { label: 'ATP Físico Firmado', key: 'atpfisicofirmado', filename: this.data.atpFisicoFirmado, icon: 'integration_instructions', category: 'protocolos_aceptacion' },
+      { label: 'ATP Lógico', key: 'atplogico', filename: this.data.atpLogico, icon: 'integration_instructions', category: 'protocolos_aceptacion' },
+      { label: 'Responsiva IaaS', key: 'cartaresponsivaiaas', filename: this.data.cartaResponsivaIaaS, icon: 'integration_instructions', category: 'actas_aceptacion' },
+      { label: 'Responsiva Plataforma', key: 'cartaresponsivaplataforma', filename: this.data.cartaResponsivaPlataforma, icon: 'integration_instructions', category: 'actas_aceptacion' },
+      { label: 'Responsiva Storage', key: 'cartaresponsivastorage', filename: this.data.cartaResponsivaStorage, icon: 'integration_instructions', category: 'actas_aceptacion' },
+      { label: 'Responsiva HA', key: 'cartaresponsivaha', filename: this.data.cartaResponsivaHa, icon: 'integration_instructions', category: 'actas_aceptacion' },
+      { label: 'Responsiva GSOC', key: 'cartaresponsivagsoc', filename: this.data.cartaResponsivaGsoc, icon: 'integration_instructions', category: 'actas_aceptacion' },
+      { label: 'Otros archivos', key: 'otros', filename: this.data.otros, icon: 'integration_instructions', category: 'documentacion_tecnica' }
     ];
 
-    // 2) Filtramos todo aquello que NO sea "Pendiente"
+    // 2) Filtramos todo aquello que NO sea "na"
     this.documentosSubidos = todos.filter(doc =>
       doc.filename != null
       && doc.filename.trim() !== ''
@@ -176,6 +177,11 @@ export class DetalleProyectoComponent implements OnInit {
     }, (error: any) => {
       console.log('Error', error);
     });
+  }
+
+  tieneDocumentos(categoria: string): number {
+    if (!this.documentosSubidos) return 0;
+    return this.documentosSubidos.filter(d => d.category === categoria).length;
   }
 
   onNodoListWheel(event: WheelEvent) {

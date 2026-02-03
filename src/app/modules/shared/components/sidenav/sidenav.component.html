@@ -7,7 +7,7 @@
         <!--Botones de ayuda y cierre de sesion-->
         <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
             <ul fxLayout="row" fxLayoutGap="20px">
-                
+
                 <li>
                     <button mat-button mat-icon-button [matMenuTriggerFor]="menuAyuda">
                         <mat-icon id="help">help_outline</mat-icon>
@@ -78,12 +78,24 @@
 
             </mat-nav-list>
             <mat-divider></mat-divider>
+            <div class="sidenav-footer">
+                <p>&copy; 2026 - Todos los derechos reservados</p>
+                <p>Desarrollado por: Departamento OYM Recepción Sistemas Operativos y Base de Datos</p>
+                <p>Versión: 1.0.0</p>
+                <p>Contacto: <a
+                        href="mailto:hugo.trejo@telcel.com;alvaro.ortega@telcel.com;marcos.guadarrama@telcel.com?subject=Soporte al portal">soporte
+                        técnico</a></p>
+            </div>
         </mat-sidenav>
 
         <!--Contenido del SideNav-->
-        <mat-sidenav-content>
-            <!--Cargará el componencte home por la route child configurada-->
-            <router-outlet></router-outlet>
+        <mat-sidenav-content class="dashboard-content">
+            <div class="main-content-container">
+                <div class="router-container">
+                    <!--Cargará el componente home por la route child configurada-->
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

@@ -12,6 +12,7 @@ import { DetalleProyectoComponent } from '../detalle-proyecto/detalle-proyecto.c
 import { EditProyectoComponent } from '../edit-proyecto/edit-proyecto.component';
 import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { trigger as animationTrigger, transition, style, animate } from '@angular/animations';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-proyecto',
@@ -35,6 +36,8 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   anioActual = new Date().getFullYear();
   proyectos: ProyectoElement[] = [];
   maxMostrar = 6; // Número máximo de nodos a mostrar antes de "ver más"
+  totalLiberados: number = this.getTotalProyectosLiberados();
+  totalPendientes: number = this.getTotalProyectosEnProceso();
 
   //DataSource de los datos a pintar
   dataSource = new MatTableDataSource<ProyectoElement>([]);
@@ -64,7 +67,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   // MatPaginator: Componente de paginación de Material Angular
   // MatSort: Componente de ordenamiento de Material Angular
   constructor(private proyectoService: ProyectoService, private paginatorLabel: MatPaginatorIntl, public dialog: MatDialog,
-    private snackbar: MatSnackBar, private util: UtilsService) { }
+    private snackbar: MatSnackBar, private util: UtilsService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.paginatorLabel.itemsPerPageLabel = "Elementos por página";
@@ -77,6 +80,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
     this.isUser = this.util.isUser();
     this.isPefilApp = this.util.isPerfilApp();
     this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
+    this.obtenerFondoGrafica();
 
     this.setDisplayedColumns();
 
@@ -84,6 +88,15 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
 
     this.dataSource.filterPredicate = (data, filter) => {
       const term = filter.trim().toLowerCase();
+
+      // 1. LÓGICA DE BOTONES (ESTADOS)
+      if (term === 'liberado') {
+        return data.fechaLiberacion !== 'Pendiente';
+      }
+      if (term === 'pendiente') {
+        return data.fechaLiberacion === 'Pendiente';
+      }
+
       const str = [
         data.nombre,
         data.nodos,
@@ -98,6 +111,31 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
       ].join(' ').toLowerCase();
       return str.includes(term);
     };
+  }
+
+  obtenerFondoGrafica(): SafeStyle {
+    const total = this.proyectos.length;
+    if (!total || total === 0) return this.sanitizer.bypassSecurityTrustStyle('#e0e0e0');
+
+    // Calculamos qué porcentaje del círculo es "Liberado" (Verde)
+    const porcentajeLiberados = (this.getTotalProyectosLiberados() / total) * 100;
+
+    // El gradiente: El verde empieza en 0 y llega hasta su porcentaje. 
+    // El ámbar empieza donde termina el verde y llega al 100%.
+    const estilo = `conic-gradient(#2e7d32 0% ${porcentajeLiberados}%, #e65100 ${porcentajeLiberados}% 100%)`;
+
+    return this.sanitizer.bypassSecurityTrustStyle(estilo);
+
+  }
+
+  obtenerTextoPorcentaje(): string {
+    const total = this.proyectos.length;
+    if (total === 0) return 'Sin datos';
+
+    const pLiberados = ((this.totalLiberados / total) * 100).toFixed(1);
+    const pPendientes = ((this.totalPendientes / total) * 100).toFixed(1);
+
+    return `Liberados: ${pLiberados}% | En Proceso: ${pPendientes}%`;
   }
 
   ngAfterViewInit() {
@@ -130,6 +168,27 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
     });
   }
 
+  filtrarPorEstado(estado: string) {
+    if (!estado || estado === 'TODOS') {
+      this.dataSource.filter = '';
+    } else {
+      // Aplicamos el filtro. 
+      // Nota: El filtro de mat-table busca en TODA la fila, 
+      // así que buscará la palabra 'pendiente' o 'liberado'.
+      this.dataSource.filter = estado.trim().toLowerCase();
+    }
+  }
+
+  // Total de proyectos liberados
+  getTotalProyectosLiberados(): number {
+    return this.proyectos.filter(proyecto => proyecto.fechaLiberacion !== 'Pendiente').length;
+  }
+
+  // Total de proyectos en proceso
+  getTotalProyectosEnProceso(): number {
+    return this.proyectos.filter(proyecto => proyecto.fechaLiberacion === 'Pendiente').length;
+  }
+
   // Peticion al servicio REST del backend y que obtiene todos los proyectos
   getProyectos() {
     this.proyectoService.getProyectos().subscribe((data: any) => {
@@ -148,6 +207,8 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
       this.proyectoSort.direction = "desc";
       this.dataSource.sort = this.proyectoSort;
       this.proyectoSort.sortChange.emit(this.proyectoSort);
+      this.totalLiberados = this.getTotalProyectosLiberados();
+      this.totalPendientes = this.getTotalProyectosEnProceso();
 
     }, (error: any) => {
       console.log('Error', error);
@@ -156,17 +217,17 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
 
   /**Procesamiento del servicio REST y se recorre el json
   processProyectosResponse(resp: any) {
-
+  
     const dataProyectos: ProyectoElement[] = [];
-
+  
     if (resp.metadata[0].code == '00') {
-
+  
       let listProyectos = resp.proyectoResponse.proyectos;
-
+  
       listProyectos.forEach((element: ProyectoElement) => {
         dataProyectos.push(element);
       });
-
+  
       this.dataSource = new MatTableDataSource<ProyectoElement>(dataProyectos);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.proyectoSort;
