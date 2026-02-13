@@ -19,7 +19,7 @@
             </mat-form-field>
             <!--Propiedad numero empleado del formulario-->
             <mat-form-field>
-                <input formControlName="numeroEmpleado" type="number" matInput placeholder="Número de Empleado" required/>
+                <input formControlName="numeroEmpleado" matInput placeholder="Número de Empleado" required/>
                 <mat-icon matSuffix>contacts</mat-icon>
             </mat-form-field>
             <!--Propiedad category del formulario-->
@@ -31,16 +31,6 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <!--Propiedad picture del formulario
-            <div class="container-upload">
-                <mat-label>Imagen: </mat-label>
-                <label for="file-upload" class="upload">
-                    Seleccionar archivo
-                </label>
-                <input class="input-file" id="file-upload" type="file" accept="image/png, image/jpeg" (change)="onFileChanged($event)"
-                       formControlName="picture"/>
-                <span style="margin-left: 10px;">{{ nameImage }}</span>
-            </div>-->
         </div>
     </form>
 </mat-dialog-content>

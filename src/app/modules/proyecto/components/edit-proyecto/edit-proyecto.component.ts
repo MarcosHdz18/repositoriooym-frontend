@@ -1,8 +1,9 @@
 import { HttpEventType } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition, SimpleSnackBar } from '@angular/material/snack-bar';
+import { KeycloakService } from 'keycloak-angular';
 import { timer, zip } from 'rxjs';
 import { ClienteElement } from 'src/app/models/cliente.model';
 import { ProyectoElement } from 'src/app/models/proyecto.model';
@@ -23,6 +24,7 @@ import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 })
 export class EditProyectoComponent implements OnInit {
 
+  @ViewChild('scrollContainer') private myScrollContainer!: ElementRef;
 
   nodosList: string[] = [];
   isPerfilApp: any;
@@ -36,6 +38,9 @@ export class EditProyectoComponent implements OnInit {
   progress: number = 0;
   tamanioTotalMB: string = '0';
 
+  // Capturar el usuario activo para auditoria
+  username: any;
+
   public proyectoForm!: FormGroup;
   tituloFormulario!: string;
   botonLabel!: string;
@@ -48,11 +53,16 @@ export class EditProyectoComponent implements OnInit {
   nombreArchivoF60: string = '';
   nombreArchivoLld: string = '';
   nombreArchivoHld: string = '';
+  nombreArchivoMemoriaTecnica: string = '';
+  nombreArchivoSid: string = '';
   nombreArchivoLayout: string = '';
   nombreArchivoPresentacion: string = '';
   nombreArchivoSla: string = '';
   nombreArchivoReporteFotografico: string = '';
   nombreArchivoAsignacionFuerzaEspacio: string = '';
+  nombreArchivoEtiquetado: string = '';
+  nombreArchivoPlanos: string = '';
+  nombreArchivoProyectoEjecutivo: string = '';
   nombreArchivoInventarioHardware: string = '';
   nombreArchivoAtpFisico: string = '';
   nombreArchivoAtpLogico: string = '';
@@ -61,6 +71,7 @@ export class EditProyectoComponent implements OnInit {
   nombreArchivoCartaResponsivaIaaS: string = '';
   nombreArchivoCartaResponsivaStorage: string = '';
   nombreArchivoCartaResponsivaGsoc: string = '';
+  nombreArchivoCartaResponsivaLlaves: string = '';
   nombreArchivoCartaResponsivaHa: string = '';
   nombreArchivoAtpFisicoFirmado: string = '';
   nombreArchivoOtros: string = '';
@@ -69,11 +80,16 @@ export class EditProyectoComponent implements OnInit {
   selectedFileF60: File | null = null;
   selectedFileLld: File | null = null;
   selectedFileHld: File | null = null;
+  selectedFileMemoriaTecnica: File | null = null;
+  selectedFileSid: File | null = null;
   selectedFileLayout: File | null = null;
   selectedFilePresentacion: File | null = null;
   selectedFileSla: File | null = null;
   selectedFileReporteFotografico: File | null = null;
   selectedFileFuerzaEspacio: File | null = null;
+  selectedFileEtiquetado: File | null = null;
+  selectedFilePlanos: File | null = null;
+  selectedFileProyectoEjecutivo: File | null = null;
   selectedFileInventario: File | null = null;
   selectedFileAtpFisico: File | null = null;
   selectedFileAtpLogico: File | null = null;
@@ -82,14 +98,21 @@ export class EditProyectoComponent implements OnInit {
   selectedFileCartaIaaS: File | null = null;
   selectedFileCartaStorage: File | null = null;
   selectedFileCartaGsoc: File | null = null;
+  selectedFileCartaLlaves: File | null = null;
   selectedFileCartaHa: File | null = null;
   selectedFileAtpFisicoFirmado: File | null = null;
   selectedFileOtros: File | null = null;
 
+  // Arreglo de files para archivos adjuntos
+  archivosParaSubir: File[] = [];
+  isDragging = false;
+
+  // Variable para identificar si es edición
+  isEditMode = true;
 
   constructor(private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService,
     private sitioService: SitioService, private clienteService: ClienteService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<EditProyectoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ProyectoElement, private util: UtilsService, private snackbar: MatSnackBar) {
+    @Inject(MAT_DIALOG_DATA) public data: ProyectoElement, private util: UtilsService, private snackbar: MatSnackBar, private keycloakService: KeycloakService) {
     // Configuración del título y botón del formulario
     this.tituloFormulario = 'Actualizar';
     this.botonLabel = 'Actualizar';
@@ -104,14 +127,19 @@ export class EditProyectoComponent implements OnInit {
       tipoProyecto: [this.data.tipoProyecto.idTipoProyecto, Validators.required],
       sitio: [this.data.sitio.idSitio, Validators.required],
       cliente: [this.data.cliente.idCliente, Validators.required],
-      fileLld: ['',],
-      fileF60: ['',],
-      fileHld: ['',],
+      fileLld: [''],
+      fileF60: [''],
+      fileHld: [''],
+      fileMemoriaTecnica: [''],
+      fileSid: [''],
       fileLayout: [''],
       filePresentacion: [''],
       fileSla: [''],
       fileReporteFotografico: [''],
       fileAsignacionFuerzaEspacio: [''],
+      fileEtiquetado: [''],
+      filePlanos: [''],
+      fileProyectoEjecutivo: [''],
       fileInventarioHardware: [''],
       fileAtpFisico: [''],
       fileAtpLogico: [''],
@@ -120,6 +148,7 @@ export class EditProyectoComponent implements OnInit {
       fileCartaResponsivaIaaS: [''],
       fileCartaResponsivaStorage: [''],
       fileCartaResponsivaGsoc: [''],
+      fileCartaResponsivaLlaves: [''],
       fileCartaResponsivaHa: [''],
       fileAtpFisicoFirmado: [''],
       fileOtros: ['']
@@ -172,11 +201,16 @@ export class EditProyectoComponent implements OnInit {
     this.nombreArchivoF60 = this.fileNameSinCarpeta(this.data.f60);
     this.nombreArchivoLld = this.fileNameSinCarpeta(this.data.lld);
     this.nombreArchivoHld = this.fileNameSinCarpeta(this.data.hld);
+    this.nombreArchivoMemoriaTecnica = this.fileNameSinCarpeta(this.data.memoriaTecnica);
+    this.nombreArchivoSid = this.fileNameSinCarpeta(this.data.sid);
     this.nombreArchivoLayout = this.fileNameSinCarpeta(this.data.layout);
     this.nombreArchivoPresentacion = this.fileNameSinCarpeta(this.data.presentacion);
     this.nombreArchivoSla = this.fileNameSinCarpeta(this.data.sla);
     this.nombreArchivoReporteFotografico = this.fileNameSinCarpeta(this.data.reporteFotografico);
     this.nombreArchivoAsignacionFuerzaEspacio = this.fileNameSinCarpeta(this.data.asignacionFuerzaEspacio);
+    this.nombreArchivoEtiquetado = this.fileNameSinCarpeta(this.data.etiquetado);
+    this.nombreArchivoPlanos = this.fileNameSinCarpeta(this.data.planos);
+    this.nombreArchivoProyectoEjecutivo = this.fileNameSinCarpeta(this.data.proyectoEjecutivo);
     this.nombreArchivoInventarioHardware = this.fileNameSinCarpeta(this.data.inventarioHardware);
     this.nombreArchivoAtpFisico = this.fileNameSinCarpeta(this.data.atpFisico);
     this.nombreArchivoAtpLogico = this.fileNameSinCarpeta(this.data.atpLogico);
@@ -185,6 +219,7 @@ export class EditProyectoComponent implements OnInit {
     this.nombreArchivoCartaResponsivaIaaS = this.fileNameSinCarpeta(this.data.cartaResponsivaIaaS);
     this.nombreArchivoCartaResponsivaStorage = this.fileNameSinCarpeta(this.data.cartaResponsivaStorage);
     this.nombreArchivoCartaResponsivaGsoc = this.fileNameSinCarpeta(this.data.cartaResponsivaGsoc);
+    this.nombreArchivoCartaResponsivaLlaves = this.fileNameSinCarpeta(this.data.cartaResponsivaLlaves);
     this.nombreArchivoCartaResponsivaHa = this.fileNameSinCarpeta(this.data.cartaResponsivaHA);
     this.nombreArchivoAtpFisicoFirmado = this.fileNameSinCarpeta(this.data.atpFisicoFirmado);
     this.nombreArchivoOtros = this.fileNameSinCarpeta(this.data.otros);
@@ -193,6 +228,10 @@ export class EditProyectoComponent implements OnInit {
     this.getTiposProyecto();
     this.getSitiosProyecto();
     this.getClientesProyecto();
+
+    this.username = this.keycloakService.loadUserProfile().then(profile => {
+      this.username = profile.firstName + ' ' + profile.lastName;
+    });
   }
 
   // Limpiar lista de nodos al iniciar el componente
@@ -289,6 +328,24 @@ export class EditProyectoComponent implements OnInit {
   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
   * @param event evento que propicia la carga del archivo
   */
+  onFileChangedMemoriaTecnica(event: any) {
+    this.selectedFileMemoriaTecnica = event.target.files[0];
+    this.nombreArchivoMemoriaTecnica = event.target.files[0].name;
+  }
+
+  /**
+  * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+  * @param event evento que propicia la carga del archivo
+  */
+  onFileChangedSid(event: any) {
+    this.selectedFileSid = event.target.files[0];
+    this.nombreArchivoSid = event.target.files[0].name;
+  }
+
+  /**
+  * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+  * @param event evento que propicia la carga del archivo
+  */
   onFileChangedLayout(event: any) {
     this.selectedFileLayout = event.target.files[0];
     this.nombreArchivoLayout = event.target.files[0].name;
@@ -328,6 +385,33 @@ export class EditProyectoComponent implements OnInit {
   onFileChangedFuerzaEspacio(event: any) {
     this.selectedFileFuerzaEspacio = event.target.files[0];
     this.nombreArchivoAsignacionFuerzaEspacio = event.target.files[0].name;
+  }
+
+  /**
+  * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+  * @param event evento que propicia la carga del archivo
+  */
+  onFileChangedEtiquetado(event: any) {
+    this.selectedFileEtiquetado = event.target.files[0];
+    this.nombreArchivoEtiquetado = event.target.files[0].name;
+  }
+
+  /**
+   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+   * @param event evento que propicia la carga del archivo
+   */
+  onFileChangedPlanos(event: any) {
+    this.selectedFilePlanos = event.target.files[0];
+    this.nombreArchivoPlanos = event.target.files[0].name;
+  }
+
+  /**
+   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+   * @param event evento que propicia la carga del archivo
+   */
+  onFileChangedProyectoEjecutivo(event: any) {
+    this.selectedFileProyectoEjecutivo = event.target.files[0];
+    this.nombreArchivoProyectoEjecutivo = event.target.files[0].name;
   }
 
   /**
@@ -402,6 +486,14 @@ export class EditProyectoComponent implements OnInit {
     this.nombreArchivoCartaResponsivaGsoc = event.target.files[0].name;
   }
 
+  /**  * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+   * @param event evento que propicia la carga del archivo
+   */
+  onFileChangedCartaResponsivaLlaves(event: any) {
+    this.selectedFileCartaLlaves = event.target.files[0];
+    this.nombreArchivoCartaResponsivaLlaves = event.target.files[0].name;
+  }
+
   /**
   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
   * @param event evento que propicia la carga del archivo
@@ -443,11 +535,16 @@ export class EditProyectoComponent implements OnInit {
       this.selectedFileF60,
       this.selectedFileLld,
       this.selectedFileHld,
+      this.selectedFileMemoriaTecnica,
+      this.selectedFileSid,
       this.selectedFileLayout,
       this.selectedFilePresentacion,
       this.selectedFileSla,
       this.selectedFileReporteFotografico,
       this.selectedFileFuerzaEspacio,
+      this.selectedFileEtiquetado,
+      this.selectedFilePlanos,
+      this.selectedFileProyectoEjecutivo,
       this.selectedFileInventario,
       this.selectedFileAtpFisico,
       this.selectedFileAtpLogico,
@@ -456,12 +553,15 @@ export class EditProyectoComponent implements OnInit {
       this.selectedFileCartaIaaS,
       this.selectedFileCartaStorage,
       this.selectedFileCartaGsoc,
+      this.selectedFileCartaLlaves,
       this.selectedFileCartaHa,
       this.selectedFileAtpFisicoFirmado,
       this.selectedFileOtros
     ];
 
     filesArray.forEach(f => { if (f) totalBytes += f.size; });
+    this.archivosParaSubir.forEach(f => { if (f) totalBytes += f.size; });
+
     this.tamanioTotalMB = (totalBytes / (1024 * 1024)).toFixed(2) + ' MB';
 
     // 2. Mostrar snackbar informando al usuario sobre la carga de archivos
@@ -485,6 +585,12 @@ export class EditProyectoComponent implements OnInit {
     formData.append('tipoProyectoId', this.proyectoForm.value.tipoProyecto);
     formData.append('sitioId', this.proyectoForm.value.sitio);
     formData.append('clienteId', this.proyectoForm.value.cliente);
+    formData.append('usuarioActivo', this.username);
+
+    // Agregamos los archivos adicionales al formulario para persistir a través de la url con el endpoin en backend
+    this.archivosParaSubir.forEach(file => {
+      formData.append('archivosAdicionales', file);
+    });
 
     // helper para los archivos opcionales / existentes
     const appendFileOrPendiente = (campo: string, file: File | null) => {
@@ -499,11 +605,16 @@ export class EditProyectoComponent implements OnInit {
     appendFileOrPendiente('fileF60', this.selectedFileF60);
     appendFileOrPendiente('fileLld', this.selectedFileLld);
     appendFileOrPendiente('fileHld', this.selectedFileHld);
+    appendFileOrPendiente('fileMemoriaTecnica', this.selectedFileMemoriaTecnica);
+    appendFileOrPendiente('fileSid', this.selectedFileSid);
     appendFileOrPendiente('fileLayout', this.selectedFileLayout);
     appendFileOrPendiente('filePresentacion', this.selectedFilePresentacion);
     appendFileOrPendiente('fileSla', this.selectedFileSla);
     appendFileOrPendiente('fileReporteFotografico', this.selectedFileReporteFotografico);
     appendFileOrPendiente('fileAsignacionFuerzaEspacio', this.selectedFileFuerzaEspacio);
+    appendFileOrPendiente('fileEtiquetado', this.selectedFileEtiquetado);
+    appendFileOrPendiente('filePlanos', this.selectedFilePlanos);
+    appendFileOrPendiente('fileProyectoEjecutivo', this.selectedFileProyectoEjecutivo);
     appendFileOrPendiente('fileInventarioHardware', this.selectedFileInventario);
     appendFileOrPendiente('fileAtpFisico', this.selectedFileAtpFisico);
     appendFileOrPendiente('fileAtpLogico', this.selectedFileAtpLogico);
@@ -512,6 +623,7 @@ export class EditProyectoComponent implements OnInit {
     appendFileOrPendiente('fileCartaResponsivaIaaS', this.selectedFileCartaIaaS);
     appendFileOrPendiente('fileCartaResponsivaStorage', this.selectedFileCartaStorage);
     appendFileOrPendiente('fileCartaResponsivaGsoc', this.selectedFileCartaGsoc);
+    appendFileOrPendiente('fileCartaResponsivaLlaves', this.selectedFileCartaLlaves);
     appendFileOrPendiente('fileCartaResponsivaHa', this.selectedFileCartaHa);
     appendFileOrPendiente('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado);
     appendFileOrPendiente('fileOtros', this.selectedFileOtros);
@@ -585,6 +697,72 @@ export class EditProyectoComponent implements OnInit {
     this.selectedFileHld = null;
     this.nombreArchivoHld = this.fileNameSinCarpeta(this.data.hld) || 'NA';
     const inputEl = document.getElementById('file-hld') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileMemoriaTecnica() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileMemoriaTecnica: '' });
+    this.selectedFileMemoriaTecnica = null;
+    this.nombreArchivoMemoriaTecnica = '';
+    const inputEl = document.getElementById('file-memoriaTecnica') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileSid() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileSid: '' });
+    this.selectedFileSid = null;
+    this.nombreArchivoSid = '';
+    const inputEl = document.getElementById('file-sid') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileEtiquetado() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileEtiquetado: '' });
+    this.selectedFileEtiquetado = null;
+    this.nombreArchivoEtiquetado = '';
+    const inputEl = document.getElementById('file-etiquetado') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFilePlanos() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ filePlanos: '' });
+    this.selectedFilePlanos = null;
+    this.nombreArchivoPlanos = '';
+    const inputEl = document.getElementById('file-planos') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileProyectoEjecutivo() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileProyectoEjecutivo: '' });
+    this.selectedFileProyectoEjecutivo = null;
+    this.nombreArchivoProyectoEjecutivo = '';
+    const inputEl = document.getElementById('file-proyectoEjecutivo') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileCartaLlaves() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileCartaLlaves: '' });
+    this.selectedFileCartaLlaves = null;
+    this.nombreArchivoCartaResponsivaLlaves = '';
+    const inputEl = document.getElementById('file-cartaLlaves') as HTMLInputElement;
     if (inputEl) {
       inputEl.value = ''; // reset visual del <input type="file">
     }
@@ -773,6 +951,81 @@ export class EditProyectoComponent implements OnInit {
       verticalPosition: this.verticalPositionSnackbar
     });
   }
+
+  // Operaciones para archivos adjuntos
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: any) {
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+    if (event.dataTransfer?.files) {
+      this.agregarArchivosALista(event.dataTransfer.files);
+    }
+  }
+
+  onFileSelected(event: any) {
+    if (event.target.files) {
+      this.agregarArchivosALista(event.target.files);
+    }
+  }
+
+  agregarArchivosALista(files: FileList) {
+    const nuevosArchivos = Array.from(files);
+    this.archivosParaSubir.push(...nuevosArchivos);
+
+    setTimeout(() => {
+      if (this.myScrollContainer) {
+        this.myScrollContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+
+      const dialogContent = document.querySelector('mat-dialog-content');
+      if (dialogContent) {
+        dialogContent.scrollTo({
+          top: dialogContent.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
+    }, 150);
+  }
+
+  removerArchivo(index: number) {
+    this.archivosParaSubir.splice(index, 1);
+  }
+
+  descargarAdjunto(idAdjunto: number, nombreArchivo: string) {
+
+    if (!idAdjunto) {
+      this.openSnackbar("Error: ID de archivo no válido", "Cerrar");
+      return;
+    }
+
+    this.proyectoService.descargarAdjuntoMasivo(idAdjunto).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        // El nombre se recuperará del header del Backend
+        a.download = nombreArchivo;
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error("Error al descargar:", err);
+        this.openSnackbar("No se pudo descargar el archivo", "Cerrar");
+      }
+    });
+  }
+
   /**
    * Metodo para cerrar el dialog
    */

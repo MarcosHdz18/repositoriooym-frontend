@@ -7,6 +7,7 @@ import { TipoProyectoService } from '../../services/tipoProyectoService.service'
 import { RegionService } from '../../services/region.service';
 import { ClienteService } from '../../services/cliente.service';
 import { SitioService } from '../../services/sitio.service';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-dialog-confirm',
@@ -23,6 +24,8 @@ export class DialogConfirmComponent implements OnInit {
   idSitioDeleted = 0;
   idClienteDeleted = 0;
 
+  username: any;
+
   nombreArea = '';
   nombreResponsable = '';
   nombreRegion = '';
@@ -33,7 +36,8 @@ export class DialogConfirmComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<DialogConfirmComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     private areaService: AreaService, private responsableService: ResponsableService, private regionService: RegionService,
-    private tipoProyectoService: TipoProyectoService, private sitioService: SitioService, private clienteService: ClienteService, private proyectoService: ProyectoService) { }
+    private tipoProyectoService: TipoProyectoService, private sitioService: SitioService, private clienteService: ClienteService, private proyectoService: ProyectoService,
+    private keycloakService: KeycloakService) { }
 
   ngOnInit(): void {
     this.idAreaDeleted = this.data.idArea;
@@ -51,6 +55,10 @@ export class DialogConfirmComponent implements OnInit {
     this.nombreTipoProyecto = this.data.nombreTipoProyecto;
     this.nombreCliente = this.data.nombreCliente;
     this.nombreSitio = this.data.nombreSitio;
+
+    this.username = this.keycloakService.loadUserProfile().then(profile => {
+      this.username = profile.firstName + ' ' + profile.lastName;
+    });
   }
 
   // Confirmacion para eliminar el registro seleccionado
@@ -89,7 +97,7 @@ export class DialogConfirmComponent implements OnInit {
           this.dialogRef.close(2);
         });
       } else if (this.data.module == "proyecto") {
-        this.proyectoService.deleteProyecto(this.data.idProyecto).subscribe((data: any) => {
+        this.proyectoService.deleteProyecto(this.data.idProyecto, this.username).subscribe((data: any) => {
           this.dialogRef.close(1);
         }, (error: any) => {
           this.dialogRef.close(2);

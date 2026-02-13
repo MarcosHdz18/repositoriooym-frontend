@@ -38,7 +38,8 @@ export class ProyectoService {
 
     return this.http.post(endpoint, body, {
       reportProgress: true, // Esto permite rastrear el progreso de la solicitud 
-      observe: 'events' }); // Esto permite observar la respuesta completa, incluyendo encabezados y estado
+      observe: 'events'
+    }); // Esto permite observar la respuesta completa, incluyendo encabezados y estado
   }
 
   /**
@@ -61,8 +62,8 @@ export class ProyectoService {
    * @param idProyecto identificador unico del proyecto que se eliminara
    * @returns null
    */
-  deleteProyecto(idProyecto: number): Observable<void> {
-    const endpoint = `${base_url}/proyectos/${idProyecto}`;
+  deleteProyecto(idProyecto: number, username: string): Observable<void> {
+    const endpoint = `${base_url}/proyectos/${idProyecto}?usuarioActivo=${username}`;
 
     return this.http.delete<void>(endpoint);
   }
@@ -105,6 +106,13 @@ export class ProyectoService {
     });
   }
 
+  // Método para descargar desde la nueva tabla de adjuntos
+  descargarAdjuntoMasivo(idAdjunto: number): Observable<Blob> {
+    return this.http.get(`${base_url}/proyectos/adjuntos/descargar/${idAdjunto}`, {
+      responseType: 'blob'
+    });
+  }
+
   /**
    * Metodo que permite la exportacion de los datos en formato de libro de excel
    * @returns file export excel
@@ -112,7 +120,7 @@ export class ProyectoService {
   exportProyectosExcel() {
     const endpoint = `${base_url}/proyectos/export/excel`;
 
-    return this.http.get(endpoint, { 
+    return this.http.get(endpoint, {
       responseType: 'blob'
     });
 

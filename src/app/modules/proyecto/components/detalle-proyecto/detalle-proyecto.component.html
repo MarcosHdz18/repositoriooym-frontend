@@ -123,7 +123,8 @@
                         <mat-icon class="doc-icon">{{ doc.icon }}</mat-icon>
                         <div class="doc-texts">
                             <span class="doc-label">{{ doc.label }}</span>
-                            <span class="doc-filename" matTooltip="{{ doc.filename?.split('/')?.pop() || 'Sin archivo' }}">
+                            <span class="doc-filename"
+                                matTooltip="{{ doc.filename?.split('/')?.pop() || 'Sin archivo' }}">
                                 {{ doc.filename?.split('/')?.pop() }}
                             </span>
                         </div>
@@ -136,13 +137,56 @@
         </div>
     </div>
 
+    <!--Documentacion adicional-->
+    <ng-container *ngIf="isPerfilInfraestructura">
+        <div class="seccion-container">
+            <div class="seccion-linea"></div>
+            <div class="seccion-contenido">
+                <mat-icon class="seccion-icon">book_library</mat-icon>
+                <span class="seccion-texto">Archivos adicionales</span>
+            </div>
+            <div class="seccion-linea"></div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div *ngIf="tieneDocumentos('adjuntos_adicionales') > 0 && isPerfilInfraestructura; else sinDocumentos">
+            <div class="adjuntos-existentes-container" *ngIf="data.adjuntos && data.adjuntos.length > 0">
+                <div class="adjuntos-header">
+                    <mat-icon>attachment</mat-icon>
+                    <span>Archivos adicionales en este proyecto: <strong>{{ data.adjuntos.length }}
+                            archivos</strong></span>
+                </div>
+
+                <div class="adjuntos-list">
+                    <div class="adjunto-item" *ngFor="let adj of data.adjuntos">
+                        <div class="adjunto-info">
+                            <mat-icon color="primary">description</mat-icon>
+                            <span class="adjunto-name" [matTooltip]="adj.nombreArchivo">
+                                {{ adj.nombreArchivo }}
+                            </span>
+                        </div>
+                        <div class="adjunto-actions">
+                            <button mat-icon-button color="primary"
+                                (click)="descargarAdjunto(adj.idDocumentoAdjunto, adj.nombreArchivo)"
+                                matTooltip="Descargar">
+                                <mat-icon>download</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
     <!--Sección de documentos vacíos-->
     <ng-template #sinDocumentos>
         <div class="empty-state-section">
             <mat-icon class="icon-espera">history</mat-icon>
             <div class="texto-espera">
                 <strong>Información en proceso</strong>
-                <span>Sin registros para mostrar en este momento. La información se actualizará durante la implementación.</span>
+                <span>Sin registros para mostrar en este momento. La información se actualizará durante la
+                    liberación del proyecto.</span>
             </div>
         </div>
     </ng-template>

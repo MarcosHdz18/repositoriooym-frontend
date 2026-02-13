@@ -13,6 +13,7 @@ import { EditProyectoComponent } from '../edit-proyecto/edit-proyecto.component'
 import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { trigger as animationTrigger, transition, style, animate } from '@angular/animations';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-proyecto',
@@ -38,6 +39,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   maxMostrar = 6; // Número máximo de nodos a mostrar antes de "ver más"
   totalLiberados: number = this.getTotalProyectosLiberados();
   totalPendientes: number = this.getTotalProyectosEnProceso();
+  username: any;
 
   //DataSource de los datos a pintar
   dataSource = new MatTableDataSource<ProyectoElement>([]);
@@ -67,7 +69,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   // MatPaginator: Componente de paginación de Material Angular
   // MatSort: Componente de ordenamiento de Material Angular
   constructor(private proyectoService: ProyectoService, private paginatorLabel: MatPaginatorIntl, public dialog: MatDialog,
-    private snackbar: MatSnackBar, private util: UtilsService, private sanitizer: DomSanitizer) { }
+    private snackbar: MatSnackBar, private util: UtilsService, private sanitizer: DomSanitizer, private keycloakService: KeycloakService) { }
 
   ngOnInit(): void {
     this.paginatorLabel.itemsPerPageLabel = "Elementos por página";
@@ -111,6 +113,10 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
       ].join(' ').toLowerCase();
       return str.includes(term);
     };
+
+    this.username = this.keycloakService.loadUserProfile().then(profile => {
+      this.username = profile.firstName + ' ' + profile.lastName;
+    });
   }
 
   obtenerFondoGrafica(): SafeStyle {
@@ -141,7 +147,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
 
     this.dataSource.sort = this.proyectoSort;
-    // opcional: normalizar comparaciones (por ejemplo fecha como Date y responsable por nombre)
+    // normalizar comparaciones (por ejemplo fecha como Date y responsable por nombre)
     this.dataSource.sortingDataAccessor = (item, prop) => {
       if (prop === 'fechaLiberacion') {
         return new Date(item.fechaLiberacion);
@@ -168,13 +174,11 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // Metodo para filtrar por estado (Liberado, Pendiente o Todos)
   filtrarPorEstado(estado: string) {
     if (!estado || estado === 'TODOS') {
       this.dataSource.filter = '';
     } else {
-      // Aplicamos el filtro. 
-      // Nota: El filtro de mat-table busca en TODA la fila, 
-      // así que buscará la palabra 'pendiente' o 'liberado'.
       this.dataSource.filter = estado.trim().toLowerCase();
     }
   }
@@ -215,25 +219,6 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
     });
   }
 
-  /**Procesamiento del servicio REST y se recorre el json
-  processProyectosResponse(resp: any) {
-  
-    const dataProyectos: ProyectoElement[] = [];
-  
-    if (resp.metadata[0].code == '00') {
-  
-      let listProyectos = resp.proyectoResponse.proyectos;
-  
-      listProyectos.forEach((element: ProyectoElement) => {
-        dataProyectos.push(element);
-      });
-  
-      this.dataSource = new MatTableDataSource<ProyectoElement>(dataProyectos);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.proyectoSort;
-    }
-  }*/
-
   // Metodo que actualiza un registro de proyecto en la base de datos
   editProyecto(idProyecto: number, nombre: string, fechaInicio: string, fechaLiberacion: string, responsableProyecto: any, tipoProyecto: string, sitio: string, cliente: string) {
 
@@ -260,7 +245,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   deleteProyecto(proyecto: ProyectoElement) {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '450px',
-      data: { idProyecto: proyecto.idProyecto, nombreProyecto: proyecto.nombre, module: "proyecto" }
+      data: { idProyecto: proyecto.idProyecto, nombreProyecto: proyecto.nombre, module: "proyecto", usuarioActivo: this.username }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -274,25 +259,17 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   }
 
   // Detalle del proyecto
-  detalleProyecto(idProyecto: any, nombre: any, fechaLiberacion: any, f60: any, nodos: any, lld: any, hld: any, rto: any, atpFisico: any, atpLogico: any, atpFisicoFirmado: any,
-    cartaResponsivaPlataforma: any, cartaResponsivaIaaS: any, cartaResponsivaStorage: any, cartaResponsivaHa: any,
-    cartaResponsivaGsoc: any, layout: any, presentacion: any, sla: any, reporteFotografico: any, asignacionFuerzaEspacio: any, inventarioHardware: any,
-    otros: any) {
+  detalleProyecto(proyecto: ProyectoElement) {
     const dialogRef = this.dialog.open(DetalleProyectoComponent, {
-      width: '1000px',
-      data: {
-        idProyecto: idProyecto, nombre: nombre, fechaLiberacion: fechaLiberacion, f60: f60, lld: lld, nodos: nodos, hld: hld, reporteTransferenciaOperativa: rto, atpFisico: atpFisico, atpLogico: atpLogico, atpFisicoFirmado: atpFisicoFirmado,
-        cartaResponsivaPlataforma: cartaResponsivaPlataforma, cartaResponsivaIaaS: cartaResponsivaIaaS, cartaResponsivaStorage: cartaResponsivaStorage,
-        cartaResponsivaHa: cartaResponsivaHa, cartaResponsivaGsoc: cartaResponsivaGsoc, layout: layout, presentacion: presentacion, sla: sla, reporteFotografico: reporteFotografico,
-        asignacionFuerzaEspacio: asignacionFuerzaEspacio, inventarioHardware: inventarioHardware, otros: otros
-      }
+      width: '1200px',
+      data: proyecto
     });
   }
 
   // Dialog para un nuevo registro en la base
   openNewProyectoDialog() {
     const dialogRef = this.dialog.open(NewProyectoComponent, {
-      width: '1000px'
+      width: '1200px'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {

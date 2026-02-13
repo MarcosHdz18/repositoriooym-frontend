@@ -16,6 +16,7 @@ import { OrganigramaComponent } from './pages/organigrama/organigrama.component'
 import { RegionModule } from '../region/region.module';
 import { SitioModule } from '../sitio/sitio.module';
 import { ClienteModule } from '../cliente/cliente.module';
+import { BitacoraModule } from '../bitacora/bitacora.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ClienteModule } from '../cliente/cliente.module';
     ClienteModule,
     SitioModule,
     TipoProyectoModule,
-    ProyectoModule
+    ProyectoModule,
+    BitacoraModule
   ]
 })
 export class DashboardModule { }

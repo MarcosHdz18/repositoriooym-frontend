@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProyectoService } from 'src/app/modules/shared/services/proyecto.service';
@@ -12,6 +12,7 @@ import { ClienteService } from 'src/app/modules/shared/services/cliente.service'
 import { HttpEventType } from '@angular/common/http';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition, SimpleSnackBar } from '@angular/material/snack-bar';
 import { timer, zip } from 'rxjs';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-new-proyecto',
@@ -20,6 +21,8 @@ import { timer, zip } from 'rxjs';
   providers: [DatePipe]
 })
 export class NewProyectoComponent implements OnInit {
+
+  @ViewChild('scrollContainer') private myScrollContainer!: ElementRef;
 
   nodosList: string[] = [];
   isPerfilApp: any;
@@ -33,6 +36,12 @@ export class NewProyectoComponent implements OnInit {
   progress: number = 0;
   tamanioTotalMB: string = '0';
 
+  // Capturar el usuario activo para auditoria
+  username: any;
+
+  archivosParaSubir: File[] = [];
+  isDragging = false;
+
   public proyectoForm: FormGroup;
   tituloFormulario: string;
   botonLabel: string;
@@ -43,11 +52,16 @@ export class NewProyectoComponent implements OnInit {
   selectedFileF60: any;
   selectedFileLld: any;
   selectedFileHld: any;
+  selectedFileMemoriaTecnica: any;
+  selectedFileSid: any;
   selectedFileLayout: any;
   selectedFilePresentacion: any;
   selectedFileSla: any;
   selectedFileReporteFotografico: any;
   selectedFileFuerzaEspacio: any;
+  selectedFileEtiquetado: any;
+  selectedFilePlanos: any;
+  selectedFileProyectoEjecutivo: any;
   selectedFileInventario: any;
   selectedFileAtpFisico: any;
   selectedFileAtpLogico: any;
@@ -56,17 +70,23 @@ export class NewProyectoComponent implements OnInit {
   selectedFileCartaIaaS: any;
   selectedFileCartaStorage: any;
   selectedFileCartaGsoc: any;
+  selectedFileCartaLlaves: any;
   selectedFileCartaHa: any;
   selectedFileAtpFisicoFirmado: any;
   selectedFileOtros: any;
   nombreArchivoF60: string = '';
   nombreArchivoLld: string = '';
   nombreArchivoHld: string = '';
+  nombreArchivoMemoriaTecnica: string = '';
+  nombreArchivoSid: string = '';
   nombreArchivoLayout: string = '';
   nombreArchivoPresentacion: string = '';
   nombreArchivoSla: string = '';
   nombreArchivoReporteFotografico: string = '';
   nombreArchivoAsignacionFuerzaEspacio: string = '';
+  nombreArchivoEtiquetado: string = '';
+  nombreArchivoPlanos: string = '';
+  nombreArchivoProyectoEjecutivo: string = '';
   nombreArchivoInventarioHardware: string = '';
   nombreArchivoAtpFisico: string = '';
   nombreArchivoAtpLogico: string = '';
@@ -75,13 +95,14 @@ export class NewProyectoComponent implements OnInit {
   nombreArchivoCartaResponsivaIaaS: string = '';
   nombreArchivoCartaResponsivaStorage: string = '';
   nombreArchivoCartaResponsivaGsoc: string = '';
+  nombreArchivoCartaResponsivaLlaves: string = '';
   nombreArchivoCartaResponsivaHa: string = '';
   nombreArchivoAtpFisicoFirmado: string = '';
   nombreArchivoOtros: string = '';
 
   constructor(private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService, private sitioService: SitioService,
     private clienteService: ClienteService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<NewProyectoComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
-    private util: UtilsService, private snackbar: MatSnackBar) {
+    private util: UtilsService, private snackbar: MatSnackBar, private keycloakService: KeycloakService) {
 
     this.tituloFormulario = 'Agregar nuevo';
     this.botonLabel = 'Guardar';
@@ -99,11 +120,16 @@ export class NewProyectoComponent implements OnInit {
       fileLld: [''],
       fileF60: [''],
       fileHld: [''],
+      fileMemoriaTecnica: [''],
+      fileSid: [''],
       fileLayout: [''],
       filePresentacion: [''],
       fileSla: [''],
       fileReporteFotografico: [''],
       fileAsignacionFuerzaEspacio: [''],
+      fileEtiquetado: [''],
+      filePlanos: [''],
+      fileProyectoEjecutivo: [''],
       fileInventarioHardware: [''],
       fileAtpFisico: [''],
       fileAtpLogico: [''],
@@ -112,6 +138,7 @@ export class NewProyectoComponent implements OnInit {
       fileCartaResponsivaIaaS: [''],
       fileCartaResponsivaStorage: [''],
       fileCartaResponsivaGsoc: [''],
+      fileCartaResponsivaLlaves: [''],
       fileCartaResponsivaHa: [''],
       fileAtpFisicoFirmado: [''],
       fileOtros: [''],
@@ -131,6 +158,10 @@ export class NewProyectoComponent implements OnInit {
     this.getSitios();
     // Lista de clientes
     this.getClientes();
+
+    this.username = this.keycloakService.loadUserProfile().then(profile => {
+      this.username = profile.firstName + ' ' + profile.lastName;
+    });
   }
 
   // Limpiar lista de nodos al iniciar el componente
@@ -216,6 +247,24 @@ export class NewProyectoComponent implements OnInit {
   }
 
   /**
+   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+   * @param event evento que propicia la carga del archivo
+   */
+  onFileChangedMemoriaTecnica(event: any) {
+    this.selectedFileMemoriaTecnica = event.target.files[0];
+    this.nombreArchivoMemoriaTecnica = event.target.files[0].name;
+  }
+
+  /**
+   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+   * @param event evento que propicia la carga del archivo
+   */
+  onFileChangedSid(event: any) {
+    this.selectedFileSid = event.target.files[0];
+    this.nombreArchivoSid = event.target.files[0].name;
+  }
+
+  /**
   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
   * @param event evento que propicia la carga del archivo
   */
@@ -258,6 +307,33 @@ export class NewProyectoComponent implements OnInit {
   onFileChangedFuerzaEspacio(event: any) {
     this.selectedFileFuerzaEspacio = event.target.files[0];
     this.nombreArchivoAsignacionFuerzaEspacio = event.target.files[0].name;
+  }
+
+  /**
+   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+   * @param event evento que propicia la carga del archivo
+   */
+  onFileChangedEtiquetado(event: any) {
+    this.selectedFileEtiquetado = event.target.files[0];
+    this.nombreArchivoEtiquetado = event.target.files[0].name;
+  }
+
+  /**
+   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+   * @param event evento que propicia la carga del archivo
+   */
+  onFileChangedPlanos(event: any) {
+    this.selectedFilePlanos = event.target.files[0];
+    this.nombreArchivoPlanos = event.target.files[0].name;
+  }
+
+  /**
+   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+   * @param event evento que propicia la carga del archivo
+   */
+  onFileChangedProyectoEjecutivo(event: any) {
+    this.selectedFileProyectoEjecutivo = event.target.files[0];
+    this.nombreArchivoProyectoEjecutivo = event.target.files[0].name;
   }
 
   /**
@@ -332,6 +408,15 @@ export class NewProyectoComponent implements OnInit {
     this.nombreArchivoCartaResponsivaGsoc = event.target.files[0].name;
   }
 
+
+  /**  * Metodo que obtiene el nombre del archivo y se muestra en el formulario
+   * @param event evento que propicia la carga del archivo
+   */
+  onFileChangedCartaResponsivaLlaves(event: any) {
+    this.selectedFileCartaLlaves = event.target.files[0];
+    this.nombreArchivoCartaResponsivaLlaves = event.target.files[0].name;
+  }
+
   /**
   * Metodo que obtiene el nombre del archivo y se muestra en el formulario
   * @param event evento que propicia la carga del archivo
@@ -373,11 +458,16 @@ export class NewProyectoComponent implements OnInit {
       this.selectedFileF60,
       this.selectedFileLld,
       this.selectedFileHld,
+      this.selectedFileMemoriaTecnica,
+      this.selectedFileSid,
       this.selectedFileLayout,
       this.selectedFilePresentacion,
       this.selectedFileSla,
       this.selectedFileReporteFotografico,
       this.selectedFileFuerzaEspacio,
+      this.selectedFileEtiquetado,
+      this.selectedFilePlanos,
+      this.selectedFileProyectoEjecutivo,
       this.selectedFileInventario,
       this.selectedFileAtpFisico,
       this.selectedFileAtpLogico,
@@ -386,12 +476,15 @@ export class NewProyectoComponent implements OnInit {
       this.selectedFileCartaIaaS,
       this.selectedFileCartaStorage,
       this.selectedFileCartaGsoc,
+      this.selectedFileCartaLlaves,
       this.selectedFileCartaHa,
       this.selectedFileAtpFisicoFirmado,
       this.selectedFileOtros
     ];
 
     filesArray.forEach(f => { if (f) totalBytes += f.size; });
+    this.archivosParaSubir.forEach(f => { if (f) totalBytes += f.size; });
+
     this.tamanioTotalMB = (totalBytes / (1024 * 1024)).toFixed(2) + ' MB';
 
     // 2. Mostrar snackbar informando al usuario sobre la carga de archivos
@@ -431,6 +524,7 @@ export class NewProyectoComponent implements OnInit {
     subirDatos.append('tipoProyectoId', this.proyectoForm.get('tipoProyecto')?.value as string);
     subirDatos.append('sitioId', this.proyectoForm.get('sitio')?.value as string);
     subirDatos.append('clienteId', this.proyectoForm.get('cliente')?.value as string);
+    subirDatos.append('usuarioActivo', this.username);
 
     // Archivos opcionales del formulario: si existen, los agregamos al FormData; si no, enviamos "NA"
     const pendingFiles = (fieldName: string, file: File | null) => {
@@ -444,11 +538,16 @@ export class NewProyectoComponent implements OnInit {
     pendingFiles('fileLld', this.selectedFileLld);
     pendingFiles('fileF60', this.selectedFileF60);
     pendingFiles('fileHld', this.selectedFileHld);
+    pendingFiles('fileMemoriaTecnica', this.selectedFileMemoriaTecnica);
+    pendingFiles('fileSid', this.selectedFileSid);
     pendingFiles('fileLayout', this.selectedFileLayout);
     pendingFiles('filePresentacion', this.selectedFilePresentacion);
     pendingFiles('fileSla', this.selectedFileSla);
     pendingFiles('fileReporteFotografico', this.selectedFileReporteFotografico);
     pendingFiles('fileAsignacionFuerzaEspacio', this.selectedFileFuerzaEspacio);
+    pendingFiles('fileEtiquetado', this.selectedFileEtiquetado);
+    pendingFiles('filePlanos', this.selectedFilePlanos);
+    pendingFiles('fileProyectoEjecutivo', this.selectedFileProyectoEjecutivo);
     pendingFiles('fileInventarioHardware', this.selectedFileInventario);
     pendingFiles('fileAtpFisico', this.selectedFileAtpFisico);
     pendingFiles('fileAtpLogico', this.selectedFileAtpLogico);
@@ -457,9 +556,15 @@ export class NewProyectoComponent implements OnInit {
     pendingFiles('fileCartaResponsivaIaaS', this.selectedFileCartaIaaS);
     pendingFiles('fileCartaResponsivaStorage', this.selectedFileCartaStorage);
     pendingFiles('fileCartaResponsivaGsoc', this.selectedFileCartaGsoc);
+    pendingFiles('fileCartaResponsivaLlaves', this.selectedFileCartaLlaves);
     pendingFiles('fileCartaResponsivaHa', this.selectedFileCartaHa);
     pendingFiles('fileAtpFisicoFirmado', this.selectedFileAtpFisicoFirmado);
     pendingFiles('fileOtros', this.selectedFileOtros);
+
+    //Persistir archivos adjuntos
+    this.archivosParaSubir.forEach(file => {
+      subirDatos.append('archivosAdicionales', file);
+    });
 
     //3. Lógica de retraso para asegurar que el snackbar se muestre antes de iniciar la carga
     const minWaitTime = timer(1250); // Tiempo mínimo de espera en milisegundos
@@ -530,6 +635,72 @@ export class NewProyectoComponent implements OnInit {
     this.selectedFileHld = null;
     this.nombreArchivoHld = '';
     const inputEl = document.getElementById('file-hld') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileMemoriaTecnica() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileMemoriaTecnica: '' });
+    this.selectedFileMemoriaTecnica = null;
+    this.nombreArchivoMemoriaTecnica = '';
+    const inputEl = document.getElementById('file-memoriaTecnica') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileSid() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileSid: '' });
+    this.selectedFileSid = null;
+    this.nombreArchivoSid = '';
+    const inputEl = document.getElementById('file-sid') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileEtiquetado() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileEtiquetado: '' });
+    this.selectedFileEtiquetado = null;
+    this.nombreArchivoEtiquetado = '';
+    const inputEl = document.getElementById('file-etiquetado') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFilePlanos() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ filePlanos: '' });
+    this.selectedFilePlanos = null;
+    this.nombreArchivoPlanos = '';
+    const inputEl = document.getElementById('file-planos') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileProyectoEjecutivo() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileProyectoEjecutivo: '' });
+    this.selectedFileProyectoEjecutivo = null;
+    this.nombreArchivoProyectoEjecutivo = '';
+    const inputEl = document.getElementById('file-proyectoEjecutivo') as HTMLInputElement;
+    if (inputEl) {
+      inputEl.value = ''; // reset visual del <input type="file">
+    }
+  }
+
+  removeFileCartaLlaves() {
+    // Limpia selección y fuerza ""
+    this.proyectoForm.patchValue({ fileCartaLlaves: '' });
+    this.selectedFileCartaLlaves = null;
+    this.nombreArchivoCartaResponsivaLlaves = '';
+    const inputEl = document.getElementById('file-cartaLlaves') as HTMLInputElement;
     if (inputEl) {
       inputEl.value = ''; // reset visual del <input type="file">
     }
@@ -717,6 +888,53 @@ export class NewProyectoComponent implements OnInit {
       horizontalPosition: this.horizontalPositionSnackbar,
       verticalPosition: this.verticalPositionSnackbar
     });
+  }
+
+  // Operaciones para archivos adjuntos
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: any) {
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+    if (event.dataTransfer?.files) {
+      this.agregarArchivosALista(event.dataTransfer.files);
+    }
+  }
+
+  // 3. Selección manual
+  onFileSelected(event: any) {
+    if (event.target.files) {
+      this.agregarArchivosALista(event.target.files);
+    }
+  }
+
+  agregarArchivosALista(files: FileList) {
+    const nuevosArchivos = Array.from(files);
+    this.archivosParaSubir.push(...nuevosArchivos);
+
+    setTimeout(() => {
+      if (this.myScrollContainer) {
+        this.myScrollContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+      const dialogContent = document.querySelector('mat-dialog-content');
+      if (dialogContent) {
+        dialogContent.scrollTo({
+          top: dialogContent.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
+    }, 150);
+  }
+
+  removerArchivo(index: number) {
+    this.archivosParaSubir.splice(index, 1);
   }
 
   /**

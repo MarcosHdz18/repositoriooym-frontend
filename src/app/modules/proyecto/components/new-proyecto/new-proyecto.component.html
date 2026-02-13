@@ -64,7 +64,7 @@
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Fecha de Inicio</mat-label>
                 <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio"
-                    (focus)="pickerInicio.open()" (click)="pickerInicio.open()" readonly />
+                    (focus)="pickerInicio.open()" (click)="pickerInicio.open()" />
                 <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
                 <mat-datepicker #pickerInicio></mat-datepicker>
             </mat-form-field>
@@ -79,7 +79,7 @@
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Fecha de liberación</mat-label>
                 <input matInput [matDatepicker]="pickerLiberacion" formControlName="fechaLiberacion"
-                    (focus)="pickerLiberacion.open()" (click)="pickerLiberacion.open()" readonly />
+                    (focus)="pickerLiberacion.open()" (click)="pickerLiberacion.open()" />
                 <mat-datepicker-toggle matSuffix [for]="pickerLiberacion"></mat-datepicker-toggle>
                 <mat-datepicker #pickerLiberacion></mat-datepicker>
             </mat-form-field>
@@ -99,161 +99,228 @@
             <div class="position-f60">
                 <mat-label [matTooltip]="nombreArchivoF60">F60:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileF60" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:</span>{{ nombreArchivoF60 || '' }}
+                        <span *ngIf="selectedFileF60"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:</span>{{ nombreArchivoF60 || ''
+                        }}
                     </span>
                 </mat-label>
                 <button *ngIf="selectedFileF60" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileF60()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileF60==null" for="file-f60" class="upload-icon-btn" matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-f60" type="file" (change)="onFileChangedF60($event)" formControlName="fileF60" /><br>
+                <input class="input-file" id="file-f60" type="file" (change)="onFileChangedF60($event)"
+                    formControlName="fileF60" /><br>
             </div>
 
             <!--File LLD-->
             <div class="position-lld">
-                <mat-label [matTooltip]="nombreArchivoLld">LLD: 
+                <mat-label [matTooltip]="nombreArchivoLld">LLD:
                     <span class="file-text-blue">
-                       <span *ngIf="selectedFileLld" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoLld || '' }}
+                        <span *ngIf="selectedFileLld" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoLld || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileLld" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileLld()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileLld==null" for="file-lld" class="upload-icon-btn" matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-lld" type="file" (change)="onFileChangedLld($event)" formControlName="fileLld" /><br>
+                <input class="input-file" id="file-lld" type="file" (change)="onFileChangedLld($event)"
+                    formControlName="fileLld" /><br>
             </div>
 
             <!--File HLD-->
             <div class="position-hld">
-                <mat-label [matTooltip]="nombreArchivoHld">HLD: 
+                <mat-label [matTooltip]="nombreArchivoHld">HLD:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileHld" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoHld || '' }}
+                        <span *ngIf="selectedFileHld" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoHld || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileHld" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileHld()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileHld==null" for="file-hld" class="upload-icon-btn" matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
-                </label>                
+                </label>
 
-                <input class="input-file" id="file-hld" type="file" (change)="onFileChangedHld($event)" formControlName="fileHld" /><br>
+                <input class="input-file" id="file-hld" type="file" (change)="onFileChangedHld($event)"
+                    formControlName="fileHld" /><br>
+            </div>
+
+            <!--File Memoria Técnica-->
+            <div *ngIf="isPerfilInfraestructura" class="position-memoria-tecnica">
+                <mat-label [matTooltip]="nombreArchivoMemoriaTecnica">Memoria técnica:
+                    <span class="file-text-blue">
+                        <span *ngIf="selectedFileMemoriaTecnica"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoMemoriaTecnica || '' }}
+                    </span>
+                </mat-label>
+                <button *ngIf="selectedFileMemoriaTecnica" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFileMemoriaTecnica()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFileMemoriaTecnica==null" for="file-memoriaTecnica" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
+                    <mat-icon>upload_file</mat-icon>
+                </label>
+
+                <input class="input-file" id="file-memoriaTecnica" type="file"
+                    (change)="onFileChangedMemoriaTecnica($event)" formControlName="fileMemoriaTecnica" /><br>
+            </div>
+
+            <!--File SID-->
+            <div *ngIf="isPerfilInfraestructura" class="position-sid">
+                <mat-label [matTooltip]="nombreArchivoSid">SID:
+                    <span class="file-text-blue">
+                        <span *ngIf="selectedFileSid"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoSid || '' }}
+                    </span>
+                </mat-label>
+                <button *ngIf="selectedFileSid" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFileSid()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFileSid==null" for="file-sid" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
+                    <mat-icon>upload_file</mat-icon>
+                </label>
+
+                <input class="input-file" id="file-sid" type="file"
+                    (change)="onFileChangedSid($event)" formControlName="fileSid" /><br>
             </div>
 
             <!--File RTO-->
             <div class="position-transferencia">
-                <mat-label [matTooltip]="nombreArchivoRto">RTO: 
+                <mat-label [matTooltip]="nombreArchivoRto">RTO:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileRto" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoRto || '' }}
+                        <span *ngIf="selectedFileRto" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoRto || '' }}
                     </span>
                 </mat-label>
                 <button *ngIf="selectedFileRto" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileRto()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileRto==null" for="file-rto" class="upload-icon-btn" matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-rto" type="file" (change)="onFileChangedRto($event)" formControlName="fileReporteTransferenciaOperativa" /><br>
+                <input class="input-file" id="file-rto" type="file" (change)="onFileChangedRto($event)"
+                    formControlName="fileReporteTransferenciaOperativa" /><br>
             </div>
 
             <!--File Layout-->
             <div class="position-layout">
-                <mat-label [matTooltip]="nombreArchivoLayout">Layout: 
+                <mat-label [matTooltip]="nombreArchivoLayout">Layout:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileLayout" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoLayout || '' }}
+                        <span *ngIf="selectedFileLayout" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoLayout || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileLayout" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileLayout()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileLayout==null" for="file-layout" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileLayout==null" for="file-layout" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-layout" type="file" (change)="onFileChangedLayout($event)" formControlName="fileLayout" /><br>
+                <input class="input-file" id="file-layout" type="file" (change)="onFileChangedLayout($event)"
+                    formControlName="fileLayout" /><br>
             </div>
 
             <!--File Presentacion-->
             <div class="position-presentacion">
-                <mat-label [matTooltip]="nombreArchivoPresentacion">Presentación: 
+                <mat-label [matTooltip]="nombreArchivoPresentacion">Presentación:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFilePresentacion" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoPresentacion || '' }}
+                        <span *ngIf="selectedFilePresentacion"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoPresentacion || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFilePresentacion" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFilePresentacion()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFilePresentacion==null" for="file-presentacion" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFilePresentacion==null" for="file-presentacion" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-presentacion" type="file" (change)="onFileChangedPresentacion($event)" formControlName="filePresentacion" /><br>
+                <input class="input-file" id="file-presentacion" type="file"
+                    (change)="onFileChangedPresentacion($event)" formControlName="filePresentacion" /><br>
             </div>
 
             <!--File SLA-->
             <div *ngIf="isPerfilInfraestructura" class="position-sla">
-                <mat-label [matTooltip]="nombreArchivoSla">SLA: 
+                <mat-label [matTooltip]="nombreArchivoSla">SLA:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileSla" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoSla || '' }}
+                        <span *ngIf="selectedFileSla" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoSla || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileSla" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileSla()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileSla==null" for="file-sla" class="upload-icon-btn" matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
-                </label>                
+                </label>
 
-                <input class="input-file" id="file-sla" type="file" (change)="onFileChangedSla($event)" formControlName="fileSla" /><br>
+                <input class="input-file" id="file-sla" type="file" (change)="onFileChangedSla($event)"
+                    formControlName="fileSla" /><br>
             </div>
 
             <!--File ATP Fisico-->
             <div *ngIf="isPerfilInfraestructura" class="position-atp-fisico">
-                <mat-label [matTooltip]="nombreArchivoAtpFisico">ATP Físico: 
+                <mat-label [matTooltip]="nombreArchivoAtpFisico">ATP Físico:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileAtpFisico" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoAtpFisico || '' }}
+                        <span *ngIf="selectedFileAtpFisico" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoAtpFisico || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileAtpFisico" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileAtpFisico()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileAtpFisico==null" for="file-atpFisico" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileAtpFisico==null" for="file-atpFisico" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
-                </label>                
+                </label>
 
-                <input class="input-file" id="file-atpFisico" type="file" (change)="onFileChangedAtpFisico($event)" formControlName="fileAtpFisico" /><br>
+                <input class="input-file" id="file-atpFisico" type="file" (change)="onFileChangedAtpFisico($event)"
+                    formControlName="fileAtpFisico" /><br>
             </div>
 
             <!--File ATP Logico-->
             <div class="position-atp-logico">
-                <mat-label [matTooltip]="nombreArchivoAtpLogico">ATP Lógico: 
+                <mat-label [matTooltip]="nombreArchivoAtpLogico">ATP Lógico:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileAtpLogico" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoAtpLogico || '' }}
+                        <span *ngIf="selectedFileAtpLogico" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoAtpLogico || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileAtpLogico" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileAtpLogico()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileAtpLogico==null" for="file-atpLogico" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileAtpLogico==null" for="file-atpLogico" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
-                
+
 
                 <input class="input-file" id="file-atpLogico" type="file" (change)="onFileChangedAtpLogico($event)"
                     formControlName="fileAtpLogico" /><br>
@@ -261,185 +328,337 @@
 
             <!--File ATP Fisico Firmado-->
             <div *ngIf="isPerfilInfraestructura" class="position-atp-fisico-firmado">
-                <mat-label [matTooltip]="nombreArchivoAtpFisicoFirmado">ATP Físico Firmado: 
+                <mat-label [matTooltip]="nombreArchivoAtpFisicoFirmado">ATP Físico Firmado:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileAtpFisicoFirmado" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoAtpFisicoFirmado || '' }}
+                        <span *ngIf="selectedFileAtpFisicoFirmado"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoAtpFisicoFirmado || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileAtpFisicoFirmado" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileAtpFisicoFirmado()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileAtpFisicoFirmado==null" for="file-atpFisicoFirmado" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileAtpFisicoFirmado==null" for="file-atpFisicoFirmado" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-atpFisicoFirmado" type="file" (change)="onFileChangedAtpFisicoFirmado($event)" formControlName="fileAtpFisicoFirmado" /><br>
+                <input class="input-file" id="file-atpFisicoFirmado" type="file"
+                    (change)="onFileChangedAtpFisicoFirmado($event)" formControlName="fileAtpFisicoFirmado" /><br>
             </div>
 
             <!--File Responsiva Plataforma-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-plataforma">
-                <mat-label [matTooltip]="nombreArchivoCartaResponsivaPlataforma">Responsiva Plataforma: 
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaPlataforma">Responsiva Plataforma:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileCartaPlataforma" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoCartaResponsivaPlataforma || '' }}
+                        <span *ngIf="selectedFileCartaPlataforma"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoCartaResponsivaPlataforma || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileCartaPlataforma" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileResponsivaPlataforma()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileCartaPlataforma==null" for="file-cartaResponsivaPlataforma" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileCartaPlataforma==null" for="file-cartaResponsivaPlataforma"
+                    class="upload-icon-btn" matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
-                </label>               
+                </label>
 
-                <input class="input-file" id="file-cartaResponsivaPlataforma" type="file" (change)="onFileChangedCartaResponsivaPlataforma($event)"
+                <input class="input-file" id="file-cartaResponsivaPlataforma" type="file"
+                    (change)="onFileChangedCartaResponsivaPlataforma($event)"
                     formControlName="fileCartaResponsivaPlataforma" /><br>
             </div>
 
             <!--File Responsiva IaaS-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-iaas">
-                <mat-label [matTooltip]="nombreArchivoCartaResponsivaIaaS">Responsiva IaaS: 
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaIaaS">Responsiva IaaS:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileCartaIaaS" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoCartaResponsivaIaaS || '' }}
+                        <span *ngIf="selectedFileCartaIaaS" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoCartaResponsivaIaaS || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileCartaIaaS" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileResponsivaIaaS()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileCartaIaaS==null" for="file-cartaResponsivaIaaS" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileCartaIaaS==null" for="file-cartaResponsivaIaaS" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
-                </label>               
+                </label>
 
-                <input class="input-file" id="file-cartaResponsivaIaaS" type="file" (change)="onFileChangedCartaResponsivaIaaS($event)" formControlName="fileCartaResponsivaIaaS" /><br>
+                <input class="input-file" id="file-cartaResponsivaIaaS" type="file"
+                    (change)="onFileChangedCartaResponsivaIaaS($event)" formControlName="fileCartaResponsivaIaaS" /><br>
             </div>
 
             <!--File Responsiva Storage-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-storage">
-                <mat-label [matTooltip]="nombreArchivoCartaResponsivaStorage">Responsiva Storage: 
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaStorage">Responsiva Storage:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileCartaStorage" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoCartaResponsivaStorage || '' }}
+                        <span *ngIf="selectedFileCartaStorage"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoCartaResponsivaStorage || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileCartaStorage" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileResponsivaStorage()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileCartaStorage==null" for="file-cartaResponsivaStorage" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileCartaStorage==null" for="file-cartaResponsivaStorage" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-cartaResponsivaStorage" type="file" (change)="onFileChangedCartaResponsivaStorage($event)"
+                <input class="input-file" id="file-cartaResponsivaStorage" type="file"
+                    (change)="onFileChangedCartaResponsivaStorage($event)"
                     formControlName="fileCartaResponsivaStorage" /><br>
             </div>
 
             <!--File Responsiva HA-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-ha">
-                <mat-label [matTooltip]="nombreArchivoCartaResponsivaHa">Responsiva HA: 
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaHa">Responsiva HA:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileCartaHa" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoCartaResponsivaHa || '' }}
+                        <span *ngIf="selectedFileCartaHa" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoCartaResponsivaHa || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileCartaHa" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileResponsivaHa()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileCartaHa==null" for="file-cartaResponsivaHa" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileCartaHa==null" for="file-cartaResponsivaHa" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-cartaResponsivaHa" type="file" (change)="onFileChangedCartaResponsivaHa($event)" formControlName="fileCartaResponsivaHa" /><br>
+                <input class="input-file" id="file-cartaResponsivaHa" type="file"
+                    (change)="onFileChangedCartaResponsivaHa($event)" formControlName="fileCartaResponsivaHa" /><br>
             </div>
 
             <!--File Responsiva GSOC-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-gsoc">
-                <mat-label [matTooltip]="nombreArchivoCartaResponsivaGsoc">Responsiva GSOC: 
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaGsoc">Responsiva GSOC:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileCartaGsoc" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoCartaResponsivaGsoc || '' }}
+                        <span *ngIf="selectedFileCartaGsoc" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoCartaResponsivaGsoc || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileCartaGsoc" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileResponsivaGsoc()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileCartaGsoc==null" for="file-cartaResponsivaGsoc" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileCartaGsoc==null" for="file-cartaResponsivaGsoc" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-cartaResponsivaGsoc" type="file" (change)="onFileChangedCartaResponsivaGsoc($event)" formControlName="fileCartaResponsivaGsoc" /><br>
+                <input class="input-file" id="file-cartaResponsivaGsoc" type="file"
+                    (change)="onFileChangedCartaResponsivaGsoc($event)" formControlName="fileCartaResponsivaGsoc" /><br>
+            </div>
+
+            <!--File Responsiva Llaves-->
+            <div *ngIf="isPerfilInfraestructura" class="position-responsiva-llaves">
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaLlaves">Responsiva Llaves:
+                    <span class="file-text-blue">
+                        <span *ngIf="selectedFileCartaLlaves"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoCartaResponsivaLlaves || '' }}
+                    </span>
+                </mat-label>
+                <button *ngIf="selectedFileCartaLlaves" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFileCartaLlaves()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFileCartaLlaves==null" for="file-cartaResponsivaLlaves" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
+                    <mat-icon>upload_file</mat-icon>
+                </label>
+
+                <input class="input-file" id="file-cartaResponsivaLlaves" type="file"
+                    (change)="onFileChangedCartaResponsivaLlaves($event)"
+                    formControlName="fileCartaResponsivaLlaves" /><br>
             </div>
 
             <!--File Reporte-->
             <div *ngIf="isPerfilInfraestructura" class="position-reporte">
-                <mat-label [matTooltip]="nombreArchivoReporteFotografico">Reporte fotográfico: 
+                <mat-label [matTooltip]="nombreArchivoReporteFotografico">Reporte fotográfico:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileReporteFotografico" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoReporteFotografico || '' }}
+                        <span *ngIf="selectedFileReporteFotografico"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoReporteFotografico || '' }}
                     </span>
-                </mat-label>                
-                <button *ngIf="selectedFileReporteFotografico" color="warn" mat-icon-button color="warn"
-                    type="button" matTooltip="Quitar archivo" (click)="removeFileReporteFotografico()">
-                    <mat-icon>close</mat-icon>
+                </mat-label>
+                <button *ngIf="selectedFileReporteFotografico" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFileReporteFotografico()">
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileReporteFotografico==null" for="file-reporteFotografico" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileReporteFotografico==null" for="file-reporteFotografico"
+                    class="upload-icon-btn" matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-reporteFotografico" type="file" (change)="onFileChangedReporteFotografico($event)" formControlName="fileReporteFotografico" /><br>
+                <input class="input-file" id="file-reporteFotografico" type="file"
+                    (change)="onFileChangedReporteFotografico($event)" formControlName="fileReporteFotografico" /><br>
             </div>
 
             <!--File Fuerza Espacio-->
             <div *ngIf="isPerfilInfraestructura" class="position-fuerza-espacio">
-                <mat-label [matTooltip]="nombreArchivoAsignacionFuerzaEspacio">Asignación Fuerza-Espacio: 
+                <mat-label [matTooltip]="nombreArchivoAsignacionFuerzaEspacio">Asignación Fuerza-Espacio:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileFuerzaEspacio" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoAsignacionFuerzaEspacio || '' }}
+                        <span *ngIf="selectedFileFuerzaEspacio"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoAsignacionFuerzaEspacio || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileFuerzaEspacio" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileFuerzaEspacio()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileFuerzaEspacio==null" for="file-asignacionFuerzaEspacio" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileFuerzaEspacio==null" for="file-asignacionFuerzaEspacio"
+                    class="upload-icon-btn" matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
-                </label>                
+                </label>
 
-                <input class="input-file" id="file-asignacionFuerzaEspacio" type="file" (change)="onFileChangedFuerzaEspacio($event)" formControlName="fileAsignacionFuerzaEspacio" /><br>
+                <input class="input-file" id="file-asignacionFuerzaEspacio" type="file"
+                    (change)="onFileChangedFuerzaEspacio($event)" formControlName="fileAsignacionFuerzaEspacio" /><br>
+            </div>
+
+            <!--File etiquetado-->
+            <div *ngIf="isPerfilInfraestructura" class="position-etiquetado">
+                <mat-label [matTooltip]="nombreArchivoEtiquetado">Etiquetado:
+                    <span class="file-text-blue">
+                        <span *ngIf="selectedFileEtiquetado"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoEtiquetado || '' }}
+                    </span>
+                </mat-label>
+                <button *ngIf="selectedFileEtiquetado" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFileEtiquetado()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFileEtiquetado==null" for="file-etiquetado" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
+                    <mat-icon>upload_file</mat-icon>
+                </label>
+
+                <input class="input-file" id="file-etiquetado" type="file" (change)="onFileChangedEtiquetado($event)"
+                    formControlName="fileEtiquetado" /><br>
+            </div>
+
+            <!--File planos-->
+            <div *ngIf="isPerfilInfraestructura" class="position-planos">
+                <mat-label [matTooltip]="nombreArchivoPlanos">Planos:
+                    <span class="file-text-blue">
+                        <span *ngIf="selectedFilePlanos" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoPlanos || '' }}
+                    </span>
+                </mat-label>
+                <button *ngIf="selectedFilePlanos" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFilePlanos()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFilePlanos==null" for="file-planos" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
+                    <mat-icon>upload_file</mat-icon>
+                </label>
+
+                <input class="input-file" id="file-planos" type="file" (change)="onFileChangedPlanos($event)"
+                    formControlName="filePlanos" /><br>
+            </div>
+
+            <!--File Proyecto Ejecutivo-->
+            <div *ngIf="isPerfilInfraestructura" class="position-proyecto-ejecutivo">
+                <mat-label [matTooltip]="nombreArchivoProyectoEjecutivo">Proyecto ejecutivo:
+                    <span class="file-text-blue">
+                        <span *ngIf="selectedFileProyectoEjecutivo"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoProyectoEjecutivo || '' }}
+                    </span>
+                </mat-label>
+                <button *ngIf="selectedFileProyectoEjecutivo" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFileProyectoEjecutivo()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFileProyectoEjecutivo==null" for="file-proyecto-ejecutivo" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
+                    <mat-icon>upload_file</mat-icon>
+                </label>
+
+                <input class="input-file" id="file-proyecto-ejecutivo" type="file"
+                    (change)="onFileChangedProyectoEjecutivo($event)" formControlName="fileProyectoEjecutivo" /><br>
             </div>
 
             <!--File Inventario-->
             <div *ngIf="isPerfilInfraestructura" class="position-inventario">
-                <mat-label [matTooltip]="nombreArchivoInventarioHardware">Inventario hardware: 
+                <mat-label [matTooltip]="nombreArchivoInventarioHardware">Inventario hardware:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileInventario" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoInventarioHardware || '' }}
+                        <span *ngIf="selectedFileInventario"
+                            class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{
+                        nombreArchivoInventarioHardware || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileInventario" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileInventario()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileInventario==null" for="file-inventarioHardware" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileInventario==null" for="file-inventarioHardware" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-inventarioHardware" type="file" (change)="onFileChangedInventarioHardware($event)" formControlName="fileInventarioHardware" /><br>
+                <input class="input-file" id="file-inventarioHardware" type="file"
+                    (change)="onFileChangedInventarioHardware($event)" formControlName="fileInventarioHardware" /><br>
             </div>
 
             <!--File Otros-->
             <div class="position-otros">
-                <mat-label [matTooltip]="nombreArchivoOtros">Otros archivos: 
+                <mat-label [matTooltip]="nombreArchivoOtros">Otros archivos:
                     <span class="file-text-blue">
-                        <span *ngIf="selectedFileOtros" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoOtros || '' }}
+                        <span *ngIf="selectedFileOtros" class="cargado-status"><mat-icon>task_alt</mat-icon>Cargado:
+                        </span>{{ nombreArchivoOtros || '' }}
                     </span>
-                </mat-label>                
+                </mat-label>
                 <button *ngIf="selectedFileOtros" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileOtros()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
-                <label *ngIf="selectedFileOtros==null" for="file-otros" class="upload-icon-btn" matTooltip="Cargar archivo">
+                <label *ngIf="selectedFileOtros==null" for="file-otros" class="upload-icon-btn"
+                    matTooltip="Cargar archivo">
                     <mat-icon>upload_file</mat-icon>
                 </label>
 
-                <input class="input-file" id="file-otros" type="file" (change)="onFileChangedOtros($event)" formControlName="fileOtros" /><br>
+                <input class="input-file" id="file-otros" type="file" (change)="onFileChangedOtros($event)"
+                    formControlName="fileOtros" /><br>
             </div>
+        </div>
+
+        <!--Zona de Drag-->
+        <div *ngIf="isPerfilInfraestructura" class="drop-zone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
+            (click)="fileInput.click()" [class.drag-over]="isDragging">
+
+            <input type="file" #fileInput (change)="onFileSelected($event)" multiple hidden>
+
+            <mat-icon>cloud_upload</mat-icon>
+            <h3>Archivos Adicionales</h3>
+            <p>Arrastra archivos adicionales aquí o haz clic para buscarlos</p>
+        </div>
+
+        <div *ngIf="archivosParaSubir.length > 0 && isPerfilInfraestructura" style="margin-bottom: 20px;" class="new-files-preview">
+
+            <div class="preview-header" #scrollContainer>
+                <mat-icon color="accent">upload_file</mat-icon>
+                <span>Se realizará la carga de <strong>{{ archivosParaSubir.length }}</strong> archivo(s) adicional(es) que no formaran parte de la publicación del proyecto.</span>
+            </div>
+
+            <mat-card *ngFor="let file of archivosParaSubir; let i = index" class="file-preview-card">
+                <mat-card-content class="file-info">
+                    <span><mat-icon style="vertical-align: middle;">insert_drive_file</mat-icon> {{file.name}}</span>
+                    <button mat-icon-button color="warn" (click)="$event.stopPropagation(); removerArchivo(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-card-content>
+            </mat-card>
         </div>
     </form>
 </mat-dialog-content>

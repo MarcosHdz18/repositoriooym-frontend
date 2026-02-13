@@ -1,0 +1,132 @@
+/* Contenedor principal con margen para que no pegue a las orillas */
+.main-container {
+    padding: 20px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
+
+/* Estilo de la tarjeta que envuelve la tabla */
+.bitacora-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header de la tarjeta */
+.header-image-audit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e3f2fd;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+/* Buscador a ancho completo */
+.full-width {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.search-field {
+    margin-top: 10px;
+}
+
+/* Contenedor de la tabla con scroll si es necesario */
+.table-container {
+    position: relative;
+    max-height: 600px;
+    overflow: auto;
+    border-radius: 4px;
+}
+
+table {
+    width: 100%;
+}
+
+/* Estilos para las filas y celdas */
+.mat-header-cell {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 12px;
+}
+
+.mat-cell {
+    padding: 12px;
+    font-size: 13px;
+}
+
+/* Efecto hover en las filas */
+.element-row:hover {
+    background-color: #f1f1f1;
+}
+
+/* --- ETIQUETAS DE ACCIÓN (COLOR CODING) --- */
+/* Fuerza el renderizado de los colores en el componente */
+/* Usamos selectores más fuertes */
+/* Fuerza el renderizado de los colores en el componente */
+.tag-delete {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 4px 12px;
+    border-radius: 12px;
+    display: inline-block;
+    font-weight: bold;
+    border: 1px solid #ffcdd2;
+}
+
+.tag-update {
+    background-color: #e3f2fd;
+    color: #1565c0;
+    padding: 4px 12px;
+    border-radius: 12px;
+    display: inline-block;
+    font-weight: bold;
+    border: 1px solid #bbdefb;
+}
+
+.tag-create {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 12px;
+    border-radius: 12px;
+    display: inline-block;
+    font-weight: bold;
+    border: 1px solid #c8e6c9;
+}
+
+/* Badge del usuario */
+.user-badge {
+    background: #3f51b5;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+}
+
+/* Texto del detalle */
+.detalle-text {
+    color: #555;
+    max-width: 400px;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+/* Iconos mini */
+.mini-icon {
+    font-size: 16px;
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+    color: #757575;
+}
+
+.fecha-wrapper {
+    display: flex;
+    align-items: center;
+    color: #444;
+}

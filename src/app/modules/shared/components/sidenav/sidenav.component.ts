@@ -17,7 +17,7 @@ export class SidenavComponent implements OnInit {
   isAdmin: any;
   isPerfilApp: any;
   isPerfilInfraestructura: any;
-  userURLImage= '../../../../../assets/img/user-image.jpg';
+  userURLImage = '../../../../../assets/img/user-image.jpg';
 
   inicioMenu: MenuItem[] = [
     { name: "Inicio", route: "home", icon: "home" },
@@ -31,6 +31,10 @@ export class SidenavComponent implements OnInit {
     { name: "Sitios", route: "sitio", icon: "home", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
     { name: "Tipos de Proyecto", route: "tipoProyecto", icon: "list_alt", allowedProfiles: ['admin', 'perfilApp', 'perfilInfraestructura'] },
     { name: "Proyectos", route: "proyecto", icon: "important_devices" }
+  ];
+
+  auditoriaNav: MenuItem[] = [
+    { name: "Movimientos", route: "bitacora", icon: "manage_search", allowedProfiles: ['admin'] }
   ];
 
   historyNav: MenuItem[] = [
@@ -48,6 +52,7 @@ export class SidenavComponent implements OnInit {
     { title: 'Inicio', items: this.inicioMenu, expanded: true },
     { title: 'Información', items: this.infoNav, expanded: true },
     { title: 'Operaciones', items: this.systemNav, expanded: true },
+    { title: 'Auditoría', items: this.auditoriaNav, expanded: true },
     { title: 'Histórico', items: this.historyNav, expanded: false }
   ];
 
@@ -91,8 +96,18 @@ export class SidenavComponent implements OnInit {
         return item.allowedProfiles.some(p => userProfiles.includes(p));
       });
     });
-  }
 
+    this.sections = this.sections.filter(sec => {
+      // Si la sección tiene permiso explícito a nivel de padre, lo validamos
+      if (sec.allowedProfiles && sec.allowedProfiles.length > 0) {
+        const tienePermisoSeccion = sec.allowedProfiles.some(p => userProfiles.includes(p));
+        if (!tienePermisoSeccion) return false;
+      }
+      // Si no tiene items permitidos, ocultamos la sección completa
+      return sec.items.length > 0;
+    });
+  }
+  
   openHelp() {
     this.dialog.open(HelpDialogComponent, {
       width: '400px',
@@ -116,4 +131,5 @@ export interface MenuSection {
   title: string;
   items: MenuItem[];
   expanded?: boolean;
+  allowedProfiles?: string[];
 }

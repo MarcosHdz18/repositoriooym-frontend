@@ -62,7 +62,7 @@
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Fecha de inicio</mat-label>
                 <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio"
-                    (focus)="pickerInicio.open()" (click)="pickerInicio.open()" readonly />
+                    (focus)="pickerInicio.open()" (click)="pickerInicio.open()" />
                 <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
                 <mat-datepicker #pickerInicio></mat-datepicker>
             </mat-form-field>
@@ -77,7 +77,7 @@
             <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Fecha de liberación</mat-label>
                 <input matInput [matDatepicker]="pickerLiberacion" formControlName="fechaLiberacion"
-                    (focus)="pickerLiberacion.open()" (click)="pickerLiberacion.open()" readonly />
+                    (focus)="pickerLiberacion.open()" (click)="pickerLiberacion.open()" />
                 <mat-datepicker-toggle matSuffix [for]="pickerLiberacion"></mat-datepicker-toggle>
                 <mat-datepicker #pickerLiberacion></mat-datepicker>
             </mat-form-field>
@@ -96,7 +96,8 @@
 
             <!--File F60-->
             <div class="position-f60">
-                <mat-label [matTooltip]="nombreArchivoF60">F60: <span for="file-f60" *ngIf="selectedFileF60===null" [ngClass]="{'color-archivo-rojo': nombreArchivoF60 == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoF60">F60: <span for="file-f60" *ngIf="selectedFileF60===null"
+                        [ngClass]="{'color-archivo-rojo': nombreArchivoF60 == 'NA', 
                 'color-archivo-verde': nombreArchivoF60 != 'NA'}">{{ nombreArchivoF60 }}</span></mat-label>
                 <mat-label for="file-f60" *ngIf="selectedFileF60!==null" class="color-archivo-nuevo"
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileF60.name">
@@ -106,7 +107,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileF60" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileF60()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileF60==null" for="file-f60" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -116,7 +117,8 @@
 
             <!--File LLD-->
             <div class="position-lld">
-                <mat-label [matTooltip]="nombreArchivoLld">LLD: <span for="file-Lld" *ngIf="selectedFileLld===null" [ngClass]="{'color-archivo-rojo': nombreArchivoLld == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoLld">LLD: <span for="file-Lld" *ngIf="selectedFileLld===null"
+                        [ngClass]="{'color-archivo-rojo': nombreArchivoLld == 'NA', 
                 'color-archivo-verde': nombreArchivoLld != 'NA'}">{{ nombreArchivoLld }}</span></mat-label>
                 <mat-label for="file-lld" *ngIf="selectedFileLld!==null" class="color-archivo-nuevo"
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileLld.name">
@@ -126,7 +128,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileLld" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileLld()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileLld==null" for="file-lld" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -146,12 +148,58 @@
                 </mat-label>
                 <button *ngIf="selectedFileHld" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileHld()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileHld==null" for="file-hld" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-hld" type="file" (change)="onFileChangedHld($event)"
                     formControlName="fileHld" /><br>
+            </div>
+
+            <!--File Memoria Técnica-->
+            <div class="position-memoria-tecnica">
+                <mat-label [matTooltip]="nombreArchivoMemoriaTecnica">Memoria Técnica: <span
+                        *ngIf="selectedFileMemoriaTecnica===null" [ngClass]="{'color-archivo-rojo': nombreArchivoMemoriaTecnica == 'NA', 
+                'color-archivo-verde': nombreArchivoMemoriaTecnica != 'NA'}">{{ nombreArchivoMemoriaTecnica
+                        }}</span></mat-label>
+                <mat-label for="file-memoria-tecnica" *ngIf="selectedFileMemoriaTecnica!==null"
+                    class="color-archivo-nuevo"
+                    [matTooltip]="'Se actualizará el archivo a ' + selectedFileMemoriaTecnica.name">
+                    <span style="color: blue;">
+                        <span *ngIf="selectedFileMemoriaTecnica" style="color: #21756e;">&nbsp;
+                            <mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoMemoriaTecnica || '' }}</span>
+                </mat-label>
+                <button *ngIf="selectedFileMemoriaTecnica" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFileMemoriaTecnica()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFileMemoriaTecnica==null" for="file-memoria-tecnica" class="upload"><mat-icon
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
+                <input class="input-file" id="file-memoria-tecnica" type="file"
+                    (change)="onFileChangedMemoriaTecnica($event)" formControlName="fileMemoriaTecnica" /><br>
+            </div>
+
+            <!--File SID-->
+            <div class="position-sid">
+                <mat-label [matTooltip]="nombreArchivoSid">SID: <span
+                        *ngIf="selectedFileSid===null" [ngClass]="{'color-archivo-rojo': nombreArchivoSid == 'NA', 
+                'color-archivo-verde': nombreArchivoSid != 'NA'}">{{ nombreArchivoSid
+                        }}</span></mat-label>
+                <mat-label for="file-sid" *ngIf="selectedFileSid!==null"
+                    class="color-archivo-nuevo"
+                    [matTooltip]="'Se actualizará el archivo a ' + selectedFileSid.name">
+                    <span style="color: blue;">
+                        <span *ngIf="selectedFileSid" style="color: #21756e;">&nbsp;
+                            <mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoSid || '' }}</span>
+                </mat-label>
+                <button *ngIf="selectedFileSid" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFileSid()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFileSid==null" for="file-sid" class="upload"><mat-icon
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
+                <input class="input-file" id="file-sid" type="file"
+                    (change)="onFileChangedSid($event)" formControlName="fileSid" /><br>
             </div>
 
             <!--File RTO-->
@@ -166,7 +214,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileRto" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileRto()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileRto==null" for="file-rto" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -186,7 +234,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileLayout" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileLayout()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileLayout==null" for="file-layout" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -196,7 +244,8 @@
 
             <!--File Presentacion-->
             <div class="position-presentacion">
-                <mat-label [matTooltip]="nombreArchivoPresentacion">Presentacion: <span *ngIf="selectedFilePresentacion===null" [ngClass]="{'color-archivo-rojo': nombreArchivoPresentacion == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoPresentacion">Presentacion: <span
+                        *ngIf="selectedFilePresentacion===null" [ngClass]="{'color-archivo-rojo': nombreArchivoPresentacion == 'NA', 
                 'color-archivo-verde': nombreArchivoPresentacion != 'NA'}">{{ nombreArchivoPresentacion
                         }}</span></mat-label>
                 <mat-label for="file-presentacion" *ngIf="selectedFilePresentacion!==null" class="color-archivo-nuevo"
@@ -207,7 +256,7 @@
                 </mat-label>
                 <button *ngIf="selectedFilePresentacion" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFilePresentacion()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFilePresentacion==null" for="file-presentacion" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -227,7 +276,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileSla" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileSla()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileSla==null" for="file-sla" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -237,7 +286,8 @@
 
             <!--File ATP Fisico-->
             <div *ngIf="isPerfilInfraestructura" class="position-atp-fisico">
-                <mat-label [matTooltip]="nombreArchivoAtpFisico">ATP Físico: <span *ngIf="selectedFileAtpFisico===null" [ngClass]="{'color-archivo-rojo': nombreArchivoAtpFisico == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoAtpFisico">ATP Físico: <span *ngIf="selectedFileAtpFisico===null"
+                        [ngClass]="{'color-archivo-rojo': nombreArchivoAtpFisico == 'NA', 
                 'color-archivo-verde': nombreArchivoAtpFisico != 'NA'}">{{ nombreArchivoAtpFisico }}</span></mat-label>
                 <mat-label for="file-atpFisico" *ngIf="selectedFileAtpFisico!==null" class="color-archivo-nuevo"
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileAtpFisico.name">
@@ -247,7 +297,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileAtpFisico" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileAtpFisico()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileAtpFisico==null" for="file-atpFisico" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -257,7 +307,8 @@
 
             <!--File ATP Logico-->
             <div class="position-atp-logico">
-                <mat-label [matTooltip]="nombreArchivoAtpLogico">ATP Lógico: <span *ngIf="selectedFileAtpLogico===null" [ngClass]="{'color-archivo-rojo': nombreArchivoAtpLogico == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoAtpLogico">ATP Lógico: <span *ngIf="selectedFileAtpLogico===null"
+                        [ngClass]="{'color-archivo-rojo': nombreArchivoAtpLogico == 'NA', 
                 'color-archivo-verde': nombreArchivoAtpLogico != 'NA'}">{{ nombreArchivoAtpLogico }}</span></mat-label>
                 <mat-label for="file-atpLogico" *ngIf="selectedFileAtpLogico!==null" class="color-archivo-nuevo"
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileAtpLogico.name">
@@ -267,7 +318,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileAtpLogico" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileAtpLogico()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileAtpLogico==null" for="file-atpLogico" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -277,7 +328,8 @@
 
             <!--File ATP Fisico Firmado-->
             <div *ngIf="isPerfilInfraestructura" class="position-atp-fisico-firmado">
-                <mat-label [matTooltip]="nombreArchivoAtpFisicoFirmado">ATP Físico Firmado: <span *ngIf="selectedFileAtpFisicoFirmado===null" [ngClass]="{'color-archivo-rojo': nombreArchivoAtpFisicoFirmado == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoAtpFisicoFirmado">ATP Físico Firmado: <span
+                        *ngIf="selectedFileAtpFisicoFirmado===null" [ngClass]="{'color-archivo-rojo': nombreArchivoAtpFisicoFirmado == 'NA', 
                 'color-archivo-verde': nombreArchivoAtpFisicoFirmado!= 'NA'}">{{ nombreArchivoAtpFisicoFirmado
                         }}</span></mat-label>
                 <mat-label for="file-atpFisicoFirmado" *ngIf="selectedFileAtpFisicoFirmado!==null"
@@ -290,7 +342,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileAtpFisicoFirmado" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileAtpFisicoFirmado()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileAtpFisicoFirmado==null" for="file-atpFisicoFirmado" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -300,7 +352,8 @@
 
             <!--File Responsiva Plataforma-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-plataforma">
-                <mat-label [matTooltip]="nombreArchivoCartaResponsivaPlataforma">Responsiva Plataforma: <span *ngIf="selectedFileCartaPlataforma===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaPlataforma == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaPlataforma">Responsiva Plataforma: <span
+                        *ngIf="selectedFileCartaPlataforma===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaPlataforma == 'NA', 
                 'color-archivo-verde': nombreArchivoCartaResponsivaPlataforma != 'NA'}">{{
                         nombreArchivoCartaResponsivaPlataforma }}</span></mat-label>
                 <mat-label for="file-cartaResponsivaPlataforma" *ngIf="selectedFileCartaPlataforma!==null"
@@ -313,7 +366,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileCartaPlataforma" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileResponsivaPlataforma()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileCartaPlataforma==null" for="file-cartaResponsivaPlataforma"
                     class="upload"><mat-icon matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -324,7 +377,8 @@
 
             <!--File Responsiva IaaS-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-iaas">
-                <mat-label [matTooltip]="nombreArchivoCartaResponsivaIaaS">Responsiva IaaS: <span *ngIf="selectedFileCartaIaaS===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaIaaS == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaIaaS">Responsiva IaaS: <span
+                        *ngIf="selectedFileCartaIaaS===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaIaaS == 'NA', 
                 'color-archivo-verde': nombreArchivoCartaResponsivaIaaS != 'NA'}">{{ nombreArchivoCartaResponsivaIaaS
                         }}</span></mat-label>
                 <mat-label for="file-cartaResponsivaIaaS" *ngIf="selectedFileCartaIaaS!==null"
@@ -337,7 +391,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileCartaIaaS" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileResponsivaIaaS()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileCartaIaaS==null" for="file-cartaResponsivaIaaS" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -347,7 +401,8 @@
 
             <!--File Responsiva Storage-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-storage">
-                <mat-label [matTooltip]="nombreArchivoCartaResponsivaStorage">Responsiva Storage: <span *ngIf="selectedFileCartaStorage===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaStorage == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaStorage">Responsiva Storage: <span
+                        *ngIf="selectedFileCartaStorage===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaStorage == 'NA', 
                 'color-archivo-verde': nombreArchivoCartaResponsivaStorage != 'NA'}">{{
                         nombreArchivoCartaResponsivaStorage }}</span></mat-label>
                 <mat-label for="file-cartaResponsivaStorage" *ngIf="selectedFileCartaStorage!==null"
@@ -360,7 +415,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileCartaStorage" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileResponsivaStorage()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileCartaStorage==null" for="file-cartaResponsivaStorage" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -371,7 +426,8 @@
 
             <!--File Responsiva HA-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-ha">
-                <mat-label [matTooltip]="nombreArchivoCartaResponsivaHa">Responsiva HA: <span *ngIf="selectedFileCartaHa===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaHa == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaHa">Responsiva HA: <span
+                        *ngIf="selectedFileCartaHa===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaHa == 'NA', 
                 'color-archivo-verde': nombreArchivoCartaResponsivaHa != 'NA'}">{{ nombreArchivoCartaResponsivaHa
                         }}</span></mat-label>
                 <mat-label for="file-cartaResponsivaHa" *ngIf="selectedFileCartaHa!==null" class="color-archivo-nuevo"
@@ -383,7 +439,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileCartaHa" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileResponsivaHa()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileCartaHa==null" for="file-cartaResponsivaHa" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -393,7 +449,8 @@
 
             <!--File Responsiva GSOC-->
             <div *ngIf="isPerfilInfraestructura" class="position-responsiva-gsoc">
-                <mat-label [matTooltip]="nombreArchivoCartaResponsivaGsoc">Responsiva GSOC: <span *ngIf="selectedFileCartaGsoc===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaGsoc == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaGsoc">Responsiva GSOC: <span
+                        *ngIf="selectedFileCartaGsoc===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaGsoc == 'NA', 
                 'color-archivo-verde': nombreArchivoCartaResponsivaGsoc != 'NA'}">{{ nombreArchivoCartaResponsivaGsoc
                         }}</span></mat-label>
                 <mat-label for="file-cartaResponsivaGsoc" *ngIf="selectedFileCartaGsoc!==null"
@@ -406,12 +463,38 @@
                 </mat-label>
                 <button *ngIf="selectedFileCartaGsoc" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileResponsivaGsoc()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileCartaGsoc==null" for="file-cartaResponsivaGsoc" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-cartaResponsivaGsoc" type="file"
                     (change)="onFileChangedCartaResponsivaGsoc($event)" formControlName="fileCartaResponsivaGsoc" /><br>
+            </div>
+
+            <!--File Responsiva Llaves-->
+            <div *ngIf="isPerfilInfraestructura" class="position-responsiva-llaves">
+                <mat-label [matTooltip]="nombreArchivoCartaResponsivaLlaves">Responsiva Llaves: <span
+                        *ngIf="selectedFileCartaLlaves===null" [ngClass]="{'color-archivo-rojo': nombreArchivoCartaResponsivaLlaves == 'NA', 
+                'color-archivo-verde': nombreArchivoCartaResponsivaLlaves != 'NA'}">{{
+                        nombreArchivoCartaResponsivaLlaves
+                        }}</span></mat-label>
+                <mat-label for="file-cartaResponsivaLlaves" *ngIf="selectedFileCartaLlaves!==null"
+                    class="color-archivo-nuevo"
+                    [matTooltip]="'Se actualizará el archivo a ' + selectedFileCartaLlaves.name">
+                    <span style="color: blue;">
+                        <span *ngIf="selectedFileCartaLlaves" style="color: #21756e;">&nbsp;
+                            <mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoCartaResponsivaLlaves || ''
+                        }}</span>
+                </mat-label>
+                <button *ngIf="selectedFileCartaLlaves" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFileCartaLlaves()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFileCartaLlaves==null" for="file-cartaResponsivaLlaves" class="upload"><mat-icon
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
+                <input class="input-file" id="file-cartaResponsivaLlaves" type="file"
+                    (change)="onFileChangedCartaResponsivaLlaves($event)"
+                    formControlName="fileCartaResponsivaLlaves" /><br>
             </div>
 
             <!--File Reporte-->
@@ -429,7 +512,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileReporteFotografico" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileReporteFotografico()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileReporteFotografico==null" for="file-reporteFotografico"
                     class="upload"><mat-icon matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -439,7 +522,8 @@
 
             <!--File Fuerza Espacio-->
             <div *ngIf="isPerfilInfraestructura" class="position-fuerza-espacio">
-                <mat-label [matTooltip]="nombreArchivoAsignacionFuerzaEspacio">Asignación Fuerza-Espacio: <span *ngIf="selectedFileFuerzaEspacio===null" [ngClass]="{'color-archivo-rojo': nombreArchivoAsignacionFuerzaEspacio == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoAsignacionFuerzaEspacio">Asignación Fuerza-Espacio: <span
+                        *ngIf="selectedFileFuerzaEspacio===null" [ngClass]="{'color-archivo-rojo': nombreArchivoAsignacionFuerzaEspacio == 'NA', 
                 'color-archivo-verde': nombreArchivoAsignacionFuerzaEspacio != 'NA'}">{{
                         nombreArchivoAsignacionFuerzaEspacio }}</span></mat-label>
                 <mat-label for="file-asignacionFuerzaEspacio" *ngIf="selectedFileFuerzaEspacio!==null"
@@ -452,7 +536,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileFuerzaEspacio" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileFuerzaEspacio()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileFuerzaEspacio==null" for="file-asignacionFuerzaEspacio"
                     class="upload"><mat-icon matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -460,9 +544,76 @@
                     (change)="onFileChangedFuerzaEspacio($event)" formControlName="fileAsignacionFuerzaEspacio" /><br>
             </div>
 
+            <!--File Etiquetado-->
+            <div class="position-etiquetado">
+                <mat-label [matTooltip]="nombreArchivoEtiquetado">Etiquetado: <span
+                        *ngIf="selectedFileEtiquetado===null" [ngClass]="{'color-archivo-rojo': nombreArchivoEtiquetado == 'NA', 
+                'color-archivo-verde': nombreArchivoEtiquetado != 'NA'}">{{ nombreArchivoEtiquetado
+                        }}</span></mat-label>
+                <mat-label for="file-etiquetado" *ngIf="selectedFileEtiquetado!==null" class="color-archivo-nuevo"
+                    [matTooltip]="'Se actualizará el archivo a ' + selectedFileEtiquetado.name">
+                    <span style="color: blue;">
+                        <span *ngIf="selectedFileEtiquetado" style="color: #21756e;">&nbsp;
+                            <mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoEtiquetado || '' }}</span>
+                </mat-label>
+                <button *ngIf="selectedFileEtiquetado" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFileEtiquetado()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFileEtiquetado==null" for="file-etiquetado" class="upload"><mat-icon
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
+                <input class="input-file" id="file-etiquetado" type="file" (change)="onFileChangedEtiquetado($event)"
+                    formControlName="fileEtiquetado" /><br>
+            </div>
+
+            <!--File Planos-->
+            <div class="position-planos">
+                <mat-label [matTooltip]="nombreArchivoPlanos">Planos: <span *ngIf="selectedFilePlanos===null" [ngClass]="{'color-archivo-rojo': nombreArchivoPlanos == 'NA', 
+                'color-archivo-verde': nombreArchivoPlanos != 'NA'}">{{ nombreArchivoPlanos }}</span></mat-label>
+                <mat-label for="file-planos" *ngIf="selectedFilePlanos!==null" class="color-archivo-nuevo"
+                    [matTooltip]="'Se actualizará el archivo a ' + selectedFilePlanos.name">
+                    <span style="color: blue;">
+                        <span *ngIf="selectedFilePlanos" style="color: #21756e;">&nbsp;
+                            <mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoPlanos || '' }}</span>
+                </mat-label>
+                <button *ngIf="selectedFilePlanos" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFilePlanos()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFilePlanos==null" for="file-planos" class="upload"><mat-icon
+                        matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
+                <input class="input-file" id="file-planos" type="file" (change)="onFileChangedPlanos($event)"
+                    formControlName="filePlanos" /><br>
+            </div>
+
+            <!--File Proyecto Ejecutivo-->
+            <div class="position-proyecto-ejecutivo">
+                <mat-label [matTooltip]="nombreArchivoProyectoEjecutivo">Proyecto ejecutivo: <span
+                        *ngIf="selectedFileProyectoEjecutivo===null" [ngClass]="{'color-archivo-rojo': nombreArchivoProyectoEjecutivo == 'NA', 
+                'color-archivo-verde': nombreArchivoProyectoEjecutivo != 'NA'}">{{ nombreArchivoProyectoEjecutivo
+                        }}</span></mat-label>
+                <mat-label for="file-proyecto-ejecutivo" *ngIf="selectedFileProyectoEjecutivo!==null"
+                    class="color-archivo-nuevo"
+                    [matTooltip]="'Se actualizará el archivo a ' + selectedFileProyectoEjecutivo.name">
+                    <span style="color: blue;">
+                        <span *ngIf="selectedFileProyectoEjecutivo" style="color: #21756e;">&nbsp;
+                            <mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoProyectoEjecutivo || ''
+                        }}</span>
+                </mat-label>
+                <button *ngIf="selectedFileProyectoEjecutivo" color="warn" mat-icon-button color="warn" type="button"
+                    matTooltip="Quitar archivo" (click)="removeFileProyectoEjecutivo()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <label *ngIf="selectedFileProyectoEjecutivo==null" for="file-proyecto-ejecutivo"
+                    class="upload"><mat-icon matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
+                <input class="input-file" id="file-proyecto-ejecutivo" type="file"
+                    (change)="onFileChangedProyectoEjecutivo($event)" formControlName="fileProyectoEjecutivo" /><br>
+            </div>
+
             <!--File Inventario-->
             <div *ngIf="isPerfilInfraestructura" class="position-inventario">
-                <mat-label [matTooltip]="nombreArchivoInventarioHardware">Inventario hardware: <span *ngIf="selectedFileInventario===null" [ngClass]="{'color-archivo-rojo': nombreArchivoInventarioHardware == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoInventarioHardware">Inventario hardware: <span
+                        *ngIf="selectedFileInventario===null" [ngClass]="{'color-archivo-rojo': nombreArchivoInventarioHardware == 'NA', 
                 'color-archivo-verde': nombreArchivoInventarioHardware != 'NA'}">{{ nombreArchivoInventarioHardware
                         }}</span></mat-label>
                 <mat-label for="file-inventarioHardware" *ngIf="selectedFileInventario!==null"
@@ -475,7 +626,7 @@
                 </mat-label>
                 <button *ngIf="selectedFileInventario" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileInventario()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileInventario==null" for="file-inventarioHardware" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
@@ -485,7 +636,8 @@
 
             <!--File Otros-->
             <div class="position-otros">
-                <mat-label [matTooltip]="nombreArchivoOtros">Otros archivos: <span *ngIf="selectedFileOtros===null" [ngClass]="{'color-archivo-rojo': nombreArchivoOtros == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoOtros">Otros archivos: <span *ngIf="selectedFileOtros===null"
+                        [ngClass]="{'color-archivo-rojo': nombreArchivoOtros == 'NA', 
                 'color-archivo-verde': nombreArchivoOtros != 'NA'}">{{ nombreArchivoOtros }}</span></mat-label>
                 <mat-label for="file-otros" *ngIf="selectedFileOtros!==null" class="color-archivo-nuevo"
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileOtros.name">
@@ -495,13 +647,65 @@
                 </mat-label>
                 <button *ngIf="selectedFileOtros" color="warn" mat-icon-button color="warn" type="button"
                     matTooltip="Quitar archivo" (click)="removeFileOtros()">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>delete</mat-icon>
                 </button>
                 <label *ngIf="selectedFileOtros==null" for="file-otros" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
                 <input class="input-file" id="file-otros" type="file" (change)="onFileChangedOtros($event)"
                     formControlName="fileOtros" /><br>
             </div>
+        </div>
+
+        <!--Lista a mostrar de los archivos adicionales que ya se encuentran referenciados al proyecto-->
+        <div class="adjuntos-existentes-container" *ngIf="data.adjuntos && data.adjuntos.length > 0 && isPerfilInfraestructura">
+            <div class="adjuntos-header">
+                <mat-icon>attachment</mat-icon>
+                <span>Archivos adicionales en este proyecto: <strong>{{ data.adjuntos.length }} archivos</strong></span>
+            </div>
+
+            <div class="adjuntos-list">
+                <div class="adjunto-item" *ngFor="let adj of data.adjuntos">
+                    <div class="adjunto-info">
+                        <mat-icon color="primary">description</mat-icon>
+                        <span class="adjunto-name" [matTooltip]="adj.nombreArchivo">
+                            {{ adj.nombreArchivo }}
+                        </span>
+                    </div>
+                    <div class="adjunto-actions">
+                        <button mat-icon-button color="primary" (click)="descargarAdjunto(adj.idDocumentoAdjunto, adj.nombreArchivo)"
+                            matTooltip="Descargar">
+                            <mat-icon>download</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Zona de Drag-->
+        <div *ngIf="isPerfilInfraestructura" class="drop-zone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
+            (click)="fileInput.click()" [class.drag-over]="isDragging">
+
+            <input type="file" #fileInput (change)="onFileSelected($event)" multiple hidden>
+            <mat-icon>add_to_photos</mat-icon>
+            <h3>Agregar más archivos adicionales</h3>
+            <p>Arrastra aquí archivos adicionales para este proyecto</p>
+        </div>
+
+        <div *ngIf="archivosParaSubir.length > 0 && isPerfilInfraestructura" class="new-files-preview">
+            <div class="preview-header" #scrollContainer>
+                <mat-icon color="accent">upload_file</mat-icon>
+                <span>Se realizará la carga de <strong>{{ archivosParaSubir.length }}</strong> archivo(s) adicional(es) que no formaran parte de la publicación del proyecto.</span>
+            </div>
+
+            <mat-card *ngFor="let file of archivosParaSubir; let i = index" class="file-preview-card">
+                <mat-card-content class="file-info">
+                    <span><mat-icon style="vertical-align: middle;">insert_drive_file</mat-icon> {{file.name}} ({{(file.size / 1024) | number:'1.1-2'}}
+                        KB)</span>
+                    <button mat-icon-button color="warn" (click)="$event.stopPropagation(); removerArchivo(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-card-content>
+            </mat-card>
         </div>
     </form>
 </mat-dialog-content>

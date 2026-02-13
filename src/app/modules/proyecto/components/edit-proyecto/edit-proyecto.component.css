@@ -20,6 +20,8 @@
 .position-f60,
 .position-lld,
 .position-hld,
+.position-memoria-tecnica,
+.position-sid,
 .position-instructivos,
 .position-respaldos,
 .position-rutinas,
@@ -31,6 +33,9 @@
 .position-sla,
 .position-reporte,
 .position-fuerza-espacio,
+.position-etiquetado,
+.position-planos,
+.position-proyecto-ejecutivo,
 .position-inventario,
 .position-atp-fisico,
 .position-atp-logico,
@@ -40,6 +45,7 @@
 .position-responsiva-storage,
 .position-responsiva-ha,
 .position-responsiva-gsoc,
+.position-responsiva-llaves,
 .position-atp-fisico-firmado,
 .position-otros {
     display: flex !important;
@@ -63,7 +69,7 @@ mat-dialog-actions {
 }
 
 .upload {
-   margin: 0 auto;
+    margin: 0 auto;
     text-align: center;
     width: 30px;
     height: 22px;
@@ -252,4 +258,115 @@ mat-dialog-actions {
     margin-top: 15px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+/**Estilos para la zona de drag y muestra de los archivos adicionales del proyecto*/
+.drop-zone {
+    border: 2px dashed #3f51b5;
+    background-color: #fafafa;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #3f51b5;
+}
+
+.drop-zone.drag-over {
+    background-color: #e8eaf6;
+    border-color: #1a237e;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.drop-zone mat-icon {
+    font-size: 50px;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+/* Lista de archivos en el formulario */
+.file-preview-card {
+    margin-bottom: 8px;
+    border-left: 4px solid #ff4081;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.preview-header,
+.adjuntos-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background-color: rgba(63, 81, 181, 0.05);
+    border-radius: 8px 8px 0 0;
+    font-size: 14px;
+}
+
+.new-files-preview {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: visible;
+}
+
+.adjuntos-existentes-container {
+    margin: 20px 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.adjuntos-header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    border-bottom: 1px solid #e0e0e0;
+    color: #3f51b5;
+}
+
+.adjuntos-list {
+    max-height: 270px;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.adjunto-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    margin-bottom: 4px;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid #eeeeee;
+}
+
+.adjunto-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.adjunto-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+    font-size: 13px;
 }

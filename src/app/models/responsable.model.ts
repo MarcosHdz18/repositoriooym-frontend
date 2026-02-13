@@ -6,7 +6,7 @@ export interface ResponsableElement {
   nombre: string;
   apellidoPaterno: string;
   apellidoMaterno: string;
-  numeroEmpleado: number;
+  numeroEmpleado: String;
   area: {
     idArea: number;
     nombre: string;

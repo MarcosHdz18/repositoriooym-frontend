@@ -1,4 +1,4 @@
-import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition, SimpleSnackBar } from '@angular/material/snack-bar';
@@ -7,12 +7,14 @@ import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { ProyectoService } from 'src/app/modules/shared/services/proyecto.service';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 
+
 interface DocItem {
   key: string;
   label: string;
   filename: string | null;
   icon: string;
   category?: string;
+  idDocumentoAdjunto?: number;
 }
 
 @Component({
@@ -26,11 +28,11 @@ export class DetalleProyectoComponent implements OnInit {
   documentosSubidos: DocItem[] = []; // Mostrar solo los documentos subidos
   proyectos: ProyectoElement[] = [];
   isAdmin: any;
+  isPerfilInfraestructura: any;
 
   isDownloading: boolean = false;
   downloadProgress: number = 0;
 
-  // Declaramos las variables
   searchTerm: string = '';
   nodosFiltrados: string[] = [];
 
@@ -57,18 +59,21 @@ export class DetalleProyectoComponent implements OnInit {
     // Inicializamos la lista filtrada con todos los nodos al principio
     this.nodosFiltrados = this.data.nodosList ? [...this.data.nodosList] : [];
 
-    this.buildDocumentList();
-
     // Montamos la lista de documentos subidos
     const todos: DocItem[] = [
       { label: 'F60', key: 'f60', filename: this.data.f60, icon: 'integration_instructions', category: 'documentacion_tecnica' },
       { label: 'LLD', key: 'lld', filename: this.data.lld, icon: 'integration_instructions', category: 'documentacion_tecnica' },
       { label: 'HLD', key: 'hld', filename: this.data.hld, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'Memoria técnica', key: 'memoriaTecnica', filename: this.data.memoriaTecnica, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'SID', key: 'sid', filename: this.data.sid, icon: 'integration_instructions', category: 'documentacion_tecnica' },
       { label: 'Layout', key: 'layout', filename: this.data.layout, icon: 'integration_instructions', category: 'documentacion_tecnica' },
       { label: 'Presentacion', key: 'presentacion', filename: this.data.presentacion, icon: 'integration_instructions', category: 'documentacion_tecnica' },
       { label: 'SLA', key: 'sla', filename: this.data.sla, icon: 'integration_instructions', category: 'documentacion_tecnica' },
       { label: 'RTO', key: 'reportetransferenciaoperativa', filename: this.data.reporteTransferenciaOperativa, icon: 'integration_instructions', category: 'actas_aceptacion' },
       { label: 'Asignación Fuerza Espacio', key: 'asignacionfuerzaespacio', filename: this.data.asignacionFuerzaEspacio, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'Etiquetado', key: 'etiquetado', filename: this.data.etiquetado, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'Planos', key: 'planos', filename: this.data.planos, icon: 'integration_instructions', category: 'documentacion_tecnica' },
+      { label: 'Proyecto ejecutivo', key: 'proyectoEjecutivo', filename: this.data.proyectoEjecutivo, icon: 'integration_instructions', category: 'documentacion_tecnica' },
       { label: 'Reporte fotográfico', key: 'reporteFotografico', filename: this.data.reporteFotografico, icon: 'integration_instructions', category: 'documentacion_tecnica' },
       { label: 'Inventario Hardware', key: 'inventariohardware', filename: this.data.inventarioHardware, icon: 'integration_instructions', category: 'documentacion_tecnica' },
       { label: 'ATP Físico', key: 'atpfisico', filename: this.data.atpFisico, icon: 'integration_instructions', category: 'protocolos_aceptacion' },
@@ -79,6 +84,7 @@ export class DetalleProyectoComponent implements OnInit {
       { label: 'Responsiva Storage', key: 'cartaresponsivastorage', filename: this.data.cartaResponsivaStorage, icon: 'integration_instructions', category: 'actas_aceptacion' },
       { label: 'Responsiva HA', key: 'cartaresponsivaha', filename: this.data.cartaResponsivaHa, icon: 'integration_instructions', category: 'actas_aceptacion' },
       { label: 'Responsiva GSOC', key: 'cartaresponsivagsoc', filename: this.data.cartaResponsivaGsoc, icon: 'integration_instructions', category: 'actas_aceptacion' },
+      { label: 'Responsiva Llaves', key: 'cartaresponsivallaves', filename: this.data.cartaResponsivaLlaves, icon: 'integration_instructions', category: 'actas_aceptacion' },
       { label: 'Otros archivos', key: 'otros', filename: this.data.otros, icon: 'integration_instructions', category: 'documentacion_tecnica' }
     ];
 
@@ -89,8 +95,22 @@ export class DetalleProyectoComponent implements OnInit {
       && doc.filename.toLowerCase() !== 'na'
     );
 
-    //this.getProyectos();
+
+    if (this.data.adjuntos && Array.isArray(this.data.adjuntos)) {
+      // Creamos un arreglo temporal con los nuevos adjuntos
+      const nuevosAdjuntos = this.data.adjuntos.map((adj: any) => ({
+        key: 'adjuntos',
+        label: 'Archivo Adicional',
+        filename: adj.nombreArchivo,
+        icon: 'attachment',
+        category: 'adjuntos_adicionales',
+        idDocumentoAdjunto: adj.idDocumentoAdjunto
+      }));
+      this.documentosSubidos = [...this.documentosSubidos, ...nuevosAdjuntos];
+    }
+    
     this.isAdmin = this.util.isAdmin();
+    this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
   }
 
   // Filtra los nodos según el término de búsqueda
@@ -112,16 +132,13 @@ export class DetalleProyectoComponent implements OnInit {
     // Unimos los nodos filtrados con un salto de línea
     const textoACopiar = this.nodosFiltrados.join('\n');
 
-    // 1. Intentar con la API moderna (solo funciona en HTTPS o Localhost)
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(textoACopiar).then(() => {
         this.openSnackbar(`${cantidad} nodos copiados exitosamente`, "Operación exitosa");
       }).catch(err => {
-        // Si falla la API moderna por alguna razón, intentamos el fallback
         this.copiarFallback(textoACopiar, cantidad);
       });
     } else {
-      // 2. Si no hay contexto seguro (HTTP), usamos el método antiguo de respaldo
       this.copiarFallback(textoACopiar, cantidad);
     }
   }
@@ -208,8 +225,6 @@ export class DetalleProyectoComponent implements OnInit {
       });
 
       this.dataSource = new MatTableDataSource<ProyectoElement>(dataProyectos);
-      //this.dataSource.paginator = this.paginator;
-      //this.dataSource.sort = this.proyectoSort;
     }
   }
 
@@ -277,32 +292,30 @@ export class DetalleProyectoComponent implements OnInit {
     });
   }
 
-  /**
-   * Metodo que se utiliza para mostrar un mensaje en pantalla
-   * @param mensaje mensaje que se mostrara en pantalla
-   * @param accion accion que se realizo 
-   */
-  buildDocumentList() {
-    this.documentos = [
-      { key: 'f60', label: 'F60', filename: this.data.f60, icon: 'description' },
-      { key: 'lld', label: 'LLD', filename: this.data.lld, icon: 'table_chart' },
-      { key: 'hld', label: 'HLD', filename: this.data.hld, icon: 'table_chart' },
-      { key: 'layout', label: 'Layout', filename: this.data.layout, icon: 'integration_instructions' },
-      { key: 'presentacion', label: 'Presentacion', filename: this.data.presentacion, icon: 'integration_instructions' },
-      { key: 'sla', label: 'SLA', filename: this.data.sla, icon: 'integration_instructions' },
-      { key: 'reporteFotografico', label: 'Reporte Fotográfico', filename: this.data.reporteFotografico, icon: 'integration_instructions' },
-      { key: 'asignacionFuerzaEspacio', label: 'Asignación Fuerza Espacio', filename: this.data.asignacionFuerzaEspacio, icon: 'integration_instructions' },
-      { key: 'inventarioHardware', label: 'Inventario Hardware', filename: this.data.inventarioHardware, icon: 'integration_instructions' },
-      { key: 'atpFisico', label: 'ATP Físico', filename: this.data.atpFisico, icon: 'integration_instructions' },
-      { key: 'atpFisicoFirmado', label: 'ATP Físico Firmado', filename: this.data.atpFisicoFirmado, icon: 'integration_instructions' },
-      { key: 'atpLogico', label: 'ATP Lógico', filename: this.data.atpLogico, icon: 'integration_instructions' },
-      { key: 'cartaResponsivaPlataforma', label: 'Responsiva Plataforma', filename: this.data.cartaResponsivaPlataforma, icon: 'integration_instructions' },
-      { key: 'cartaResponsivaIaaS', label: 'Responsiva IaaS', filename: this.data.cartaResponsivaIaaS, icon: 'integration_instructions' },
-      { key: 'cartaResponsivaStorage', label: 'Responsiva Storage', filename: this.data.cartaResponsivaStorage, icon: 'integration_instructions' },
-      { key: 'cartaResponsivaHa', label: 'Responsiva HA', filename: this.data.cartaResponsivaHa, icon: 'integration_instructions' },
-      { key: 'cartaResponsivaGsoc', label: 'Responsiva GSOC', filename: this.data.cartaResponsivaGsoc, icon: 'integration_instructions' },
-      { key: 'otros', label: 'Otros archivos', filename: this.data.otros, icon: 'integration_instructions' }
-    ];
-    console.log('Documentos cargados:', this.documentos);
+  descargarAdjunto(idAdjunto: number, nombreArchivo: string) {
+
+    if (!idAdjunto) {
+      this.openSnackbar("Error: ID de archivo no válido", "Cerrar");
+      return;
+    }
+
+    this.proyectoService.descargarAdjuntoMasivo(idAdjunto).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        // El nombre se recuperará del header del Backend
+        a.download = nombreArchivo;
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err) => {
+        console.error("Error al descargar:", err);
+        this.openSnackbar("No se pudo descargar el archivo", "Cerrar");
+      }
+    });
   }
 }

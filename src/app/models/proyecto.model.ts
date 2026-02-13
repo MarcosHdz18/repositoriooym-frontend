@@ -1,4 +1,15 @@
 /**
+ * Representa los archivos adjuntos del proyecto
+ */
+export interface DocumentoAdjunto {
+  idDocumentoAdjunto: number;
+  nombreArchivo: string;
+  rutaArchivo: string;
+  usuarioSubio: string;
+  fechaCarga: string;
+}
+
+/**
  * Representa un proyecto en la aplicación.
  * Sirve tanto para listados como para editar/crear.
  */
@@ -50,10 +61,15 @@ export interface ProyectoElement {
   f60:               string;
   lld:               string;
   hld:               string;
+  memoriaTecnica:        string;
+  sid:        string;
   layout:            string;
   sla:               string;
   reporteFotografico:string;
   asignacionFuerzaEspacio: string;
+  etiquetado:          string;
+  planos:            string;
+  proyectoEjecutivo:     string;
   inventarioHardware:      string;
   atpFisico:               string;
   atpFisicoFirmado:        string;
@@ -64,5 +80,7 @@ export interface ProyectoElement {
   cartaResponsivaStorage: string;
   cartaResponsivaHA:      string;
   cartaResponsivaGsoc:    string;
+  cartaResponsivaLlaves:   string;
   otros: string; // Nuevo campo para otros archivos
+  adjuntos?: DocumentoAdjunto [];
 }
