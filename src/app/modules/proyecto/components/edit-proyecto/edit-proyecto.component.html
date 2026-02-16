@@ -100,7 +100,7 @@
                         [ngClass]="{'color-archivo-rojo': nombreArchivoF60 == 'NA', 
                 'color-archivo-verde': nombreArchivoF60 != 'NA'}">{{ nombreArchivoF60 }}</span></mat-label>
                 <mat-label for="file-f60" *ngIf="selectedFileF60!==null" class="color-archivo-nuevo"
-                    [matTooltip]="'Se actualizará el archivo a ' + selectedFileF60.name">
+                    [matTooltip]="'Se actualizará al archivo ' + selectedFileF60.name + ' al guardar los cambios.'">
                     <span style="color: blue;">
                         <span *ngIf="selectedFileF60" style="color: #21756e;">&nbsp;
                             <mat-icon>task_alt</mat-icon>Cargado: </span>{{ nombreArchivoF60 || '' }}</span>
@@ -181,12 +181,10 @@
 
             <!--File SID-->
             <div class="position-sid">
-                <mat-label [matTooltip]="nombreArchivoSid">SID: <span
-                        *ngIf="selectedFileSid===null" [ngClass]="{'color-archivo-rojo': nombreArchivoSid == 'NA', 
+                <mat-label [matTooltip]="nombreArchivoSid">SID: <span *ngIf="selectedFileSid===null" [ngClass]="{'color-archivo-rojo': nombreArchivoSid == 'NA', 
                 'color-archivo-verde': nombreArchivoSid != 'NA'}">{{ nombreArchivoSid
                         }}</span></mat-label>
-                <mat-label for="file-sid" *ngIf="selectedFileSid!==null"
-                    class="color-archivo-nuevo"
+                <mat-label for="file-sid" *ngIf="selectedFileSid!==null" class="color-archivo-nuevo"
                     [matTooltip]="'Se actualizará el archivo a ' + selectedFileSid.name">
                     <span style="color: blue;">
                         <span *ngIf="selectedFileSid" style="color: #21756e;">&nbsp;
@@ -198,8 +196,8 @@
                 </button>
                 <label *ngIf="selectedFileSid==null" for="file-sid" class="upload"><mat-icon
                         matTooltip="Actualizar archivo" matSuffix>sync</mat-icon></label>
-                <input class="input-file" id="file-sid" type="file"
-                    (change)="onFileChangedSid($event)" formControlName="fileSid" /><br>
+                <input class="input-file" id="file-sid" type="file" (change)="onFileChangedSid($event)"
+                    formControlName="fileSid" /><br>
             </div>
 
             <!--File RTO-->
@@ -657,24 +655,30 @@
         </div>
 
         <!--Lista a mostrar de los archivos adicionales que ya se encuentran referenciados al proyecto-->
-        <div class="adjuntos-existentes-container" *ngIf="data.adjuntos && data.adjuntos.length > 0 && isPerfilInfraestructura">
+        <div class="adjuntos-existentes-container"
+            *ngIf="data.adjuntos && data.adjuntos.length > 0 && isPerfilInfraestructura">
             <div class="adjuntos-header">
                 <mat-icon>attachment</mat-icon>
                 <span>Archivos adicionales en este proyecto: <strong>{{ data.adjuntos.length }} archivos</strong></span>
             </div>
 
             <div class="adjuntos-list">
-                <div class="adjunto-item" *ngFor="let adj of data.adjuntos">
+                <div class="adjunto-item" *ngFor="let adj of data.adjuntos; let i = index">
                     <div class="adjunto-info">
-                        <mat-icon color="primary">description</mat-icon>
+                        <mat-icon color="primary" style="transform: scale(1.1);">description</mat-icon>
                         <span class="adjunto-name" [matTooltip]="adj.nombreArchivo">
                             {{ adj.nombreArchivo }}
                         </span>
                     </div>
                     <div class="adjunto-actions">
-                        <button mat-icon-button color="primary" (click)="descargarAdjunto(adj.idDocumentoAdjunto, adj.nombreArchivo)"
+                        <button mat-icon-button color="primary"
+                            (click)="descargarAdjunto(adj.idDocumentoAdjunto, adj.nombreArchivo)"
                             matTooltip="Descargar">
                             <mat-icon>download</mat-icon>
+                        </button>
+                        <button matTooltip="Eliminar" mat-icon-button color="warn"
+                            (click)="confirmarEliminarAdjunto(adj.idDocumentoAdjunto, i, adj.nombreArchivo)">
+                            <mat-icon>delete_forever</mat-icon>
                         </button>
                     </div>
                 </div>
@@ -682,8 +686,9 @@
         </div>
 
         <!--Zona de Drag-->
-        <div *ngIf="isPerfilInfraestructura" class="drop-zone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
-            (click)="fileInput.click()" [class.drag-over]="isDragging">
+        <div *ngIf="isPerfilInfraestructura" class="drop-zone" (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (click)="fileInput.click()"
+            [class.drag-over]="isDragging">
 
             <input type="file" #fileInput (change)="onFileSelected($event)" multiple hidden>
             <mat-icon>add_to_photos</mat-icon>
@@ -694,12 +699,14 @@
         <div *ngIf="archivosParaSubir.length > 0 && isPerfilInfraestructura" class="new-files-preview">
             <div class="preview-header" #scrollContainer>
                 <mat-icon color="accent">upload_file</mat-icon>
-                <span>Se realizará la carga de <strong>{{ archivosParaSubir.length }}</strong> archivo(s) adicional(es) que no formaran parte de la publicación del proyecto.</span>
+                <span>Se realizará la carga de <strong>{{ archivosParaSubir.length }}</strong> archivo(s) adicional(es)
+                    que no formaran parte de la publicación del proyecto.</span>
             </div>
 
             <mat-card *ngFor="let file of archivosParaSubir; let i = index" class="file-preview-card">
                 <mat-card-content class="file-info">
-                    <span><mat-icon style="vertical-align: middle;">insert_drive_file</mat-icon> {{file.name}} ({{(file.size / 1024) | number:'1.1-2'}}
+                    <span><mat-icon style="vertical-align: middle;">insert_drive_file</mat-icon> {{file.name}}
+                        ({{(file.size / 1024) | number:'1.1-2'}}
                         KB)</span>
                     <button mat-icon-button color="warn" (click)="$event.stopPropagation(); removerArchivo(i)">
                         <mat-icon>delete</mat-icon>

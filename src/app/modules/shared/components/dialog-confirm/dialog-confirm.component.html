@@ -1,6 +1,11 @@
 <h1 *ngIf="data.module === 'area'" class="mat-dialog-title centrar-texto">Eliminar Departamento</h1>
 <h1 *ngIf="data.module === 'responsable'" class="mat-dialog-title centrar-texto">Eliminar Responsable</h1>
 <h1 *ngIf="data.module === 'proyecto'" class="mat-dialog-title centrar-texto">Eliminar Proyecto</h1>
+<h1 *ngIf="data.module === 'region'" class="mat-dialog-title centrar-texto">Eliminar Región</h1>
+<h1 *ngIf="data.module === 'tipoProyecto'" class="mat-dialog-title centrar-texto">Eliminar Tipo de Proyecto</h1>
+<h1 *ngIf="data.module === 'sitio'" class="mat-dialog-title centrar-texto">Eliminar Sitio</h1>
+<h1 *ngIf="data.module === 'cliente'" class="mat-dialog-title centrar-texto">Eliminar Cliente</h1>
+<h1 *ngIf="data.module === 'adjunto'" class="mat-dialog-title centrar-texto">Eliminar Archivo Adjunto</h1>
 <div class="centrar-texto" mat-dialog-content>
     <p *ngIf="data.module === 'area'">¿Está seguro que desea eliminar el departamento con el ID: <strong>{{ idAreaDeleted }} - {{ nombreArea }} </strong>?</p>
     <p *ngIf="data.module === 'responsable'">¿Está seguro que desea eliminar el responsable con el ID: <strong>{{ idResponsableDeleted }} - {{ nombreResponsable }}</strong>?</p>
@@ -10,6 +15,8 @@
     <p *ngIf="data.module === 'cliente'">¿Está seguro que desea eliminar el cliente con el ID: <strong>{{ idClienteDeleted }} - {{ nombreCliente }}</strong>?</p>
     <p *ngIf="data.module === 'proyecto'">¿Está seguro que desea eliminar el proyecto y sus archivos asociados con el ID: <strong>{{ idProyectoDeleted }} - {{ nombreProyecto }}</strong>?</p>
     <p style="color: red;">Esta acción no se puede deshacer.</p>
+    <p *ngIf="data.module === 'adjunto'">¿Está seguro que desea eliminar el archivo adjunto <strong>{{ nombreArchivoAdjunto }}</strong>? Esta acción no se puede deshacer.</p>
+    <p *ngIf="data.module === 'archivo-principal'">¿Está seguro que desea eliminar el archivo <strong>{{ nombreArchivoPrincipal }}</strong>? Esta acción no se puede deshacer.</p>
 </div>
 <div class="container-buttons" mat-dialog-actions>
     <button mat-raised-button color="primary" (click)="clickConfirmado()" cdkFocusInitial>Si</button>

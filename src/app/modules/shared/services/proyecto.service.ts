@@ -69,6 +69,31 @@ export class ProyectoService {
   }
 
   /**
+   * 
+   * @param idAdjunto identificador unico del archivo adjunto a eliminar
+   * @param username  usuario que realiza la accion
+   * @returns null
+   */
+  deleteArchivoAdjunto(idArchivoAdjunto: number, username: string): Observable<void> {
+    const endpoint = `${base_url}/proyectos/adjuntos/eliminar/${idArchivoAdjunto}?usuarioActivo=${username}`;
+
+    return this.http.delete<void>(endpoint);
+  }
+
+  /**
+   * Metodo que funciona para eliminar los archivos principales de un proyecto en la edición del mismo
+   * @param idProyecto identificador unico del proyecto
+   * @param campo archivo a eliminar
+   * @param username usuario que realiza la accion
+   * @returns 
+   */
+  deleteArchivoPrincipal(idProyecto: number, campo: string, username: string): Observable<void> {
+    const endpoint = `${base_url}/proyectos/${idProyecto}/archivo/${campo}?usuarioActivo=${username}`;
+
+    return this.http.delete<void>(endpoint);
+  }
+
+  /**
    * Metodo que realiza la busqueda por nombre de los proyectos
    * @param nombre parametro del nombre a buscar
    * @returns json con el listado de los proyectos filtrados por nombre

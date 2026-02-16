@@ -1,34 +1,126 @@
-<div @fadeAnimation class="dashboard">
-    <mat-card class="card">
-        <mat-card-header>
+<div @fadeAnimation class="dashboard-container">
+    <mat-card class="main-card">
+        <mat-card-header class="custom-header">
             <div mat-card-avatar class="avatar-image"></div>
-            <mat-card-title>Inicio</mat-card-title>
-            <mat-card-subtitle style="text-align: left;">Portal</mat-card-subtitle>
+            <div class="header-text">
+                <mat-card-title>Inicio</mat-card-title>
+                <mat-card-subtitle>Sitios de interés y enlaces externos</mat-card-subtitle>
+            </div>
         </mat-card-header>
-        <img mat-card-image src="../../../../../assets/img/repository-logo.jpg" class="logo-telcel" alt="logo-telcel">
+
+        <img mat-card-image src="assets/img/repository-logo.jpg" class="dashboard-banner" alt="Banner Corporativo">
+
         <mat-card-content>
-            <p>
-                SISTEMA PRIVADO. UNICAMENTE USUARIOS AUTORIZADOS.
-            </p>
-            <p>
-                EL USO DE ESTE SISTEMA ES EXCLUSIVO PARA LOS FINES AUTORIZADOS POR LA GERENCIA OYM RECEPCIÓN INFRAESTRUCTURA, APLICATIVOS Y SISTEMAS VIRTUALIZADOS Y ESTA
-                SUJETO A SER AUDITADO EN CUALQUIER MOMENTO.
-            </p>
+            <div class="legal-disclaimer">
+                <div class="disclaimer-icon">
+                    <mat-icon>settings_system_daydream</mat-icon>
+                </div>
+                <div class="disclaimer-text">
+                    <strong>SISTEMA PRIVADO - UNICAMENTE USUARIOS AUTORIZADOS</strong>
+                    <p>EL USO DE ESTE SISTEMA ES EXCLUSIVO PARA LOS FINES AUTORIZADOS POR LA GERENCIA OYM RECEPCIÓN INFRAESTRUCTURA, APLICATIVOS Y 
+                        SISTEMAS VIRTUALIZADOS Y ESTA SUJETO A SER AUDITADO EN CUALQUIER MOMENTO.</p>
+                </div>
+            </div>
+
+            <mat-accordion multi="false" class="custom-accordion">
+                
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="category-title hr-theme">
+                            <mat-icon>groups</mat-icon>
+                            <span>RECURSOS HUMANOS</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="links-grid">
+                        <a class="shortcut-item hr-item" href="http://intranet2.telcel.com/html/home.html?" target="_blank">
+                            <mat-icon>public</mat-icon><span>INTRANET</span>
+                        </a>
+                        <a class="shortcut-item hr-item" href="http://10.119.111.106:8080/Monitor/Usuario.jsp" target="_blank">
+                            <mat-icon>history_edu</mat-icon><span>CHECADOR</span>
+                        </a>
+                        <a class="shortcut-item hr-item" href="http://intranet.telcel.com:8020/drh/incidencias/index.jsp" target="_blank">
+                            <mat-icon>report_problem</mat-icon><span>INCIDENCIAS</span>
+                        </a>
+                        <a class="shortcut-item hr-item" href="http://intranet.telcel.com:8020/drh/reciboelectronico/inicio.do" target="_blank">
+                            <mat-icon>payments</mat-icon><span>RECIBO</span>
+                        </a>
+                        <a class="shortcut-item hr-item" href="http://intranet.telcel.com:8020/Vacaciones/inicio.do" target="_blank">
+                            <mat-icon>beach_access</mat-icon><span>VACACIONES</span>
+                        </a>
+                        <a class="shortcut-item hr-item" href="http://intranet.telcel.com:8030/Estacionamientos/login.xhtml" target="_blank">
+                            <mat-icon>directions_car</mat-icon><span>ESTACIONAMIENTO</span>
+                        </a>
+                    </div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="category-title tech-theme">
+                            <mat-icon>settings_suggest</mat-icon>
+                            <span>HERRAMIENTAS TÉCNICAS</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="links-grid">
+                        <a class="shortcut-item tech-item" href="http://adoc.telcel.com/adoc/loginPage" target="_blank">
+                            <mat-icon>description</mat-icon><span>@DOC</span>
+                        </a>
+                        <a class="shortcut-item tech-item" href="https://remedycloudamx-dwp.onbmc.com/dwp/app/#/page/hjmyqbot" target="_blank">
+                            <mat-icon>support_agent</mat-icon><span>REMEDY</span>
+                        </a>
+                        <a class="shortcut-item tech-item" href="http://operaciones.telcel.com:8480/" target="_blank">
+                            <mat-icon>apps</mat-icon><span>PORTAL OYM</span>
+                        </a>
+                        <a class="shortcut-item tech-item" href="http://10.191.110.100/inventario/vista/login.php" target="_blank">
+                            <mat-icon>inventory_2</mat-icon><span>INVENTARIO</span>
+                        </a>
+                        <a class="shortcut-item tech-item" href="http://10.119.154.130/sf/seguridad/login.php?refurl=/visualizador/index.php&err=012" target="_blank">
+                            <mat-icon>analytics</mat-icon><span>MOM FALLAS</span>
+                        </a>
+                        <a class="shortcut-item tech-item" href="https://gestion.telcel.com/CAisd/pdmweb3.exe" target="_blank">
+                            <mat-icon>headset_mic</mat-icon><span>SERVICE DESK</span>
+                        </a>
+                        <a class="shortcut-item tech-item" href="http://sisap2014.telcel.com:9081/SISAP2Web/Inicio.sp" target="_blank">
+                            <mat-icon>assignment</mat-icon><span>SISAP</span>
+                        </a>
+                    </div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="category-title other-theme">
+                            <mat-icon>open_in_new</mat-icon>
+                            <span>OTROS SITIOS</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="links-grid">
+                        <a class="shortcut-item other-item" href="http://intranet.telcel.com:8020/sea/inicio.do" target="_blank">
+                            <mat-icon>vpn_key</mat-icon><span>GESTIÓN ACCESOS</span>
+                        </a>
+                        <a class="shortcut-item other-item" href="https://calidad.telcel.com/portal_quality/jsf/login.xhtml" target="_blank">
+                            <mat-icon>verified</mat-icon><span>PORTAL CALIDAD</span>
+                        </a>
+                        <a class="shortcut-item other-item" href="http://idm.oymcloud.americamovil.com:8080/idm81/user/login.jsp" target="_blank">
+                            <mat-icon>lock_open</mat-icon><span>DESBLOQUEO</span>
+                        </a>
+                        <a class="shortcut-item other-item" href="https://mailex.telcel.com/owa" target="_blank">
+                            <mat-icon>mail</mat-icon><span>OUTLOOK</span>
+                        </a>
+                        <a class="shortcut-item other-item" href="https://account.docusign.com/" target="_blank">
+                            <mat-icon>draw</mat-icon><span>DOCUSIGN</span>
+                        </a>
+                        <a class="shortcut-item other-item" href="http://intranet.telcel.com:8020/siatemaalterno/inicio.do" target="_blank">
+                            <mat-icon>alt_route</mat-icon><span>S. ALTERNO</span>
+                        </a>
+                        <a class="shortcut-item other-item" href="https://sso.telcel.com/oam/server/obrareq.cgi?..." target="_blank">
+                            <mat-icon>security</mat-icon><span>SUA NUEVA</span>
+                        </a>
+                    </div>
+                </mat-expansion-panel>
+
+            </mat-accordion>
         </mat-card-content>
-        <mat-card-actions>
-            <p>SITIOS DE INTERÉS</p>
-            <a mat-button href="http://intranet2.telcel.com/html/home.html?" target="_blank">INTRANET</a>
-            <a mat-button href="http://10.119.111.106:8080/Monitor/Usuario.jsp" target="_blank">CHECADOR REGISTROS</a>
-            <a mat-button href="http://intranet.telcel.com:8020/drh/incidencias/index.jsp" target="_blank">INCIDENCIAS</a>
-            <a mat-button href="http://intranet.telcel.com:8020/drh/reciboelectronico/inicio.do" target="_blank">RECIBO ELECTRÓNICO</a>
-            <a mat-button href="http://adoc.telcel.com/adoc/loginPage" target="_blank">&#64;DOC</a>
-            <a mat-button href="https://remedycloudamx-dwp.onbmc.com/dwp/app/#/page/hjmyqbot" target="_blank">REMEDY</a>
-            <a mat-button href="http://operaciones.telcel.com:8480/" target="_blank">PORTAL OYM</a>
-            <a mat-button href="http://intranet.telcel.com:8020/Vacaciones/inicio.do" target="_blank">VACACIONES</a>
-            <a mat-button href="http://10.191.110.100/inventario/vista/login.php" target="_blank">SISTEMA INVENTARIO OYM</a>
-            <a mat-button href="http://intranet.telcel.com:8020/siatemaalterno/inicio.do" target="_blank">SISTEMA ALTERNO</a>
-            <a mat-button href="https://account.docusign.com/" target="_blank">DOCUSIGN</a>
-            <a mat-button href="http://10.119.154.130/sf/seguridad/login.php?refurl=/visualizador/index.php&err=012" target="_blank">SISTEMAS DE FALLAS (MoM)</a>
-        </mat-card-actions>
     </mat-card>
 </div>

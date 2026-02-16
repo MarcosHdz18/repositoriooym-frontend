@@ -1,7 +1,7 @@
 import { HttpEventType } from '@angular/common/http';
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition, SimpleSnackBar } from '@angular/material/snack-bar';
 import { KeycloakService } from 'keycloak-angular';
 import { timer, zip } from 'rxjs';
@@ -10,6 +10,7 @@ import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { ResponsableElement } from 'src/app/models/responsable.model';
 import { SitioElement } from 'src/app/models/sitio.model';
 import { TipoProyectoElement } from 'src/app/models/tipoProyectoElement';
+import { DialogConfirmComponent } from 'src/app/modules/shared/components/dialog-confirm/dialog-confirm.component';
 import { ClienteService } from 'src/app/modules/shared/services/cliente.service';
 import { ProyectoService } from 'src/app/modules/shared/services/proyecto.service';
 import { ResponsableService } from 'src/app/modules/shared/services/responsable.service';
@@ -110,7 +111,7 @@ export class EditProyectoComponent implements OnInit {
   // Variable para identificar si es edición
   isEditMode = true;
 
-  constructor(private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService,
+  constructor(private fb: FormBuilder, private responsableService: ResponsableService, private tipoProyectoService: TipoProyectoService, public dialog: MatDialog,
     private sitioService: SitioService, private clienteService: ClienteService, private proyectoService: ProyectoService, private dialogRef: MatDialogRef<EditProyectoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ProyectoElement, private util: UtilsService, private snackbar: MatSnackBar, private keycloakService: KeycloakService) {
     // Configuración del título y botón del formulario
@@ -948,7 +949,8 @@ export class EditProyectoComponent implements OnInit {
   openSnackbar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
     return this.snackbar.open(message, action, {
       horizontalPosition: this.horizontalPositionSnackbar,
-      verticalPosition: this.verticalPositionSnackbar
+      verticalPosition: this.verticalPositionSnackbar,
+      duration: 7000
     });
   }
 
@@ -978,7 +980,27 @@ export class EditProyectoComponent implements OnInit {
 
   agregarArchivosALista(files: FileList) {
     const nuevosArchivos = Array.from(files);
-    this.archivosParaSubir.push(...nuevosArchivos);
+
+    nuevosArchivos.forEach(nuevofile => {
+      const existeEnServer = this.data.adjuntos?.some(adj => adj.nombreArchivo === nuevofile.name);
+
+      const existeEnLista = this.archivosParaSubir.findIndex(file => file.name === nuevofile.name);
+
+      if (existeEnServer) {
+        this.openSnackbar(`El archivo "${nuevofile.name}" ya existe y será reemplazado al actualizar el proyecto.`, "Cerrar");
+
+        if (existeEnLista === -1) {
+          this.archivosParaSubir.push(nuevofile);
+        } else {
+          this.archivosParaSubir[existeEnLista] = nuevofile; // Reemplaza el archivo en la lista de subida
+        }
+      } else if (existeEnLista !== -1) {
+        this.archivosParaSubir[existeEnLista] = nuevofile; // Reemplaza el archivo en la lista de subida
+        this.openSnackbar(`El archivo "${nuevofile.name}" ya estaba en la lista de archivos para subir y ha sido actualizado.`, "Cerrar");
+      } else {
+        this.archivosParaSubir.push(nuevofile);
+      }
+    });
 
     setTimeout(() => {
       if (this.myScrollContainer) {
@@ -1022,6 +1044,67 @@ export class EditProyectoComponent implements OnInit {
       error: (err) => {
         console.error("Error al descargar:", err);
         this.openSnackbar("No se pudo descargar el archivo", "Cerrar");
+      }
+    });
+  }
+
+  confirmarEliminarAdjunto(idAdjunto: number, indice: number, nombreArchivo: string) {
+
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      width: '450px',
+      data: {
+        module: 'adjunto',
+        idDocumentoAdjunto: idAdjunto,
+        nombreArchivo: nombreArchivo
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 1) {
+        this.data.adjuntos?.splice(indice, 1);
+        this.openSnackbar(`El archivo "${nombreArchivo}" fue eliminado exitosamente.`, "Cerrar");
+      } else if (result === 2) {
+        this.openSnackbar("Error al eliminar el archivo. Por favor, intenta de nuevo.", "Cerrar");
+      }
+    });
+  }
+
+  confirmarEliminarArchivoPrincipal(campo: string, nombreArchivo: string) {
+    // 1. Abrimos el diálogo que ya tienes configurado
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      width: '450px',
+      data: {
+        module: 'archivo-principal', // Nombre del módulo para tu lógica de diálogo
+        nombreArchivo: nombreArchivo // Mostramos el nombre en el mensaje de confirmación
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Si el usuario confirmó (result === 1)
+      if (result === 1) {
+        // Llamamos al servicio (asegúrate de que el idProyecto esté disponible en this.data)
+        this.proyectoService.deleteArchivoPrincipal(this.data.idProyecto, campo, this.username)
+          .subscribe({
+            next: () => {
+              const campoKey = campo as keyof ProyectoElement;
+              // ACTUALIZACIÓN QUIRÚRGICA DE LA VISTA
+              // Usamos corchetes para acceder a la propiedad dinámicamente (f60, lld, etc.)
+              (this.data as any)[campoKey] = 'NA';
+
+              // Actualizamos también las variables de control del HTML
+              if (campo === 'f60') this.nombreArchivoF60 = 'NA';
+              if (campo === 'lld') this.nombreArchivoLld = 'NA';
+              if (campo === 'hld') this.nombreArchivoHld = 'NA';
+              if (campo === 'memoriaTecnica') this.nombreArchivoMemoriaTecnica = 'NA';
+
+              this.openSnackbar(`El archivo ${campo.toUpperCase()} ha sido eliminado permanentemente.`, "Cerrar");
+            },
+            error: (err) => {
+              console.error("Error al eliminar archivo:", err);
+              this.openSnackbar("Error al intentar eliminar el archivo del servidor.", "Cerrar");
+            }
+          });
       }
     });
   }

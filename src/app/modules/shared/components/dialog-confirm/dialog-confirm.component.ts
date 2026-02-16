@@ -23,6 +23,8 @@ export class DialogConfirmComponent implements OnInit {
   idRegionDeleted = 0;
   idSitioDeleted = 0;
   idClienteDeleted = 0;
+  idDocumentoAdjuntoDeleted = 0;
+  
 
   username: any;
 
@@ -33,6 +35,8 @@ export class DialogConfirmComponent implements OnInit {
   nombreProyecto = '';
   nombreTipoProyecto = '';
   nombreCliente = '';
+  nombreArchivoAdjunto = '';
+  nombreArchivoPrincipal = '';
 
   constructor(public dialogRef: MatDialogRef<DialogConfirmComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     private areaService: AreaService, private responsableService: ResponsableService, private regionService: RegionService,
@@ -47,6 +51,7 @@ export class DialogConfirmComponent implements OnInit {
     this.idRegionDeleted = this.data.idRegion;
     this.idSitioDeleted = this.data.idSitio;
     this.idClienteDeleted = this.data.idCliente;
+    this.idDocumentoAdjuntoDeleted = this.data.idDocumentoAdjunto;
 
     this.nombreArea = this.data.nombreArea;
     this.nombreResponsable = this.data.nombreResponsable;
@@ -55,6 +60,8 @@ export class DialogConfirmComponent implements OnInit {
     this.nombreTipoProyecto = this.data.nombreTipoProyecto;
     this.nombreCliente = this.data.nombreCliente;
     this.nombreSitio = this.data.nombreSitio;
+    this.nombreArchivoAdjunto = this.data.nombreArchivo;
+    this.nombreArchivoPrincipal = this.data.nombreArchivoPrincipal;
 
     this.username = this.keycloakService.loadUserProfile().then(profile => {
       this.username = profile.firstName + ' ' + profile.lastName;
@@ -102,6 +109,14 @@ export class DialogConfirmComponent implements OnInit {
         }, (error: any) => {
           this.dialogRef.close(2);
         });
+      } else if (this.data.module == "adjunto") {
+        this.proyectoService.deleteArchivoAdjunto(this.data.idDocumentoAdjunto, this.username).subscribe((data: any) => {
+          this.dialogRef.close(1);
+        }, (error: any) => {
+          this.dialogRef.close(2);
+        });
+      }else if (this.data.module == "archivo-principal") {
+        this.dialogRef.close(1);
       } else if (this.data.module == "cliente") {
         this.clienteService.deleteCliente(this.data.idCliente).subscribe((data: any) => {
           this.dialogRef.close(1);
