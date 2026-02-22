@@ -1,8 +1,35 @@
 <mat-card @fadeAnimation class="legacy-card">
-  <mat-card-header color="accent">
-    <mat-card-title>Proyectos 2007 – 2025</mat-card-title>
+  <mat-card-header class="custom-legacy-header">
+    <div class="header-content">
+      <mat-card-title>Proyectos 2007 – 2025</mat-card-title>
+      <span class="spacer"></span>
+
+      <ng-container *ngIf="puedeVerAyuda">
+        <button mat-icon-button color="primary" [matMenuTriggerFor]="helpMenu" *ngIf="puedeVerAyuda">
+          <mat-icon>help_outline</mat-icon>
+        </button>
+
+
+        <mat-menu #helpMenu="matMenu">
+          <div style="padding: 15px; max-width: 250px; font-size: 13px;">
+            <strong>¿Cómo actualizar cambios?</strong><br>
+            Para ver reflejados tus cambios en el HTML:
+            <ol style="margin-top: 8px;">
+              <li>Clic derecho <strong>dentro</strong> del portal.</li>
+              <li>Selecciona <strong>"Actualizar marco"</strong>.</li>
+            </ol>
+          </div>
+        </mat-menu>
+      </ng-container>
+    </div>
   </mat-card-header>
+
   <mat-card-content class="legacy-container">
-    <iframe [src]="urlPortalLegacy" class="legacy-frame"></iframe>
+    <iframe #iframeLegacy [src]="urlPortalLegacy" class="legacy-frame"></iframe>
   </mat-card-content>
+
+  <mat-card-footer class="legacy-footer" *ngIf="puedeVerAyuda">
+    <mat-icon inline>info</mat-icon>
+    <span>Tip: Clic derecho + "Actualizar marco" para refrescar archivos modificados.</span>
+  </mat-card-footer>
 </mat-card>

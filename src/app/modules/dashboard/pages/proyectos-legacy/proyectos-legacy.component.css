@@ -1,18 +1,34 @@
+.legacy-card {
+    margin: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.custom-legacy-header {
+    background: #f8f9fa;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
 .legacy-container {
-    /* ancho máximo deseado y altura fija o relativa al viewport */
-    max-width: 1100px;
-    height: 750px;
+    padding: 0 !important;
+    height: 80vh;
+}
 
-    /* centrar horizontalmente */
-    margin: 0 auto;
-
-    /* si quieres scroll interno: */
-    overflow: auto;
-
-    /* opcional: un borde para separar visualmente */
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.legacy-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 @media (max-width: 1300px) {
@@ -39,4 +55,14 @@
         max-width: 95%;
         margin: 30px auto;
     }
+}
+
+.legacy-footer {
+  padding: 8px 16px;
+  background: #f1f3f9;
+  color: #5c6bc0;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
