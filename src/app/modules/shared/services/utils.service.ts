@@ -59,4 +59,14 @@ export class UtilsService {
       return false;
     }
   }
+
+  isPerfilDocsAdicionales() {
+    let roles = this.keycloakService.getUserRoles().filter(role => role == 'perfil-documentos-adicionales');
+
+    if (roles.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

@@ -655,8 +655,7 @@
         </div>
 
         <!--Lista a mostrar de los archivos adicionales que ya se encuentran referenciados al proyecto-->
-        <div class="adjuntos-existentes-container"
-            *ngIf="data.adjuntos && data.adjuntos.length > 0 && isPerfilInfraestructura">
+        <div class="adjuntos-existentes-container" *ngIf="data.adjuntos && data.adjuntos.length > 0 && isPerfilDocsAdicionales">
             <div class="adjuntos-header">
                 <mat-icon>attachment</mat-icon>
                 <span>Archivos adicionales en este proyecto: <strong>{{ data.adjuntos.length }} archivos</strong></span>
@@ -666,16 +665,24 @@
                 <div class="adjunto-item" *ngFor="let adj of data.adjuntos; let i = index">
                     <div class="adjunto-info">
                         <mat-icon color="primary" style="transform: scale(1.1);">description</mat-icon>
-                        <span class="adjunto-name" [matTooltip]="adj.nombreArchivo">
+
+                        <a href="javascript:void(0)" 
+                           class="adjunto-name file-link" 
+                           [matTooltip]="'Descargar ' + adj.nombreArchivo"
+                           (click)="descargarAdjunto(adj.idDocumentoAdjunto, adj.nombreArchivo)">
                             {{ adj.nombreArchivo }}
-                        </span>
+                        </a>
+
+                        <!--<span class="adjunto-name" [matTooltip]="adj.nombreArchivo">
+                            {{ adj.nombreArchivo }}
+                        </span>-->
                     </div>
                     <div class="adjunto-actions">
-                        <button mat-icon-button color="primary"
+                        <!--<button mat-icon-button color="primary"
                             (click)="descargarAdjunto(adj.idDocumentoAdjunto, adj.nombreArchivo)"
                             matTooltip="Descargar">
                             <mat-icon>download</mat-icon>
-                        </button>
+                        </button>-->
                         <button matTooltip="Eliminar" mat-icon-button color="warn"
                             (click)="confirmarEliminarAdjunto(adj.idDocumentoAdjunto, i, adj.nombreArchivo)">
                             <mat-icon>delete_forever</mat-icon>
@@ -686,7 +693,7 @@
         </div>
 
         <!--Zona de Drag-->
-        <div *ngIf="isPerfilInfraestructura" class="drop-zone" (dragover)="onDragOver($event)"
+        <div *ngIf="isPerfilDocsAdicionales" class="drop-zone" (dragover)="onDragOver($event)"
             (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (click)="fileInput.click()"
             [class.drag-over]="isDragging">
 
@@ -696,7 +703,7 @@
             <p>Arrastra aquí archivos adicionales para este proyecto</p>
         </div>
 
-        <div *ngIf="archivosParaSubir.length > 0 && isPerfilInfraestructura" class="new-files-preview">
+        <div *ngIf="archivosParaSubir.length > 0 && isPerfilDocsAdicionales" class="new-files-preview">
             <div class="preview-header" #scrollContainer>
                 <mat-icon color="accent">upload_file</mat-icon>
                 <span>Se realizará la carga de <strong>{{ archivosParaSubir.length }}</strong> archivo(s) adicional(es)

@@ -30,6 +30,7 @@ export class EditProyectoComponent implements OnInit {
   nodosList: string[] = [];
   isPerfilApp: any;
   isPerfilInfraestructura: any;
+  isPerfilDocsAdicionales: any;
 
   // Posicion en pantalla del snackbar
   horizontalPositionSnackbar: MatSnackBarHorizontalPosition = 'center';
@@ -163,6 +164,7 @@ export class EditProyectoComponent implements OnInit {
 
     this.isPerfilApp = this.util.isPerfilApp();
     this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
+    this.isPerfilDocsAdicionales = this.util.isPerfilDocsAdicionales();
 
     // Fecha Inicio
     const fechaISOInicio = this.data.fechaInicio;

@@ -138,7 +138,7 @@
     </div>
 
     <!--Documentacion adicional-->
-    <ng-container *ngIf="isPerfilInfraestructura">
+    <ng-container *ngIf="isPerfilDocsAdicionales">
         <div class="seccion-container">
             <div class="seccion-linea"></div>
             <div class="seccion-contenido">
@@ -150,7 +150,7 @@
 
         <mat-divider></mat-divider>
 
-        <div *ngIf="tieneDocumentos('adjuntos_adicionales') > 0 && isPerfilInfraestructura; else sinDocumentos">
+        <div *ngIf="tieneDocumentos('adjuntos_adicionales') > 0 && isPerfilDocsAdicionales; else sinDocumentos">
             <div class="adjuntos-existentes-container" *ngIf="data.adjuntos && data.adjuntos.length > 0">
                 <div class="adjuntos-header">
                     <mat-icon>attachment</mat-icon>

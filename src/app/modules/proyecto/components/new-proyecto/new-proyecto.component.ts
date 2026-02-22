@@ -27,6 +27,7 @@ export class NewProyectoComponent implements OnInit {
   nodosList: string[] = [];
   isPerfilApp: any;
   isPerfilInfraestructura: any;
+  isPerfilDocsAdicionales: any;
 
   // Posicion en pantalla del snackbar
   horizontalPositionSnackbar: MatSnackBarHorizontalPosition = 'center';
@@ -150,6 +151,8 @@ export class NewProyectoComponent implements OnInit {
     this.isPerfilApp = this.util.isPerfilApp();
     // Perfil de Infraestructura
     this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
+    // Perfil de Documentos Adicionales
+    this.isPerfilDocsAdicionales = this.util.isPerfilDocsAdicionales();
     // Lista de responsables
     this.getResponsables();
     // Lista de tipos de proyecto

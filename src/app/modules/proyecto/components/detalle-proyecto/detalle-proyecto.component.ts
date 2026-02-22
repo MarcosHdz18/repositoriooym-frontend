@@ -29,6 +29,7 @@ export class DetalleProyectoComponent implements OnInit {
   proyectos: ProyectoElement[] = [];
   isAdmin: any;
   isPerfilInfraestructura: any;
+  isPerfilDocsAdicionales: any;
 
   isDownloading: boolean = false;
   downloadProgress: number = 0;
@@ -111,6 +112,7 @@ export class DetalleProyectoComponent implements OnInit {
     
     this.isAdmin = this.util.isAdmin();
     this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
+    this.isPerfilDocsAdicionales = this.util.isPerfilDocsAdicionales();
   }
 
   // Filtra los nodos según el término de búsqueda

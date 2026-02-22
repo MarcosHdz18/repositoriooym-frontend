@@ -634,7 +634,7 @@
         </div>
 
         <!--Zona de Drag-->
-        <div *ngIf="isPerfilInfraestructura" class="drop-zone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
+        <div *ngIf="isPerfilDocsAdicionales" class="drop-zone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
             (click)="fileInput.click()" [class.drag-over]="isDragging">
 
             <input type="file" #fileInput (change)="onFileSelected($event)" multiple hidden>
@@ -644,7 +644,7 @@
             <p>Arrastra archivos adicionales aquí o haz clic para buscarlos</p>
         </div>
 
-        <div *ngIf="archivosParaSubir.length > 0 && isPerfilInfraestructura" style="margin-bottom: 20px;" class="new-files-preview">
+        <div *ngIf="archivosParaSubir.length > 0 && isPerfilDocsAdicionales" style="margin-bottom: 20px;" class="new-files-preview">
 
             <div class="preview-header" #scrollContainer>
                 <mat-icon color="accent">upload_file</mat-icon>
