@@ -109,7 +109,7 @@ export class DetalleProyectoComponent implements OnInit {
       }));
       this.documentosSubidos = [...this.documentosSubidos, ...nuevosAdjuntos];
     }
-    
+
     this.isAdmin = this.util.isAdmin();
     this.isPerfilInfraestructura = this.util.isPerfilInfraestructura();
     this.isPerfilDocsAdicionales = this.util.isPerfilDocsAdicionales();
@@ -301,20 +301,45 @@ export class DetalleProyectoComponent implements OnInit {
       return;
     }
 
-    this.proyectoService.descargarAdjuntoMasivo(idAdjunto).subscribe({
-      next: (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        // El nombre se recuperará del header del Backend
-        a.download = nombreArchivo;
+    let downloadTimer: any;
+    this.downloadProgress = 0;
 
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
+    // Iniciamos un temporizador para mostrar el overlay de descarga si tarda más de 400ms
+    downloadTimer = setTimeout(() => {
+      this.isDownloading = true;
+    }, 400); // Si la descarga tarda más de 400ms, mostramos el overlay
+
+    this.proyectoService.descargarAdjuntoMasivo(idAdjunto).subscribe({
+      next: (event: HttpEvent<Blob> | any) => {
+
+        // Manejo de eventos de progreso
+        if (event.type === HttpEventType.DownloadProgress) {
+          if (event.total) {
+            this.downloadProgress = Math.round((100 * event.loaded) / event.total);
+          }
+        }
+
+        // Cuando la descarga se completa
+        if (event.type === HttpEventType.Response) {
+          clearTimeout(downloadTimer);
+          this.isDownloading = false;
+
+          const blob = event.body!;
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          // El nombre se recuperará del header del Backend
+          a.download = nombreArchivo;
+
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        }
       },
       error: (err) => {
+        if (downloadTimer) clearTimeout(downloadTimer);
+        this.isDownloading = false;
         console.error("Error al descargar:", err);
         this.openSnackbar("No se pudo descargar el archivo", "Cerrar");
       }

@@ -132,9 +132,11 @@ export class ProyectoService {
   }
 
   // Método para descargar desde la nueva tabla de adjuntos
-  descargarAdjuntoMasivo(idAdjunto: number): Observable<Blob> {
+  descargarAdjuntoMasivo(idAdjunto: number): Observable<HttpEvent<Blob>> {
     return this.http.get(`${base_url}/proyectos/adjuntos/descargar/${idAdjunto}`, {
-      responseType: 'blob'
+      reportProgress: true, // Permite rastrear el progreso de la solicitud
+      observe: 'events', // Permite observar la respuesta completa, incluyendo encabezados y estado
+      responseType: 'blob' // Indica que la respuesta será un blob (archivo binario)
     });
   }
 
@@ -142,12 +144,13 @@ export class ProyectoService {
    * Metodo que permite la exportacion de los datos en formato de libro de excel
    * @returns file export excel
    */
-  exportProyectosExcel() {
+  exportProyectosExcel(): Observable<HttpEvent<Blob>> {
     const endpoint = `${base_url}/proyectos/export/excel`;
 
     return this.http.get(endpoint, {
+      reportProgress: true, // Habilita el cálculo del porcentaje
+      observe: 'events',    // Permite escuchar el progreso y la respuesta final
       responseType: 'blob'
     });
-
   }
 }

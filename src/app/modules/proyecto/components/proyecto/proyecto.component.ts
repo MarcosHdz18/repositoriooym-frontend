@@ -14,6 +14,7 @@ import { ProyectoElement } from 'src/app/models/proyecto.model';
 import { trigger as animationTrigger, transition, style, animate } from '@angular/animations';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { KeycloakService } from 'keycloak-angular';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-proyecto',
@@ -40,6 +41,9 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
   totalLiberados: number = this.getTotalProyectosLiberados();
   totalPendientes: number = this.getTotalProyectosEnProceso();
   username: any;
+
+  isExporting: boolean = false;
+  downloadProgress: number = 0;
 
   //DataSource de los datos a pintar
   dataSource = new MatTableDataSource<ProyectoElement>([]);
@@ -320,18 +324,51 @@ export class ProyectoComponent implements OnInit, AfterViewInit {
     input.focus(); // Coloca el cursor para volver a escribir
   }
 
-  // Metodo que realiza la exportacion de los datos a un archivo de Excel
+  // Método que realiza la exportación de los datos a un archivo de Excel
   exportDataFileExcel() {
-    this.proyectoService.exportProyectosExcel().subscribe((data: any) => {
-      let file = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      let fileURL = URL.createObjectURL(file);
-      var anchor = document.createElement("a");
-      anchor.download = "Reporte proyectos.xlsx";
-      anchor.href = fileURL;
-      anchor.click();
-      this.openSnackbar("Exportación de archivo correcta", "Operación exitosa");
-    }, (error: any) => {
-      this.openSnackbar("Exportación de archivo incorrecta", "Operación fallida");
+    let downloadTimer: any;
+    this.downloadProgress = 0;
+
+    // Iniciamos un temporizador para mostrar el overlay si tarda más de 400ms
+    downloadTimer = setTimeout(() => {
+      this.isExporting = true;
+    }, 400);
+
+    this.proyectoService.exportProyectosExcel().subscribe({
+      next: (event: HttpEvent<Blob> | any) => {
+
+        // Si actualizas tu servicio para que mande progreso, esto lo atrapará
+        if (event.type === HttpEventType.DownloadProgress) {
+          if (event.total) {
+            this.downloadProgress = Math.round((100 * event.loaded) / event.total);
+          }
+        }
+
+        // Detecta si es el evento final o si el servicio sigue devolviendo el Blob directo
+        if (event.type === HttpEventType.Response || event instanceof Blob) {
+          clearTimeout(downloadTimer);
+          this.isExporting = false;
+
+          // Extraemos el archivo dependiendo de cómo venga la respuesta
+          const data = event.body || event;
+
+          let file = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          let fileURL = URL.createObjectURL(file);
+
+          var anchor = document.createElement("a");
+          anchor.download = "Reporte_proyectos.xlsx";
+          anchor.href = fileURL;
+          anchor.click();
+
+          URL.revokeObjectURL(fileURL); // Buena práctica para liberar memoria
+          this.openSnackbar("Exportación de archivo correcta", "Operación exitosa");
+        }
+      },
+      error: (error: any) => {
+        if (downloadTimer) clearTimeout(downloadTimer);
+        this.isExporting = false;
+        this.openSnackbar("Exportación de archivo incorrecta", "Operación fallida");
+      }
     });
   }
 }

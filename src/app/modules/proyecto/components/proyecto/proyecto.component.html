@@ -1,5 +1,21 @@
 <!--Componente card-->
 <div @fadeAnimation>
+
+    <!-- OVERLAY PARA EXPORTACIÓN A EXCEL -->
+    <div class="overlay-loading" *ngIf="isExporting">
+        <div class="loading-card">
+            <mat-icon color="primary" class="overlay-icon-animation">table_chart</mat-icon>
+            
+            <h3>Generando reporte de proyectos...</h3>
+            
+            <mat-progress-bar [mode]="downloadProgress > 0 ? 'determinate' : 'indeterminate'" [value]="downloadProgress" color="primary"></mat-progress-bar>
+            
+            <div class="percentage" *ngIf="downloadProgress > 0">{{ downloadProgress }}%</div>
+
+            <p class="warning-text">No actualices ni cierres la página mientras se construye el archivo</p>
+        </div>
+    </div>
+
     <mat-card class="card" style="margin-top: 10px; margin-bottom: 20px;">
         <!--Encabezado del card-->
         <mat-card-header>

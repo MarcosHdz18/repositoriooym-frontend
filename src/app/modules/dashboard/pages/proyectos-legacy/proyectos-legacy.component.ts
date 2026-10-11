@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { trigger as animationTrigger, transition, style, animate } from '@angular/animations';
-import { KeycloakService } from 'keycloak-angular';
 import { UtilsService } from 'src/app/modules/shared/services/utils.service';
 
 @Component({

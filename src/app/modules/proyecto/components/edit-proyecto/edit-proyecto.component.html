@@ -1,17 +1,36 @@
+<!-- OVERLAY PARA ACTUALIZAR EL PROYECTO -->
 <div class="overlay-loading" *ngIf="isLoading">
     <div class="loading-card">
-        <mat-icon color="primary" style="transform: scale(2); margin-bottom: 15px;">sync</mat-icon>
-        <h3>Actualizando información del proyecto...</h3>
-        <div class="tamanio-info">
+        <mat-icon color="primary" class="overlay-icon-animation">sync</mat-icon>
+        
+        <h3>Actualizando información...</h3>
+        
+        <div class="tamanio-info" *ngIf="tamanioTotalMB">
             Nuevos archivos: <strong>{{ tamanioTotalMB }}</strong>
         </div>
-        <mat-progress-bar [mode]="(progress > 0) ? 'determinate' : 'indeterminate'" [value]="progress" color="primary">
-        </mat-progress-bar>
-        <span class="percentage" *ngIf="progress > 0">{{ progress }}%</span>
+
+        <mat-progress-bar [mode]="progress > 0 ? 'determinate' : 'indeterminate'" [value]="progress" color="primary"></mat-progress-bar>
+        
+        <div class="percentage" *ngIf="progress > 0">{{ progress }}%</div>
+
         <p class="warning-text">Guardando cambios en el servidor</p>
     </div>
 </div>
 
+<!-- OVERLAY PARA DESCARGAR ADJUNTOS EN ESTA MISMA PANTALLA -->
+<div class="overlay-loading" *ngIf="isDownloading">
+    <div class="loading-card">
+        <mat-icon color="primary" class="overlay-icon-animation">cloud_download</mat-icon>
+        
+        <h3>Descargando archivo...</h3>
+        
+        <mat-progress-bar [mode]="downloadProgress > 0 ? 'determinate' : 'indeterminate'" [value]="downloadProgress" color="primary"></mat-progress-bar>
+        
+        <div class="percentage" *ngIf="downloadProgress > 0">{{ downloadProgress }}%</div>
+
+        <p class="warning-text">No actualices ni cierres la página para completar la descarga</p>
+    </div>
+</div>
 
 <h2 mat-dialog-title class="centrar-texto">{{ tituloFormulario }} proyecto</h2>
 <mat-dialog-content>

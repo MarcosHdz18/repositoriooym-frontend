@@ -1,16 +1,20 @@
 <div class="overlay-loading" *ngIf="isLoading">
     <div class="loading-card">
-        <mat-icon color="primary" style="transform: scale(2); margin-bottom: 15px;">cloud_upload</mat-icon>
+        <mat-icon color="primary" class="overlay-icon-animation">cloud_upload</mat-icon>
+        
         <h3>{{ progress > 0 ? 'Creando proyecto...' : 'Procesando solicitud...' }}</h3>
-        <div class="tamanio-info">
+        
+        <div class="tamanio-info" *ngIf="tamanioTotalMB">
             Tamaño total de archivos: <strong>{{ tamanioTotalMB }}</strong>
         </div>
-        <mat-progress-bar [mode]="(progress > 0) ? 'determinate' : 'indeterminate'" [value]="progress" color="primary">
-        </mat-progress-bar>
-        <span class="percentage" *ngIf="progress > 0">{{ progress }}%</span>
-        <p class="warning-text">
-            <mat-icon style="font-size: 14px; width: 14px; height: 14px; vertical-align: middle;">warning</mat-icon>
-            No cierres la ventana ni refresques la página
+
+        <mat-progress-bar [mode]="progress > 0 ? 'determinate' : 'indeterminate'" [value]="progress" color="primary"></mat-progress-bar>
+        
+        <div class="percentage" *ngIf="progress > 0">{{ progress }}%</div>
+
+        <p class="warning-text-danger">
+            <mat-icon style="font-size: 14px; width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;">warning</mat-icon>
+            No cierres la ventana ni actualices la página
         </p>
     </div>
 </div>
